@@ -1,6 +1,7 @@
 <launch>
   <arg name="input_path_topic" default="/planning/scenario_planning/lane_driving/behavior_planning/path" />
   <arg name="vehicle_param_file" />
+  <arg name="use_surround_obstacle_check" default="true" />
 
   <!-- path planning for avoiding obstacle with dynamic object info -->
   <group>
@@ -14,7 +15,7 @@
 
 
   <!-- surround obstacle checker (Do not start if there are pedestrian/bicycles around ego-car) -->
-  <group>
+  <group if="$(var use_surround_obstacle_check)">
     <include file="$(find-pkg-share surround_obstacle_checker)/launch/surround_obstacle_checker.launch.xml">
       <arg name="input_trajectory" value="obstacle_avoidance_planner/trajectory" />
       <arg name="output_trajectory" value="surround_obstacle_checker/trajectory" />
@@ -22,9 +23,12 @@
     </include>
   </group>
 
+  <!-- skip surround obstacle checker -->
+  <group unless="$(var use_surround_obstacle_check)">
+    <node pkg="topic_tools" exec="relay" name="skip_surround_obstacle_check_relay" args="obstacle_avoidance_planner/trajectory surround_obstacle_checker/trajectory" />
+  </group>
 
   <!-- stop velocity planning with obstacle pointcloud info -->
-
   <group>
     <include file="$(find-pkg-share obstacle_stop_planner)/launch/obstacle_stop_planner.launch.xml">
       <arg name="input_trajectory" value="surround_obstacle_checker/trajectory" />
