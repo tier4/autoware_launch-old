@@ -11,7 +11,7 @@
   <arg name="cmdline_arg" default="$(var bd_list)"/>
 
   <group>
-    <node name="livox_lidar_publisher" pkg="livox_ros2_driver" exec="livox_ros2_driver_node" required="true" output="screen" args="$(var cmdline_arg)">
+    <node name="livox_lidar_publisher" pkg="livox_ros2_driver" exec="livox_ros2_driver_node" output="screen" args="$(var cmdline_arg)">
       <param name="xfer_format" value="$(var xfer_format)"/>
       <param name="multi_topic" value="$(var multi_topic)"/>
       <param name="data_src" value="$(var data_src)"/>
