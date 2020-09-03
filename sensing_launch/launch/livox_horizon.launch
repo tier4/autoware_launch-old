@@ -27,7 +27,7 @@
     <param name="user_config_path" type="string" value="$(find livox_ros_driver)/config/livox_lidar_config.json"/>
     <param name="frame_id" value="$(arg sensor_frame)" />
 
-    <node name="livox_lidar_publisher" pkg="livox_ros_driver" type="livox_ros_driver_node" required="true" output="screen" args="$(arg cmdline_arg)">
+    <node name="livox_lidar_publisher" pkg="livox_ros_driver" type="livox_ros_driver_node" output="screen" args="$(arg cmdline_arg)">
     </node>
   </group>
 
