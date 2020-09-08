@@ -48,6 +48,7 @@
     <!-- vehicle cmd gate -->
     <include file="$(find-pkg-share vehicle_cmd_gate)/launch/vehicle_cmd_gate.launch.xml">
       <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+      <arg name="use_emergency_handling" value="false"/>
     </include>
 
     <!-- remote_cmd_converter -->
