@@ -31,6 +31,7 @@
     <param name="drivable_area_height" value="50.0" />
     <param name="static_obstale_velocity_thresh" value="0.1" />
     <param name="enable_abort_lane_change" value="true" />
+    <param name="refine_goal_search_radius_range" value="7.5" />
   </node>
 
   <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/lane_change_approval std_msgs/msg/Bool 'data: true' -r 10"/>
