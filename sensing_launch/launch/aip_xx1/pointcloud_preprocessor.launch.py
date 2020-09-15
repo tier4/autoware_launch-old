@@ -30,23 +30,42 @@ def generate_launch_description():
     launch_arguments.append(DeclareLaunchArgument(name, default_value=default_value))
 
   add_launch_arg('base_frame', 'base_link')
+  add_launch_arg('use_concat_filter', 'use_concat_filter')
 
   # set concat filter as a component
-  concat_component = ComposableNode(
-      package=pkg,
-      plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
-      name='concatenate_data',
-      remappings=[('/output', 'concatenated/pointcloud')],
-      parameters=[
-          {
-              'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
-                               '/sensing/lidar/left/outlier_filtered/pointcloud',
-                               '/sensing/lidar/right/outlier_filtered/pointcloud',
-                               '/sensing/lidar/rear/outlier_filtered/pointcloud'],
-              'output_frame': 'base_link',
-          }
-      ]
-  )
+  if (LaunchConfiguration('use_concat_filter')):
+    concat_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
+        name='concatenate_data',
+        remappings=[('/output', 'concatenated/pointcloud')],
+        parameters=[
+            {
+                'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
+                                '/sensing/lidar/left/outlier_filtered/pointcloud',
+                                '/sensing/lidar/right/outlier_filtered/pointcloud'],
+                'output_frame': 'base_link',
+            }
+        ]
+    )
+  else:
+    # set PointCloud PassThrough Filter as a component
+    concat_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::PassThroughFilterComponent',
+        name='passthrough_filter',
+        remappings=[
+            ('/input', 'top/outlier_filtered/pointcloud'),
+            ('/output', 'concatenated/pointcloud'),
+            ('/min_z', '/vehicle_info/min_height_offset'),
+            ('/max_z', '/vehicle_info/max_height_offset'),
+        ],
+        parameters=[
+            {
+                'output_frame': 'base_link',
+            }
+        ]
+    )
 
   # set crop box filter as a component
   cropbox_component = ComposableNode(
