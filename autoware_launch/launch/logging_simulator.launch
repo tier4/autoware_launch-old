@@ -61,7 +61,7 @@
   </include>
 
   <!-- Rviz -->
-  <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find autoware_launch)/rviz/autoware.rviz" if="$(arg rviz)" />
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find autoware_launch)/rviz/autoware.rviz -s $(find autoware_launch)/rviz/image/autoware.png" if="$(arg rviz)" />
 
   <!-- Web Controller -->
   <include file="$(find roswww)/launch/roswww.launch">
