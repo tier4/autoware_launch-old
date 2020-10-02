@@ -31,6 +31,7 @@ def generate_launch_description():
 
   add_launch_arg('base_frame', 'base_link')
   add_launch_arg('use_concat_filter', 'use_concat_filter')
+  add_launch_arg('use_radius_search', 'use_radius_search')
 
   # set concat filter as a component
   if (LaunchConfiguration('use_concat_filter')):
@@ -41,9 +42,10 @@ def generate_launch_description():
         remappings=[('/output', 'concatenated/pointcloud')],
         parameters=[
             {
-                'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
-                                '/sensing/lidar/left/outlier_filtered/pointcloud',
-                                '/sensing/lidar/right/outlier_filtered/pointcloud'],
+                'input_topics': ['/sensing/lidar/front/outlier_filtered/pointcloud',
+                                '/sensing/lidar/front_left/mirror_cropped/pointcloud',
+                                '/sensing/lidar/front_right/mirror_cropped/pointcloud',
+                                '/sensing/lidar/front_center/mirror_cropped/pointcloud'],
                 'output_frame': 'base_link',
             }
         ]
@@ -97,21 +99,74 @@ def generate_launch_description():
       name='ray_ground_filter',
       remappings=[
           ('/input', 'mesurement_range_cropped/pointcloud'),
-          ('/output', 'no_ground/pointcloud')
+          ('/output', 'no_ground/pointcloud_with_outlier'),
+          ('min_x', '/vehicle_info/min_longitudinal_offset'),
+          ('max_x', '/vehicle_info/max_longitudinal_offset'),
+          ('min_y', '/vehicle_info/min_lateral_offset'),
+          ('max_y', '/vehicle_info/max_lateral_offset')
       ],
       parameters=[{
+        "initial_max_slope": 1.0,
         "general_max_slope": 10.0,
         "local_max_slope": 10.0,
-        "min_height_threshold": 0.2,
+        "min_height_threshold": 0.13,
+        "use_vehicle_footprint": True,
       }]
   )
+
+  if (LaunchConfiguration('use_radius_search')):
+    voxel_grid_filter_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::VoxelGridDownsampleFilterComponent',
+        name='voxel_grid_filter',
+        remappings=[
+            ('/input', 'no_ground/pointcloud_with_outlier'),
+            ('/output', 'voxel_grid_filtered/pointcloud'),
+        ],
+        parameters=[{
+            "voxel_size_x": 0.04,
+            "voxel_size_y": 0.04,
+            "voxel_size_z": 0.2,
+            "input_frame": "base_link",
+            "output_frame": "base_link",
+        }]
+    )
+    radius_search_2d_outlier_filter_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::RadiusSearch2dOutlierFilterComponent',
+        name='radius_search_2d_outlier_filter',
+        remappings=[
+            ('/input', 'voxel_grid_filtered/pointcloud'),
+            ('/output', 'no_ground/pointcloud'),
+        ],
+        parameters=[{
+            "search_radius": 0.2,
+            "min_neighbors": 5
+        }]
+    )
+  else:
+    voxel_grid_outlier_filter_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::VoxelGridOutlierFilterComponent',
+        name='voxel_grid_filter',
+        remappings=[
+            ('/input', 'no_ground/pointcloud_with_outlier'),
+            ('/output', 'no_ground/pointcloud'),
+        ],
+        parameters=[{
+            "voxel_size_x": 0.4,
+            "voxel_size_y": 0.4,
+            "voxel_size_z": 100,
+            "voxel_points_threshold": 8,
+        }]
+    )
 
   relay_component = ComposableNode(
       package='topic_tools',
       plugin='topic_tools::RelayNode',
       name='relay',
       parameters=[{
-        "input_topic": "/sensing/lidar/top/rectified/pointcloud",
+        "input_topic": "/sensing/lidar/front/rectified/pointcloud",
         "output_topic": "/sensing/lidar/pointcloud",
         "type": "sensor_msgs/msg/PointCloud2",
       }],

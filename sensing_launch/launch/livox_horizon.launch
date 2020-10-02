@@ -9,8 +9,11 @@
   <arg name="publish_freq" default="10.0"/>
   <arg name="output_type" default="0"/>
   <arg name="cmdline_arg" default="$(var bd_list)"/>
+  <arg name="base_frame" default="base_link" />
+  <arg name="manager" default="livox_nodelet_manager" />
+  <arg name="launch_driver" default="true" />
 
-  <group>
+  <group if="$(var launch_driver)">
     <node name="livox_lidar_publisher" pkg="livox_ros2_driver" exec="livox_ros2_driver_node" output="screen" args="$(var cmdline_arg)">
       <param name="xfer_format" value="$(var xfer_format)"/>
       <param name="multi_topic" value="$(var multi_topic)"/>
@@ -24,4 +27,36 @@
       <param name="frame_id" value="$(var sensor_frame)" />
     </node>
   </group>
+
+  <!-- crop self -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)_crop_box_filter_self" args="load pointcloud_preprocessor/crop_box_filter_nodelet $(arg manager)" output="log">
+    <remap from="~input" to="livox/lidar" />
+    <remap from="~output" to="self_cropped/pointcloud" />
+    <remap from="~min_x" to="/vehicle_info/min_longitudinal_offset" />
+    <remap from="~max_x" to="/vehicle_info/max_longitudinal_offset" />
+    <remap from="~min_y" to="/vehicle_info/min_lateral_offset" />
+    <remap from="~max_y" to="/vehicle_info/max_lateral_offset" />
+    <remap from="~min_z" to="/vehicle_info/min_height_offset" />
+    <remap from="~max_z" to="/vehicle_info/max_height_offset" />
+
+    <param name="negative" value="True" />
+    <param name="input_frame" value="$(arg base_frame)" />
+    <param name="output_frame" value="$(arg base_frame)" />
+  </node>
+
+  <!-- crop mirror -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)_crop_box_filter_mirror" args="load pointcloud_preprocessor/crop_box_filter_nodelet $(arg manager)" output="log">
+    <remap from="~input" to="self_cropped/pointcloud" />
+    <remap from="~output" to="mirror_cropped/pointcloud" />
+    <remap from="~min_x" to="/vehicle_info/mirror/min_longitudinal_offset" />
+    <remap from="~max_x" to="/vehicle_info/mirror/max_longitudinal_offset" />
+    <remap from="~min_y" to="/vehicle_info/mirror/min_lateral_offset" />
+    <remap from="~max_y" to="/vehicle_info/mirror/max_lateral_offset" />
+    <remap from="~min_z" to="/vehicle_info/mirror/min_height_offset" />
+    <remap from="~max_z" to="/vehicle_info/mirror/max_height_offset" />
+    <param name="negative" value="True" />
+    <param name="input_frame" value="$(arg base_frame)" />
+    <param name="output_frame" value="$(arg base_frame)" />
+  </node>
+
 </launch>
