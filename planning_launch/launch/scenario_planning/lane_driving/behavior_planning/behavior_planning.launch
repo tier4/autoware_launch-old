@@ -33,6 +33,9 @@
     <param name="static_obstale_velocity_thresh" value="0.1" />
     <param name="maximum_deceleration" value="1.0" />
     <param name="enable_abort_lane_change" value="false" />
+    <param name="enable_collision_check_at_prepare_phase" value="false" />
+    <param name="use_predicted_path_outside_lanelet" value="false" />
+    <param name="use_all_predicted_path" value="false" />
     <param name="refine_goal_search_radius_range" value="7.5" />
   </node>
 
