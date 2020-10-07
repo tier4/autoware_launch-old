@@ -977,6 +977,25 @@ Visualization Manager:
       Name: Planning
     - Class: rviz/Group
       Displays:
+        - Class: rviz_plugins/Trajectory
+          Color Border Vel Max: 3
+          Enabled: true
+          Name: Predicted Trajectory
+          Topic: /control/trajectory_follower/predicted_trajectory
+          Unreliable: false
+          Value: true
+          View Path:
+            Alpha: 1
+            Color: 255; 255; 255
+            Constant Color: true
+            Value: true
+            Width: 0.05000000074505806
+          View Velocity:
+            Alpha: 1
+            Color: 0; 0; 0
+            Constant Color: false
+            Scale: 0.30000001192092896
+            Value: false
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /control/trajectory_follower/mpc_follower/debug/markers
