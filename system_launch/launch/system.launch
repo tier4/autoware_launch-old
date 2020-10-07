@@ -3,6 +3,13 @@
   <arg name="run_mode" default="online" doc="options: online, planning_simulation"/>
 
   <group ns="/system">
+    <!-- System Monitor -->
+    <group ns="system_monitor">
+      <include file="$(find system_monitor)/launch/system_monitor.launch">
+        <arg name="config_file" value="$(find system_launch)/config/system_monitor.yaml"/>
+      </include>
+    </group>
+
     <!-- State Monitor -->
     <include file="$(find autoware_state_monitor)/launch/autoware_state_monitor.launch">
       <arg name="config_file" if="$(eval run_mode == 'online')" value="$(find autoware_state_monitor)/config/autoware_state_monitor.yaml" />
