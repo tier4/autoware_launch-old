@@ -21,7 +21,7 @@
       <push-ros-namespace namespace="front_left"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml">
         <arg name="sensor_frame" value="livox_front_left" />
-        <arg name="bd_list" value="$(env LIVOX_FRONT_LEFT_ID)" />
+        <arg name="bd_list" value="$(env LIVOX_FRONT_LEFT_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
@@ -31,7 +31,7 @@
       <push-ros-namespace namespace="front_center"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml">
         <arg name="sensor_frame" value="livox_front_center" />
-        <arg name="bd_list" value="$(env LIVOX_FRONT_CENTER_ID)" />
+        <arg name="bd_list" value="$(env LIVOX_FRONT_CENTER_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
@@ -41,7 +41,7 @@
       <push-ros-namespace namespace="front_right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml">
         <arg name="sensor_frame" value="livox_front_right" />
-        <arg name="bd_list" value="$(env LIVOX_FRONT_RIGHT_ID)" />
+        <arg name="bd_list" value="$(env LIVOX_FRONT_RIGHT_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
