@@ -22,6 +22,7 @@
     <param name="max_accel" value="-5.0" />
     <param name="lane_change_prepare_duration" value="4.0" />
     <param name="lane_changing_duration" value="8.0" />
+    <param name="backward_length_buffer_for_end_of_lane" value="5.0" />
     <param name="minimum_lane_change_length" value="12.0" />
     <param name="minimum_lane_change_velocity" value="8.3" />
     <param name="prediction_duration" value="8.0" />
