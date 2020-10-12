@@ -230,11 +230,11 @@ Visualization Manager:
               Color: 255; 255; 255
               Delta Range: 10
               Enabled: true
-              Max Alpha: 1
+              Max Alpha: 0.5
               Max Range: 100
-              Max Wave Alpha: 1
-              Min Alpha: 0.20000000298023224
-              Min Wave Alpha: 0.20000000298023224
+              Max Wave Alpha: 0.5
+              Min Alpha: 0.01
+              Min Wave Alpha: 0.01
               Name: PolarGridDisplay
               Reference Frame: base_link
               Value: true
