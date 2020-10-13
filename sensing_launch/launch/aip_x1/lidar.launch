@@ -8,11 +8,11 @@
     <push-ros-namespace namespace="lidar"/>
 
     <group>
-      <push-ros-namespace namespace="front"/>
+      <push-ros-namespace namespace="top"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" value="velodyne_front" />
-        <arg name="device_ip" value="192.168.1.202"/>
-        <arg name="port" value="2369"/>
+        <arg name="sensor_frame" value="velodyne_top" />
+        <arg name="device_ip" value="192.168.1.20"/>
+        <arg name="port" value="2368"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
