@@ -42,7 +42,7 @@ def generate_launch_description():
         remappings=[('/output', 'concatenated/pointcloud')],
         parameters=[
             {
-                'input_topics': ['/sensing/lidar/front/outlier_filtered/pointcloud',
+                'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
                                 '/sensing/lidar/front_left/mirror_cropped/pointcloud',
                                 '/sensing/lidar/front_right/mirror_cropped/pointcloud',
                                 '/sensing/lidar/front_center/mirror_cropped/pointcloud'],
@@ -166,7 +166,7 @@ def generate_launch_description():
       plugin='topic_tools::RelayNode',
       name='relay',
       parameters=[{
-        "input_topic": "/sensing/lidar/front/rectified/pointcloud",
+        "input_topic": "/sensing/lidar/top/rectified/pointcloud",
         "output_topic": "/sensing/lidar/pointcloud",
         "type": "sensor_msgs/msg/PointCloud2",
       }],
