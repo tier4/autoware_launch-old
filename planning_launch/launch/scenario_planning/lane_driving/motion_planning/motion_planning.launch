@@ -1,5 +1,6 @@
 <launch>
   <arg name="input_path_topic" default="/planning/scenario_planning/lane_driving/behavior_planning/path" />
+  <arg name="use_surround_obstacle_check" default="true" />
 
   <!-- path planning for avoiding obstacle with dynamic object info -->
   <group>
@@ -12,13 +13,16 @@
 
 
   <!-- surround obstacle checker (Do not start if there are pedestrian/bicycles around ego-car) -->
-  <group>
+  <group if="$(eval use_surround_obstacle_check)">
     <remap from="~input/trajectory" to="obstacle_avoidance_planner/trajectory" />
     <remap from="~output/trajectory" to="surround_obstacle_checker/trajectory" />
     <include file="$(find surround_obstacle_checker)/launch/surround_obstacle_checker.launch">
     </include>
   </group>
-
+  <!-- skip surround obstacle checker -->
+  <group unless="$(eval use_surround_obstacle_check)">
+    <node pkg="topic_tools" type="relay" name="skip_surround_obstacle_check_relay" args="obstacle_avoidance_planner/trajectory surround_obstacle_checker/trajectory" />
+  </group>
 
   <!-- stop velocity planning with obstacle pointcloud info -->
 
@@ -27,6 +31,9 @@
     <remap from="~input/pointcloud" to="/sensing/lidar/no_ground/pointcloud" />
     <remap from="~output/trajectory" to="/planning/scenario_planning/lane_driving/trajectory" />
     <include file="$(find obstacle_stop_planner)/launch/obstacle_stop_planner.launch">
+      <arg name="acc_param_file" value="$(find planning_launch)/config/adaptive_cruise_control.yaml" />
+      <arg name="param_file" value="$(find planning_launch)/config/obstacle_stop_planner.yaml" />
+      <arg name="enable_slow_down" value="false" />
     </include>
   </group>
 
