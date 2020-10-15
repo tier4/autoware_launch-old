@@ -35,6 +35,7 @@
       <arg name="input_pointcloud" value="/sensing/lidar/no_ground/pointcloud" />
       <arg name="output_trajectory" value="/planning/scenario_planning/lane_driving/trajectory" />
       <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+      <arg name="acc_param_file" value="$(find-pkg-share planning_launch)/config/adaptive_cruise_control.yaml" />
       <arg name="param_file" value="$(find-pkg-share planning_launch)/config/obstacle_stop_planner.yaml" />
       <arg name="enable_slow_down" value="false" />
     </include>
