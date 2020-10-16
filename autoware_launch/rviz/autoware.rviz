@@ -738,6 +738,7 @@ Visualization Manager:
                         stop point: false
                         stop polygon line: false
                         stop_virtual_wall: true
+                        walkway stop judge range: false
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
