@@ -861,12 +861,12 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner/debug/marker
                       Name: ObstaclePointCloudStop
                       Namespaces:
-                        collision_polygons: true
-                        detection_polygons: true
+                        collision_polygons: false
+                        detection_polygons: false
                         factor_text: true
                         stop_virtual_wall: true
-                        stop_obstacle_point: true
-                        stop_obstacle_text: true
+                        stop_obstacle_point: false
+                        stop_obstacle_text: false
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
