@@ -756,6 +756,7 @@ Visualization Manager:
                         stop_point_pose_line: false
                         stop_virtual_wall: true
                         stuck_vehicle_detect_area: false
+                        stuck_targets: false
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
