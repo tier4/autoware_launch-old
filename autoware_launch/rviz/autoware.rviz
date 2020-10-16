@@ -727,7 +727,17 @@ Visualization Manager:
                       Enabled: true
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/crosswalk
                       Name: Crosswalk
-                      Namespaces: {}
+                      Namespaces:
+                        collision line: false
+                        collision point: false
+                        factor_text: true
+                        slow factor_text: true
+                        slow point: false
+                        slow polygon line: false
+                        slow virtual_wall: true
+                        stop point: false
+                        stop polygon line: false
+                        stop_virtual_wall: true
                       Queue Size: 100
                       Value: true
                     - Class: rviz/MarkerArray
@@ -739,7 +749,7 @@ Visualization Manager:
                         detection_area: false
                         ego_lane: false
                         factor_text: true
-                        judge_point_pose_line: true
+                        judge_point_pose_line: false
                         path_raw: false
                         spline: false
                         stop_point_pose_line: false
@@ -757,7 +767,7 @@ Visualization Manager:
                         detection_area: false
                         detection_area_for_blind_spot: false
                         factor_text: true
-                        judge_point_pose_line: true
+                        judge_point_pose_line: false
                         path_raw: false
                         stop_virtual_wall: true
                         spline: false
