@@ -1,0 +1,5 @@
+analyzers:
+  discard_all:
+    type: diagnostic_aggregator/DiscardAnalyzer
+    path: discard_all
+    regex: ".*"
