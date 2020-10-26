@@ -886,6 +886,7 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/debug/marker
                       Name: ObstacleAvoidance
                       Namespaces:
+                        avoiding_objects: false
                         base_bounds_line: false
                         bounds_candidate_base_text: false
                         bounds_candidate_for_base: false
