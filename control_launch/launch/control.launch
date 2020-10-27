@@ -10,6 +10,7 @@
   <arg name="mpc_follower_param_path" default="$(find-pkg-share control_launch)/config/mpc_follower/mpc_follower_param.yaml"/>
   <arg name="pure_pursuit_param_path" default="$(find-pkg-share control_launch)/config/pure_pursuit/pure_pursuit_param.yaml"/>
   <arg name="velocity_controller_param_path" default="$(find-pkg-share control_launch)/config/velocity_controller/velocity_controller_param.yaml"/>
+  <arg name="vehicle_cmd_gate_param_path" default="$(find-pkg-share control_launch)/config/vehicle_cmd_gate/vehicle_cmd_gate.yaml"/>
 
   <!-- control module -->
   <group>
@@ -48,7 +49,9 @@
     <!-- vehicle cmd gate -->
     <include file="$(find-pkg-share vehicle_cmd_gate)/launch/vehicle_cmd_gate.launch.xml">
       <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+      <arg name="config_file" value="$(var vehicle_cmd_gate_param_path)"/>
       <arg name="use_emergency_handling" value="false"/>
+      <arg name="use_external_emergency_stop" value="true"/>
     </include>
 
     <!-- remote_cmd_converter -->
