@@ -913,6 +913,7 @@ Visualization Manager:
                         smoothed_points_text: false
                         straight_points_marker: false
                         top_bounds_line: false
+                        mid_bounds_line: false
                         vehicle_footprint: false
                         virtual_wall: true
                         virtual_wall_text: true
