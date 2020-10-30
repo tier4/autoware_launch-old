@@ -1,8 +1,9 @@
 <launch>
 
+  <arg name="use_gnss" default="false" />
   <arg name="launch_driver" default="true" />
 
-  <group ns="gnss">
+  <group ns="gnss" if="$(arg use_gnss)">
 
     <!-- Ublox Driver -->
     <remap from="ublox/fix" to="ublox/nav_sat_fix" />
