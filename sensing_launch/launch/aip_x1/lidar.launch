@@ -2,7 +2,7 @@
 
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
-  <arg name="use_radius_search" default="true" />
+  <arg name="use_radius_search" default="false" />
 
   <group>
     <push-ros-namespace namespace="lidar"/>
