@@ -34,6 +34,7 @@
     <!-- Emergency Handler -->
     <include file="$(find emergency_handler)/launch/emergency_handler.launch">
       <arg name="config_file" value="$(find emergency_handler)/config/emergency_handler.yaml" />
+      <arg name="use_emergency_hold" value="false" />
     </include>
   </group>
 </launch>
