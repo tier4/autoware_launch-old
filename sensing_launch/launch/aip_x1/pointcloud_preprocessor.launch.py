@@ -109,28 +109,29 @@ def generate_launch_description():
         "initial_max_slope": 1.0,
         "general_max_slope": 10.0,
         "local_max_slope": 10.0,
-        "min_height_threshold": 0.13,
+        "min_height_threshold": 0.1,
         "use_vehicle_footprint": True,
       }]
   )
 
+  voxel_grid_filter_component = ComposableNode(
+    package=pkg,
+    plugin='pointcloud_preprocessor::VoxelGridDownsampleFilterComponent',
+    name='voxel_grid_filter',
+    remappings=[
+        ('/input', 'no_ground/pointcloud_with_outlier'),
+        ('/output', 'voxel_grid_filtered/pointcloud'),
+    ],
+    parameters=[{
+        "voxel_size_x": 0.04,
+        "voxel_size_y": 0.04,
+        "voxel_size_z": 0.08,
+        "input_frame": "base_link",
+        "output_frame": "base_link",
+    }]
+  )
+
   if (LaunchConfiguration('use_radius_search')):
-    voxel_grid_filter_component = ComposableNode(
-        package=pkg,
-        plugin='pointcloud_preprocessor::VoxelGridDownsampleFilterComponent',
-        name='voxel_grid_filter',
-        remappings=[
-            ('/input', 'no_ground/pointcloud_with_outlier'),
-            ('/output', 'voxel_grid_filtered/pointcloud'),
-        ],
-        parameters=[{
-            "voxel_size_x": 0.04,
-            "voxel_size_y": 0.04,
-            "voxel_size_z": 0.2,
-            "input_frame": "base_link",
-            "output_frame": "base_link",
-        }]
-    )
     radius_search_2d_outlier_filter_component = ComposableNode(
         package=pkg,
         plugin='pointcloud_preprocessor::RadiusSearch2dOutlierFilterComponent',
@@ -150,14 +151,14 @@ def generate_launch_description():
         plugin='pointcloud_preprocessor::VoxelGridOutlierFilterComponent',
         name='voxel_grid_filter',
         remappings=[
-            ('/input', 'no_ground/pointcloud_with_outlier'),
+            ('/input', 'voxel_grid_filtered/pointcloud'),
             ('/output', 'no_ground/pointcloud'),
         ],
         parameters=[{
             "voxel_size_x": 0.4,
             "voxel_size_y": 0.4,
             "voxel_size_z": 100,
-            "voxel_points_threshold": 8,
+            "voxel_points_threshold": 5,
         }]
     )
 
