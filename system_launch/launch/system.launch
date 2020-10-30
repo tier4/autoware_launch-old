@@ -37,6 +37,7 @@
     <!-- Emergency Handler -->
     <include file="$(find-pkg-share emergency_handler)/launch/emergency_handler.launch.xml">
       <arg name="config_file" value="$(find-pkg-share emergency_handler)/config/emergency_handler.param.yaml" />
+      <arg name="use_emergency_hold" default="false" />
     </include>
   </group>
 </launch>
