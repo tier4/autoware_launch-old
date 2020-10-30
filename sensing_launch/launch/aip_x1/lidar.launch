@@ -2,7 +2,7 @@
 
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
-  <arg name="use_radius_search" default="true" />
+  <arg name="use_radius_search" default="false" />
 
   <group ns="lidar">
 
@@ -92,7 +92,7 @@
       <param name="initial_max_slope" value="1.0" />
       <param name="general_max_slope" value="10.0" />
       <param name="local_max_slope" value="10.0" />
-      <param name="min_height_threshold" value="0.13" />
+      <param name="min_height_threshold" value="0.1" />
       <param name="use_vehicle_footprint" value="true" />
       <remap from="~min_x" to="/vehicle_info/min_longitudinal_offset" />
       <remap from="~max_x" to="/vehicle_info/max_longitudinal_offset" />
@@ -100,21 +100,21 @@
       <remap from="~max_y" to="/vehicle_info/max_lateral_offset" />
     </node>
 
+    <!-- to reduce caluculation cost  -->
+    <node pkg="nodelet" type="nodelet" name="voxel_grid_filter" args="load pointcloud_preprocessor/voxel_grid_downsample_filter_nodelet $(arg manager)">
+      <remap from="~input" to="no_ground/pointcloud_with_outlier" />
+      <remap from="~output" to="voxel_grid_filtered/pointcloud" />
+      <rosparam>
+        voxel_size_x: 0.04
+        voxel_size_y: 0.04
+        voxel_size_z: 0.08
+        input_frame: base_link
+        output_frame: base_link
+      </rosparam>
+    </node>
+
     <!-- PointCloud Outlier Filter -->
     <group if="$(arg use_radius_search)">
-      <!-- to reduce caluculation cost  -->
-      <node pkg="nodelet" type="nodelet" name="voxel_grid_filter" args="load pointcloud_preprocessor/voxel_grid_downsample_filter_nodelet $(arg manager)">
-        <remap from="~input" to="no_ground/pointcloud_with_outlier" />
-        <remap from="~output" to="voxel_grid_filtered/pointcloud" />
-        <rosparam>
-          voxel_size_x: 0.04
-          voxel_size_y: 0.04
-          voxel_size_z: 0.2
-          input_frame: base_link
-          output_frame: base_link
-        </rosparam>
-      </node>
-
       <node pkg="nodelet" type="nodelet" name="$(arg manager)_radius_search_2d_outlier_filter" args="load pointcloud_preprocessor/radius_search_2d_outlier_filter_nodelet $(arg manager)">
         <remap from="~input" to="voxel_grid_filtered/pointcloud" />
         <remap from="~output" to="no_ground/pointcloud" />
@@ -127,13 +127,13 @@
 
     <group unless="$(arg use_radius_search)">
       <node pkg="nodelet" type="nodelet" name="$(arg manager)_voxel_grid_outlier_filter" args="load pointcloud_preprocessor/voxel_grid_outlier_filter_nodelet $(arg manager)">
-        <remap from="~input" to="no_ground/pointcloud_with_outlier" />
+        <remap from="~input" to="voxel_grid_filtered/pointcloud" />
         <remap from="~output" to="no_ground/pointcloud" />
         <rosparam>
         voxel_size_x: 0.4
         voxel_size_y: 0.4
         voxel_size_z: 100
-        voxel_points_threshold: 8
+        voxel_points_threshold: 5
         </rosparam>
       </node>
     </group>
