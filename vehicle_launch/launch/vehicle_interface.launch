@@ -13,7 +13,7 @@
 
   <!-- real mode -->
   <group unless="$(eval simulation==true)">
-    <include file="$(eval find(arg('vehicle_model')+'_description')+'/launch/vehicle_interface.launch')" >
+    <include file="$(eval find(arg('vehicle_model')+'_description')+'/launch/vehicle_interface.launch')" pass_all_args="true">
     </include>
   </group>
 </launch>
