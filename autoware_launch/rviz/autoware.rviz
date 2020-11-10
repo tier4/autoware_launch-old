@@ -797,7 +797,11 @@ Visualization Manager:
                       Marker Topic: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/detection_area
                       Name: DetectionArea
                       Namespaces:
+                        detection_area_correspondence: false
+                        detection_area_id: false
+                        detection_area_polygon: false
                         factor_text: true
+                        obstacles: false
                         stop_virtual_wall: true
                       Queue Size: 100
                       Value: true
