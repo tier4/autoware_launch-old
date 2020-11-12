@@ -21,7 +21,7 @@
   <arg name="use_vector_map" default="true"/>
 
   <!-- Jetson AGX -->
-  <!-- <include file="$(find tensorrt_yolo3)/launch/yolo3.launch">
+  <!-- <include file="$(find tensorrt_yolo)/launch/yolo.launch">
     <arg name="image_raw0" default="$(arg image_raw0)"/>
     <arg name="image_raw1" default="$(arg image_raw1)"/>
     <arg name="image_raw2" default="$(arg image_raw2)"/>
