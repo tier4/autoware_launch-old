@@ -667,7 +667,7 @@ Visualization Manager:
               Shaft Length: 3
               Shaft Radius: 0.20000000298023224
               Shape: Axes
-              Topic: /planning/mission_planning/goal
+              Topic: /planning/mission_planning/echo_back_goal_pose
               Unreliable: false
               Value: true
           Enabled: true
