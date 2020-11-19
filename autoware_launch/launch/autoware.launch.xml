@@ -56,8 +56,11 @@
   <node pkg="rviz" exec="rviz" name="rviz" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz" if="$(var rviz)" />
 
   <!-- Web Controller -->
-  <include file="$(find-pkg-share roswww)/launch/roswww.launch.xml">
-    <arg name="cached" value="false"/>
-  </include>
+<!--  TODO settings copied from default https://github.com/tork-a/roswww/blob/develop/launch/roswww.launch file. Check if correct-->
+  <arg name="port" default="8085" doc="port number for web server" />
+  <arg name="webpath" default="www" doc="Directory served" />
+
+  <executable name="webserver" cmd="python3" args="-m http.server $(var port)"
+              cwd="$(var webpath)" />
   <include file="$(find-pkg-share rosbridge_server)/launch/rosbridge_websocket.launch.xml" />
 </launch>

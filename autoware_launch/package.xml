@@ -17,21 +17,15 @@
   <exec_depend>localization_launch</exec_depend>
   <exec_depend>perception_launch</exec_depend>
   <exec_depend>planning_launch</exec_depend>
+  <exec_depend>python3</exec_depend>
+  <exec_depend>rosbridge_server</exec_depend>
   <exec_depend>rviz</exec_depend>
   <exec_depend>sensing_launch</exec_depend>
   <exec_depend>system_launch</exec_depend>
   <exec_depend>vehicle_launch</exec_depend>
 
-<!--  TODO roswww (requires tornado) not available in ROS2. Should we use the built-in python -->
-<!--  webserver instead as in AVP?-->
-  <exec_depend>roswww</exec_depend>
-  <exec_depend>python3-tornado</exec_depend>
-
   <!--    TODO not sure where bson would be required-->
   <exec_depend>python3-bson</exec_depend>
-
-<!--  TODO same approach as in AVP demo-->
-  <exec_depend>rosbridge_server</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
