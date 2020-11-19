@@ -6,13 +6,13 @@
 
       <!-- Ublox Driver -->
       <remap from="ublox/fix" to="ublox/nav_sat_fix" />
-      <include file="$(find ublox_gps)/launch/ublox_device.launch" if="$(eval launch_driver==true)">
+      <include file="$(find-pkg-share ublox_gps)/launch/ublox_device.launch.xml" if="$(eval launch_driver==true)">
         <arg name="node_name" value="ublox" />
         <arg name="param_file_name" value="c94_f9p_rover" />
       </include>
 
       <!-- NavSatFix to MGRS Pose -->
-      <include file="$(find gnss_poser)/launch/gnss_poser.launch">
+      <include file="$(find-pkg-share gnss_poser)/launch/gnss_poser.launch.xml">
         <arg name="input_topic_fix" value="ublox/nav_sat_fix" />
         <arg name="input_topic_navpvt" value="ublox/navpvt" />
 
