@@ -11,6 +11,7 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <depend>dynamic_object_visualization</depend>
+  <depend>image_transport_plugins</depend>
   <!--
     <build_depend>euclidean_cluster</build_depend>
     <build_depend>pointcloud_to_laserscan</build_depend>
