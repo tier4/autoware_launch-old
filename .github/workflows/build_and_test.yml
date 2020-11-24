@@ -36,6 +36,7 @@ jobs:
     - name: Build
       run: |
         . /opt/ros/foxy/setup.sh
+        colcon build \
           --event-handlers console_cohesion+ \
           --packages-ignore \
             autoware_launch \
