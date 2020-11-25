@@ -17,6 +17,7 @@
     <remap from="~input/trajectory" to="obstacle_avoidance_planner/trajectory" />
     <remap from="~output/trajectory" to="surround_obstacle_checker/trajectory" />
     <include file="$(find surround_obstacle_checker)/launch/surround_obstacle_checker.launch">
+      <arg name="param_path" value="$(find planning_launch)/config/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker/surround_obstacle_checker.yaml"/>
     </include>
   </group>
   <!-- skip surround obstacle checker -->
