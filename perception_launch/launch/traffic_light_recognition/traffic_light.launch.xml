@@ -17,35 +17,35 @@
 
   <group if="$(var enable_fine_detection)">
     <include file="$(find-pkg-share traffic_light_map_based_detector)/launch/traffic_light_map_based_detector.launch.xml">
-      <let var="input/camera_info" value="$(var input/camera_info)"/>
-      <let var="output/rois" value="rough/rois"/>
+      <arg name="input/camera_info" value="$(var input/camera_info)"/>
+      <arg name="output/rois" value="rough/rois"/>
     </include>
     <include file="$(find-pkg-share traffic_light_ssd_fine_detector)/launch/traffic_light_ssd_fine_detector.launch.xml">
-      <let var="manager" value="$(var manager)"/>
-      <let var="input/image" value="$(var input/image)"/>
-      <let var="input/rois" value="rough/rois"/>
-      <let var="output/rois" value="rois"/>
+      <arg name="manager" value="$(var manager)"/>
+      <arg name="input/image" value="$(var input/image)"/>
+      <arg name="input/rois" value="rough/rois"/>
+      <arg name="output/rois" value="rois"/>
     </include>
   </group>
 
   <group unless="$(var enable_fine_detection)">
     <include file="$(find-pkg-share traffic_light_map_based_detector)/launch/traffic_light_map_based_detector.launch.xml">
-      <let var="output/rois" value="rois"/>
-      <let var="input/camera_info" value="$(var input/camera_info)"/>
+      <arg name="output/rois" value="rois"/>
+      <arg name="input/camera_info" value="$(var input/camera_info)"/>
     </include>
   </group>
 
   <include file="$(find-pkg-share traffic_light_visualization)/launch/traffic_light_roi_visualizer.launch.xml">
-    <let var="manager" value="$(var manager)"/>
-    <let var="input/image" value="$(var input/image)"/>
-    <let var="input/rois" value="rois"/>
-    <let var="enable_fine_detection" value="$(var enable_fine_detection)"/>
+    <arg name="manager" value="$(var manager)"/>
+    <arg name="input/image" value="$(var input/image)"/>
+    <arg name="input/rois" value="rois"/>
+    <arg name="enable_fine_detection" value="$(var enable_fine_detection)"/>
   </include>
   <include file="$(find-pkg-share traffic_light_classifier)/launch/traffic_light_classifier.launch.xml">
-    <let var="manager" value="$(var manager)"/>
-    <let var="input/rois" value="rois"/>
-    <let var="input/image" value="$(var input/image)" />
-    <let var="output/traffic_light_states" value="traffic_light_states" />
-    <let var="use_gpu" value="true"/>
+    <arg name="manager" value="$(var manager)"/>
+    <arg name="input/rois" value="rois"/>
+    <arg name="input/image" value="$(var input/image)" />
+    <arg name="output/traffic_light_states" value="traffic_light_states" />
+    <arg name="use_gpu" value="true"/>
   </include>
 </launch>

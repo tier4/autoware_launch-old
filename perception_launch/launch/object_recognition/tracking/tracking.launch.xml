@@ -5,8 +5,8 @@
   </include>
   <!-- visualization -->
   <include file="$(find-pkg-share dynamic_object_visualization)/launch/dynamic_object_visualizer.launch.xml">
-    <let var="input" value="objects"/>
-    <let var="with_feature" value="false"/>
-    <let var="only_known_objects" default="true"/>
+    <arg name="input" value="objects"/>
+    <arg name="with_feature" value="false"/>
+    <arg name="only_known_objects" default="true"/>
   </include>
 </launch>
