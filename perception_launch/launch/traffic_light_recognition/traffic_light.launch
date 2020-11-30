@@ -39,6 +39,7 @@
     <arg name="manager" value="$(var manager)"/>
     <arg name="input/image" value="$(var input/image)"/>
     <arg name="input/rois" value="rois"/>
+    <arg name="input/traffic_light_states" default="traffic_light_states"/>
     <arg name="enable_fine_detection" value="$(var enable_fine_detection)"/>
   </include>
   <include file="$(find-pkg-share traffic_light_classifier)/launch/traffic_light_classifier.launch.xml">
