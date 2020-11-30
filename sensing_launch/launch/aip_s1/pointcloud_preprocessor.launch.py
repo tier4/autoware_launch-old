@@ -14,34 +14,13 @@
 # limitations under the License.
 
 import launch
-from launch import LaunchContext
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-from launch.actions import DeclareLaunchArgument, LogInfo
-from launch.substitutions import LaunchConfiguration, PythonExpression
-
-
-context = LaunchContext()
 
 
 def generate_launch_description():
 
   pkg = 'pointcloud_preprocessor'
-
-  # # declare launch arguments
-  # input_points_raw_list_param = DeclareLaunchArgument(
-  #     'input_points_raw_list',
-  #     default_value="['/points_raw']",
-  #     description="Input pointcloud topic_name list as a string_array. "
-  #     "To subscribe multiple topics, write as: \"['/points_raw0', '/points_raw1', '/points_raw2', ...]\"")
-  #
-  # output_points_raw_param = DeclareLaunchArgument(
-  #     'output_points_raw',
-  #     default_value='/points_raw/cropbox/filtered')
-  #
-  # tf_output_frame_param = DeclareLaunchArgument(
-  #     'tf_output_frame',
-  #     default_value='base_link')
 
   # set concat filter as a component
   concat_component = ComposableNode(
@@ -131,7 +110,8 @@ def generate_launch_description():
       package='rclcpp_components',
       executable='component_container',
       composable_node_descriptions=[
-          concat_component,
+          # TODO(fred-apex-ai) reactivate when clear that failure expected w/o sensors
+          # concat_component,
           cropbox_component,
           passthrough_component,
           ground_component,
@@ -139,14 +119,6 @@ def generate_launch_description():
       ],
       output='screen',
   )
-
-  # # check the size of input_points_raw_list
-  # log_info = LogInfo(
-  #     msg=PythonExpression(
-  #         ["'input_points_raw_list size = ' + str(len(", LaunchConfiguration(
-  #             'input_points_raw_list'), "))"]
-  #     )
-  # )
 
   return launch.LaunchDescription([
       container,
