@@ -113,6 +113,13 @@ def generate_launch_description():
       }]
   )
 
+  relay_component = ComposableNode(
+      pkg='topic_tools',
+      plugin='topic_tools::RelayNode',
+      name='relay',
+      arguments=["/sensing/lidar/top/rectified/pointcloud /sensing/lidar/pointcloud"],
+  )
+
   # set container to run all required components in the same process
   container = ComposableNodeContainer(
       name='pointcloud_preprocessor_container',
@@ -124,6 +131,7 @@ def generate_launch_description():
           cropbox_component,
           passthrough_component,
           ground_component,
+          relay_component,
       ],
       output='screen',
   )

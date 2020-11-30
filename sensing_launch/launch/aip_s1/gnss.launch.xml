@@ -7,7 +7,7 @@
 
       <!-- Ublox Driver -->
       <remap from="ublox/fix" to="ublox/nav_sat_fix" />
-      <include file="$(find-pkg-share ublox_gps)/launch/ublox_device.launch.xml" if="$(eval launch_driver==true)">
+      <include file="$(find-pkg-share ublox_gps)/launch/ublox_device.launch.xml" if="$(var launch_driver)">
         <let var="node_name" value="ublox" />
         <let var="param_file_name" value="c94_f9p_rover" />
       </include>

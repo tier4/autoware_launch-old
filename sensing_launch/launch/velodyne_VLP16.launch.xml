@@ -27,6 +27,7 @@
   <!-- nodelet manager -->
   <node pkg="nodelet" exec="nodelet" name="$(var manager)" args="manager" />
 
+<!--  TODO  follow https://github.com/ros-drivers/velodyne/blob/ros2/velodyne_driver/launch/velodyne_driver_node-VLP16-composed-launch.py -->
   <!-- velodyne driver -->
   <node pkg="nodelet" exec="nodelet" name="$(var manager)_driver" args="load velodyne_driver/DriverNodelet $(var manager)" if="$(var launch_driver)">
     <param name="device_ip" value="$(var device_ip)" />

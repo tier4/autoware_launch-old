@@ -6,7 +6,7 @@
     <push-ros-namespace namespace="camera"/>
     <group>
       <push-ros-namespace namespace="traffic_light"/>
-      <node pkg="usb_cam" name="traffic_light_camera" exec="usb_cam_node" if="$(eval launch_driver==true)">
+      <node pkg="usb_cam" name="traffic_light_camera" exec="usb_cam_node" if="$(var launch_driver)">
         <remap from="/image_raw" to="image_raw" />
         <remap from="/camera_info" to="camera_info" />
         <param name="camera_frame_id" value="traffic_light/camera_optical_link" />

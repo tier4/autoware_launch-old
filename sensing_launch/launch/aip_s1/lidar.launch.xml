@@ -35,14 +35,8 @@
       </include>
     </group>
 
-<!--      replace nodelet stuff below-->
-      <include
-              file="$(find-pkg-share sensing_launch)/launch/aip_s1/pointcloud_preprocessor.launch.py">
+      <include file="$(find-pkg-share sensing_launch)/launch/aip_s1/pointcloud_preprocessor.launch.py">
       </include>
-
-<!--      TODO figure out topic_tools workaround from Nikolay-->
-    <!-- Relay -->
-    <node pkg="topic_tools" exec="relay" name="relay" args="/sensing/lidar/top/rectified/pointcloud /sensing/lidar/pointcloud" />
 
   </group>
 </launch>
