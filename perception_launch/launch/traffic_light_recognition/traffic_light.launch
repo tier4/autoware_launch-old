@@ -41,8 +41,9 @@
     <arg name="manager" default="$(arg manager)"/>
     <arg name="input/image" default="$(arg input/image)"/>
     <arg name="input/rois" default="rois"/>
+    <arg name="input/traffic_light_states" default="traffic_light_states"/>
     <arg name="enable_fine_detection" default="$(arg enable_fine_detection)"/>
-  </include>  
+  </include>
   <include file="$(find traffic_light_classifier)/launch/traffic_light_classifier.launch">
     <arg name="manager" default="$(arg manager)"/>
     <arg name="input/rois" default="rois"/>
