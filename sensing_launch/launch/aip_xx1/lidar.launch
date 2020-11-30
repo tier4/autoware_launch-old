@@ -2,6 +2,7 @@
 
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
+  <arg name ="vehicle_id" value="$(optenv VEHICLE_ID default)" />
 
   <group ns="lidar">
 
@@ -52,7 +53,7 @@
     <group ns="front_left">
       <include file="$(find sensing_launch)/launch/livox_horizon.launch">
         <arg name="sensor_frame" default="livox_front_left" />
-        <arg name="bd_list" value="$(env LIVOX_FRONT_LEFT_ID)" if="$(arg launch_driver)"/>
+        <arg name="bd_list_text" value="$(find sensing_launch)/config/aip_xx1/$(arg vehicle_id)/livox_front_left_id.txt" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(arg launch_driver)" />
       </include>
@@ -61,7 +62,7 @@
     <group ns="front_right">
       <include file="$(find sensing_launch)/launch/livox_horizon.launch">
         <arg name="sensor_frame" default="livox_front_right" />
-        <arg name="bd_list" value="$(env LIVOX_FRONT_RIGHT_ID)" if="$(arg launch_driver)"/>
+        <arg name="bd_list_text" value="$(find sensing_launch)/config/aip_xx1/$(arg vehicle_id)/livox_front_right_id.txt" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(arg launch_driver)" />
       </include>
