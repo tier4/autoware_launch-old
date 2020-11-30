@@ -2,8 +2,10 @@
 
   <arg name="launch_driver" default="true" />
 
-  <group ns="camera">
-    <group ns="traffic_light">
+  <group>
+    <push-ros-namespace namespace="camera"/>
+    <group>
+      <push-ros-namespace namespace="traffic_light"/>
       <node pkg="usb_cam" name="traffic_light_camera" exec="usb_cam_node" if="$(eval launch_driver==true)">
         <remap from="/image_raw" to="image_raw" />
         <remap from="/camera_info" to="camera_info" />

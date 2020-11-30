@@ -2,70 +2,77 @@
 
   <arg name="launch_driver" default="true" />
 
-  <group ns="lidar">
+  <group>
+    <push-ros-namespace namespace="lidar"/>
 
-    <group ns="top">
+    <group>
+      <push-ros-namespace namespace="top"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLS128.launch.xml">
-        <arg name="sensor_frame" default="velodyne_top" />
+        <arg name="sensor_frame" value="velodyne_top" />
         <arg name="device_ip" value="192.168.1.201"/>
         <arg name="port" value="2368"/>
-        <arg name="scan_phase" default="300.0" />
-        <arg name="sensor_timestamp" default="false" />
+        <arg name="scan_phase" value="300.0" />
+        <arg name="sensor_timestamp" value="false" />
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="left">
+    <group>
+      <push-ros-namespace namespace="left"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" default="velodyne_left" />
+        <arg name="sensor_frame" value="velodyne_left" />
         <arg name="device_ip" value="192.168.1.202"/>
         <arg name="port" value="2369"/>
-        <arg name="scan_phase" default="180.0" />
-        <arg name="sensor_timestamp" default="false" />
+        <arg name="scan_phase" value="180.0" />
+        <arg name="sensor_timestamp" value="false" />
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="right">
+    <group>
+      <push-ros-namespace namespace="right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" default="velodyne_right" />
+        <arg name="sensor_frame" value="velodyne_right" />
         <arg name="device_ip" value="192.168.1.203"/>
         <arg name="port" value="2370"/>
-        <arg name="scan_phase" default="180.0" />
-        <arg name="sensor_timestamp" default="false" />
+        <arg name="scan_phase" value="180.0" />
+        <arg name="sensor_timestamp" value="false" />
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="rear">
+    <group>
+      <push-ros-namespace namespace="rear"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" default="velodyne_rear" />
+        <arg name="sensor_frame" value="velodyne_rear" />
         <arg name="device_ip" value="192.168.1.204"/>
         <arg name="port" value="2371"/>
-        <arg name="scan_phase" default="180.0" />
-        <arg name="sensor_timestamp" default="false" />
+        <arg name="scan_phase" value="180.0" />
+        <arg name="sensor_timestamp" value="false" />
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="front_left">
+    <group>
+      <push-ros-namespace namespace="front_left"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" if="$(var launch_driver)">
-        <arg name="sensor_frame" default="livox_front_left" />
+        <arg name="sensor_frame" value="livox_front_left" />
         <arg name="bd_list" value="$(env LIVOX_FRONT_LEFT_ID)" />
         <arg name="xfer_format" value="0"/>
       </include>
     </group>
 
-    <group ns="front_right">
+    <group>
+      <push-ros-namespace namespace="front_right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" if="$(var launch_driver)">
-        <arg name="sensor_frame" default="livox_front_right" />
+        <arg name="sensor_frame" value="livox_front_right" />
         <arg name="bd_list" value="$(env LIVOX_FRONT_RIGHT_ID)" />
         <arg name="xfer_format" value="0"/>
       </include>
     </group>
 
     <!-- nodelet manager -->
-    <arg name="manager" default="lidar_nodelet_manager" />
+    <let var="manager" value="lidar_nodelet_manager" />
     <node pkg="nodelet" exec="nodelet" name="$(var manager)" args="manager" />
 
 

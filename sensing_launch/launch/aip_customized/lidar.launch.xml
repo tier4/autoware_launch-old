@@ -2,29 +2,33 @@
 
   <arg name="launch_driver" default="true" />
 
-  <group ns="lidar">
+  <group>
+    <push-ros-namespace namespace="lidar"/>
 
-    <group ns="top">
+    <group>
+      <push-ros-namespace namespace="top"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLS128.launch.xml">
-        <arg name="sensor_frame" default="velodyne_top" />
+        <arg name="sensor_frame" value="velodyne_top" />
         <arg name="device_ip" value="192.168.1.201"/>
         <arg name="port" value="2368"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="left">
+    <group>
+      <push-ros-namespace namespace="left"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" default="velodyne_left" />
+        <arg name="sensor_frame" value="velodyne_left" />
         <arg name="device_ip" value="192.168.1.202"/>
         <arg name="port" value="2369"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
       </include>
     </group>
 
-    <group ns="right">
+    <group>
+      <push-ros-namespace namespace="right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
-        <arg name="sensor_frame" default="velodyne_right" />
+        <arg name="sensor_frame" value="velodyne_right" />
         <arg name="device_ip" value="192.168.1.203"/>
         <arg name="port" value="2370"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
@@ -33,7 +37,7 @@
 
 
     <!-- nodelet manager -->
-    <arg name="manager" default="lidar_nodelet_manager" />
+    <let var="manager" value="lidar_nodelet_manager" />
     <node pkg="nodelet" exec="nodelet" name="$(var manager)" args="manager" />
 
 

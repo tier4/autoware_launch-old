@@ -13,9 +13,8 @@
   <exec_depend>gnss_poser</exec_depend>
   <exec_depend>ublox_gps</exec_depend>
 
-<!--  TODO(fred-apex-ai) these packages are not part of the repo, are they only available
-internally?-->
-  <exec_depend>livox_ros_driver</exec_depend>
+<!--  TODO(fred-apex-ai) try with ros2 dashing branch -->
+<!--  <exec_depend>livox_ros_driver</exec_depend>-->
   <exec_depend>velodyne_driver</exec_depend>
   <exec_depend>velodyne_pointcloud</exec_depend>
 
