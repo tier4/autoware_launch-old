@@ -87,7 +87,7 @@ def generate_launch_description():
 
   passthrough_component = ComposableNode(
       package=pkg,
-      plugin='pointcloud_preprocessor::PassThroughFilterNodelet',
+      plugin='pointcloud_preprocessor::PassThroughFilterComponent',
       name='passthrough_filter',
       remappings=[
           ('/input', 'top/rectified/pointcloud'),
@@ -100,7 +100,7 @@ def generate_launch_description():
 
   ground_component = ComposableNode(
       package=pkg,
-      plugin='pointcloud_preprocessor::RayGroundFilterNodelet',
+      plugin='pointcloud_preprocessor::RayGroundFilterComponent',
       name='ray_ground_filter',
       remappings=[
           ('/input', 'mesurement_range_cropped/pointcloud'),
