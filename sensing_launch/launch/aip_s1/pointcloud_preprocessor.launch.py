@@ -51,9 +51,9 @@ def generate_launch_description():
       remappings=[('/output', 'concatenated/pointcloud')],
       parameters=[
           {
-              'input_topics': '[/sensing/lidar/top/outlier_filtered/pointcloud, '
-                              '/sensing/lidar/left/outlier_filtered/pointcloud, '
-                              '/sensing/lidar/right/outlier_filtered/pointcloud]',
+              'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
+                               '/sensing/lidar/left/outlier_filtered/pointcloud',
+                               '/sensing/lidar/right/outlier_filtered/pointcloud'],
               'output_frame': 'base_link',
           }
       ]
@@ -114,10 +114,14 @@ def generate_launch_description():
   )
 
   relay_component = ComposableNode(
-      pkg='topic_tools',
+      package='topic_tools',
       plugin='topic_tools::RelayNode',
       name='relay',
-      arguments=["/sensing/lidar/top/rectified/pointcloud /sensing/lidar/pointcloud"],
+      parameters=[{
+        "input_topic": "/sensing/lidar/top/rectified/pointcloud",
+        "output_topic": "/sensing/lidar/pointcloud",
+        "type": "sensor_msgs/msg/PointCloud2",
+      }],
   )
 
   # set container to run all required components in the same process
