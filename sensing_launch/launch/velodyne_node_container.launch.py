@@ -16,7 +16,7 @@ import launch
 from launch import LaunchContext
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackage
 from pathlib import Path
@@ -25,12 +25,9 @@ import os
 def generate_launch_description():
     launch_arguments = []
 
-    def add_launch_arg(name: str, default=None):
-        # TODO check if passing None is the same as not calling with arg
-        if default is not None:
-            launch_arguments.append(DeclareLaunchArgument(name, default_value=default))
-        else:
-            launch_arguments.append(DeclareLaunchArgument(name))
+    def add_launch_arg(name: str, default_value=None):
+        # a default_value of None is equivalent to not passing that kwarg at all
+        launch_arguments.append(DeclareLaunchArgument(name, default_value=default_value))
 
     add_launch_arg('model')
     add_launch_arg('launch_driver', 'True')
@@ -60,29 +57,12 @@ def generate_launch_description():
 
     nodes = []
 
-    # TODO(fred-apex-ai) how to conditionally create node?
-    # if PythonExpression(LaunchConfiguration('launch_driver'):
-    if True:
-        # load driver as in
-        # https://github.com/ros-drivers/velodyne/blob/ros2/velodyne_driver/launch/velodyne_driver_node-VLP16-composed-launch.py
-        # velodyne_driver_prefix = get_package_share_directory('velodyne_driver')
-        # config_file_name = os.path.join(velodyne_driver_prefix, 'params/{}.yaml'.format(default_values['calibration']))
-        nodes.append(ComposableNode(
-            package='velodyne_driver',
-            plugin='velodyne_driver::VelodyneDriver',
-            name='velodyne_driver_node',
-            parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
-                                              'read_fast', 'read_once', 'repeat_delay', 'rpm')
-                        ],
-        )
-        )
-
     # turn packets into pointcloud as in
     # https://github.com/ros-drivers/velodyne/blob/ros2/velodyne_pointcloud/launch/velodyne_convert_node-VLP16-composed-launch.py
     nodes.append(ComposableNode(
         package='velodyne_pointcloud',
-        node_plugin='velodyne_pointcloud::Convert',
-        node_name='velodyne_convert_node',
+        plugin='velodyne_pointcloud::Convert',
+        name='velodyne_convert_node',
         parameters=[create_parameter_dict('velodyne_points', 'velodyne_points_ex', 'calibration',
                                           'min_range', 'max_range', 'num_points_thresholds',
                                           'invalid_intensity')]
@@ -157,4 +137,21 @@ def generate_launch_description():
         composable_node_descriptions=nodes,
     )
 
-    return launch.LaunchDescription(launch_arguments + [container])
+
+    driver_component = ComposableNode(
+        package='velodyne_driver',
+        plugin='velodyne_driver::VelodyneDriver',
+        name='velodyne_driver_node',
+        parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
+                                          'read_fast', 'read_once', 'repeat_delay', 'rpm')],
+        )
+
+    # one way to add a ComposableNode conditional on a launch argument to a
+    # container. The `ComposableNode` itself doesn't accept a condition
+    loader = LoadComposableNodes(
+        composable_node_descriptions=[driver_component],
+        target_container=container,
+        condition=launch.conditions.IfCondition(LaunchConfiguration('launch_driver')),
+    )
+
+    return launch.LaunchDescription(launch_arguments + [container, loader])
