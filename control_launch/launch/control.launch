@@ -40,6 +40,10 @@
         <remap from="input/longitudinal/control_cmd" to="longitudinal/control_cmd"/>
         <remap from="output/control_cmd" to="control_cmd"/>
       </node>
+
+      <!-- lane departure checker -->
+      <include file="$(find lane_departure_checker)/launch/lane_departure_checker.launch">
+      </include>
     </group>
 
     <!-- shift decider -->
