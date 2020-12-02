@@ -25,8 +25,8 @@
       </include>
     </group>
 
- <group>
-   <push-ros-namespace namespace="right"/>
+    <group>
+      <push-ros-namespace namespace="right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/velodyne_VLP16.launch.xml">
         <arg name="sensor_frame" value="velodyne_right" />
         <arg name="device_ip" value="192.168.1.203"/>
@@ -35,8 +35,7 @@
       </include>
     </group>
 
-      <include file="$(find-pkg-share sensing_launch)/launch/aip_s1/pointcloud_preprocessor.launch.py">
-      </include>
+    <include file="$(find-pkg-share sensing_launch)/launch/aip_s1/pointcloud_preprocessor.launch.py"/>
 
   </group>
 </launch>

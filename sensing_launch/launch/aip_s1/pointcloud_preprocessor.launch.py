@@ -110,8 +110,7 @@ def generate_launch_description():
       package='rclcpp_components',
       executable='component_container',
       composable_node_descriptions=[
-          # TODO(fred-apex-ai) reactivate when clear that failure expected w/o sensors
-          # concat_component,
+          concat_component,
           cropbox_component,
           passthrough_component,
           ground_component,

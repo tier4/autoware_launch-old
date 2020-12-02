@@ -22,66 +22,35 @@ from launch_ros.substitutions import FindPackage
 from pathlib import Path
 import os
 
-context = LaunchContext()
-
-
-def get_package_share_directory(package_name):
-    """Return the absolute path to the share directory of the given package."""
-    return os.path.join(Path(FindPackage(package_name).perform(context)), 'share', package_name)
-
-
-default_values_dict = {
-    'VLP16': {'calibration': 'VLP16db', 'nbeams': 16, 'min_range': 0.4, 'max_range': 130.0},
-    '32C': {'calibration': 'VeloView-CLP-32C.yaml', 'nbeams': 32, 'min_range': 0.4,
-            'max_range': 200.0},
-    'VLS128': {'calibration': 'VLS-128_FS1.yaml', 'nbeams': 128, 'min_range': 0.5,
-               'max_range': 250.0},
-}
-
-
-def invalid_intensity(nbeams: int):
-    return [0] * nbeams
-
-
 def generate_launch_description():
-    model_param = DeclareLaunchArgument(
-        'model',
-        description='velodyne sensor model; one of {}'.format(default_values_dict.keys())
-    ),
+    launch_arguments = []
 
-    default_values = default_values_dict[LaunchConfiguration('model')]
+    def add_launch_arg(name: str, default=None):
+        # TODO check if passing None is the same as not calling with arg
+        if default is not None:
+            launch_arguments.append(DeclareLaunchArgument(name, default_value=default))
+        else:
+            launch_arguments.append(DeclareLaunchArgument(name))
 
-    launch_arguments = [model_param]
-
-    def add_launch_arg_default(name: str):
-        launch_arguments.append(DeclareLaunchArgument(name, default=default_values[name]))
-
-    def add_launch_arg(name: str, default: str):
-        launch_arguments.append(DeclareLaunchArgument(name, default=default))
-
-    add_launch_arg('launch_driver', True)
-
-    velodyne_pointcloud_prefix = get_package_share_directory('velodyne_pointcloud')
-    config_file_name = os.path.join(velodyne_pointcloud_prefix,
-                                    'params/{}'.format(default_values['calibration']))
-    add_launch_arg('calibration', config_file_name)
-
+    add_launch_arg('model')
+    add_launch_arg('launch_driver', 'True')
+    add_launch_arg('calibration')
     add_launch_arg('device_ip', '192.168.1.201')
     add_launch_arg('sensor_frame', 'velodyne')
     add_launch_arg('base_frame', 'base_link')
     add_launch_arg('container_name', 'velodyne_composable_node_container')
-    add_launch_arg_default('min_range')
-    add_launch_arg_default('max_range')
+    add_launch_arg('min_range')
+    add_launch_arg('max_range')
     add_launch_arg('pcap', '')
-    add_launch_arg('port', 2368)
-    add_launch_arg('read_fast', False)
-    add_launch_arg('read_once', False)
-    add_launch_arg('repeat_delay', 0.0)
-    add_launch_arg('rpm', 600.0)
-    add_launch_arg('laserscan_ring', -1)
-    add_launch_arg('laserscan_resolution', 0.007)
-    add_launch_arg('num_points_thresholds', 300)
-    add_launch_arg('invalid_intensity', invalid_intensity(default_values['nbeams']))
+    add_launch_arg('port', '2368')
+    add_launch_arg('read_fast', 'False')
+    add_launch_arg('read_once', 'False')
+    add_launch_arg('repeat_delay', '0.0')
+    add_launch_arg('rpm', '600.0')
+    add_launch_arg('laserscan_ring', '-1')
+    add_launch_arg('laserscan_resolution', '0.007')
+    add_launch_arg('num_points_thresholds', '300')
+    add_launch_arg('invalid_intensity')
 
     def create_parameter_dict(*args):
         result = {}
@@ -91,15 +60,17 @@ def generate_launch_description():
 
     nodes = []
 
-    if LaunchConfiguration('launch_driver'):
+    # TODO(fred-apex-ai) how to conditionally create node?
+    # if PythonExpression(LaunchConfiguration('launch_driver'):
+    if True:
         # load driver as in
         # https://github.com/ros-drivers/velodyne/blob/ros2/velodyne_driver/launch/velodyne_driver_node-VLP16-composed-launch.py
         # velodyne_driver_prefix = get_package_share_directory('velodyne_driver')
         # config_file_name = os.path.join(velodyne_driver_prefix, 'params/{}.yaml'.format(default_values['calibration']))
         nodes.append(ComposableNode(
             package='velodyne_driver',
-            node_plugin='velodyne_driver::VelodyneDriver',
-            node_name='velodyne_driver_node',
+            plugin='velodyne_driver::VelodyneDriver',
+            name='velodyne_driver_node',
             parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
                                               'read_fast', 'read_once', 'repeat_delay', 'rpm')
                         ],
@@ -138,7 +109,6 @@ def generate_launch_description():
                     ('/output', 'self_cropped/pointcloud_ex')
                     ] + cropbox_remappings,
         parameters=[cropbox_parameters],
-        output='log',
     )
     )
 
@@ -150,7 +120,6 @@ def generate_launch_description():
                     ('/output', 'mirror_cropped/pointcloud_ex'),
                     ] + cropbox_remappings,
         parameters=[cropbox_parameters],
-        output='log',
     )
     )
 
