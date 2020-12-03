@@ -18,9 +18,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
-from launch_ros.substitutions import FindPackage
-from pathlib import Path
-import os
+import uuid
 
 def generate_launch_description():
     launch_arguments = []
@@ -137,11 +135,16 @@ def generate_launch_description():
         composable_node_descriptions=nodes,
     )
 
+    def acceptable_unique_name(prefix='velodyne-driver-node'):
+        id = str(uuid.uuid4())
+        # ros2 doesn't accept hyphens in node names
+        return prefix + id.replace('-', '_')
 
     driver_component = ComposableNode(
         package='velodyne_driver',
         plugin='velodyne_driver::VelodyneDriver',
-        name='velodyne_driver_node',
+        # node is created in a global context, need to avoid name clash
+        name=acceptable_unique_name(),
         parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
                                           'read_fast', 'read_once', 'repeat_delay', 'rpm')],
         )
