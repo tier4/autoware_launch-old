@@ -20,6 +20,13 @@ from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
 import uuid
 
+
+def acceptable_unique_name(prefix):
+    id = str(uuid.uuid4())
+    # ros2 apparently doesn't accept the UUID with hyphens in node names
+    return prefix + id.replace('-', '_')
+
+
 def generate_launch_description():
     launch_arguments = []
 
@@ -128,26 +135,22 @@ def generate_launch_description():
 
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
-        name=LaunchConfiguration('container_name'),
+        # need unique name, otherwise all processes in same container and the node names then clash
+        name=acceptable_unique_name('velodyne_node_container'),
         namespace='pointcloud_preprocessor',
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=nodes,
     )
 
-    def acceptable_unique_name(prefix='velodyne-driver-node'):
-        id = str(uuid.uuid4())
-        # ros2 doesn't accept hyphens in node names
-        return prefix + id.replace('-', '_')
-
     driver_component = ComposableNode(
         package='velodyne_driver',
         plugin='velodyne_driver::VelodyneDriver',
         # node is created in a global context, need to avoid name clash
-        name=acceptable_unique_name(),
+        name='velodyne_driver',
         parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
                                           'read_fast', 'read_once', 'repeat_delay', 'rpm')],
-        )
+    )
 
     # one way to add a ComposableNode conditional on a launch argument to a
     # container. The `ComposableNode` itself doesn't accept a condition

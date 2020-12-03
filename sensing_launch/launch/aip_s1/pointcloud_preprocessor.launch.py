@@ -57,24 +57,9 @@ def generate_launch_description():
               'max_x': 100.0,
               'min_y': -50.0,
               'max_y': 50.0,
-              'min_z': -2.0,
-              'max_z': 3.0,
               'negative': False,
           }
       ]
-  )
-
-  passthrough_component = ComposableNode(
-      package=pkg,
-      plugin='pointcloud_preprocessor::PassThroughFilterComponent',
-      name='passthrough_filter',
-      remappings=[
-          ('/input', 'top/rectified/pointcloud'),
-          ('/output', 'concatenated/pointcloud')
-      ],
-      parameters=[{
-          'output_frame': 'base_link',
-      }]
   )
 
   ground_component = ComposableNode(
@@ -112,7 +97,6 @@ def generate_launch_description():
       composable_node_descriptions=[
           concat_component,
           cropbox_component,
-          passthrough_component,
           ground_component,
           relay_component,
       ],
