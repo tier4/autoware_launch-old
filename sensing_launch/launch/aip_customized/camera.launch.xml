@@ -11,10 +11,10 @@
         <remap from="/camera_info" to="camera_info" />
         <param name="camera_frame_id" value="traffic_light/camera_optical_link" />
         <param name="camera_name" value="traffic_light/camera" />
-        <param name="video_device" exec="string" value="/dev/video4" />
-        <param name="camera_info_url" exec="string" value="file://$(find-pkg-share sensing_launch)/data/traffic_light_camera.yaml" />
-        <param name="image_width" exec="int" value="2880" />
-        <param name="image_height" exec="int" value="1860" />
+        <param name="video_device" value="/dev/video4" />
+        <param name="camera_info_url" value="$(find-pkg-share sensing_launch)/data/traffic_light_camera.yaml" />
+        <param name="image_width" value="2880" />
+        <param name="image_height" value="1860" />
         <param name="pixel_format" value="yuyv" />
         <param name="framerate" value="24" />
       </node>

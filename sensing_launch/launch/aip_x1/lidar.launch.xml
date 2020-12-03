@@ -35,59 +35,7 @@
       </include>
     </group>
 
-
-    <!-- nodelet manager -->
-    <let var="manager" value="lidar_nodelet_manager" />
-    <node pkg="nodelet" exec="nodelet" name="$(var manager)" args="manager" />
-
-
-    <!-- PointCloud PassThrough Filter -->
-    <!-- <node pkg="nodelet" exec="nodelet" name="passthrough_filter" args="load pointcloud_preprocessor/passthrough_filter_nodelet $(var manager)">
-      <remap from="/input" to="top/rectified/pointcloud" />
-      <remap from="/output" to="concatenated/pointcloud" />
-      <param name="output_frame" value="base_link" />
-    </node> -->
-
-    <!-- PointCloud Concat Filter -->
-    <node pkg="nodelet" exec="nodelet" name="concatenate_data" args="load pointcloud_preprocessor/concatenate_data_nodelet $(var manager)">
-      <rosparam param="input_topics" subst_value="true">
-        [/sensing/lidar/top/outlier_filtered/pointcloud,
-        /sensing/lidar/left/outlier_filtered/pointcloud,
-        /sensing/lidar/right/outlier_filtered/pointcloud]
-      </rosparam>
-      <remap from="/output" to="concatenated/pointcloud" />
-      <param name="output_frame" value="base_link" />
-    </node>
-
-
-    <!-- PointCloud Crop Mesurement Range -->
-    <node pkg="nodelet" exec="nodelet" name="crop_box_filter" args="load pointcloud_preprocessor/crop_box_filter_nodelet $(var manager)">
-      <remap from="/input" to="concatenated/pointcloud" />
-      <remap from="/output" to="mesurement_range_cropped/pointcloud" />
-      <param name="min_x" value="-50.0" />
-      <param name="max_x" value="100.0" />
-      <param name="min_y" value="-50.0" />
-      <param name="max_y" value="50.0" />
-      <remap from="/min_z" to="/vehicle_info/min_height_offset" />
-      <remap from="/max_z" to="/vehicle_info/max_height_offset" />
-
-      <param name="negative" value="False" />
-      <param name="input_frame" value="base_link" />
-      <param name="output_frame" value="base_link" />
-    </node>
-
-    <!-- PointCloud Ground Filter -->
-    <node pkg="nodelet" exec="nodelet" name="ray_ground_filter" args="load pointcloud_preprocessor/ray_ground_filter_nodelet $(var manager)">
-      <remap from="/input" to="mesurement_range_cropped/pointcloud" />
-      <remap from="/output" to="no_ground/pointcloud" />
-
-      <param name="general_max_slope" value="10.0" />
-      <param name="local_max_slope" value="10.0" />
-      <param name="min_height_threshold" value="0.2" />
-    </node>
-
-    <!-- Relay -->
-    <node pkg="topic_tools" exec="relay" name="relay" args="/sensing/lidar/top/rectified/pointcloud /sensing/lidar/pointcloud" />
+    <include file="$(find-pkg-share sensing_launch)/launch/aip_x1/pointcloud_preprocessor.launch.py"/>
 
   </group>
 </launch>
