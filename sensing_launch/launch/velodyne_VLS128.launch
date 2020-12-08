@@ -102,7 +102,7 @@
   </node>
 
   <!-- Velodyne Monitor -->
-  <include file="$(find velodyne_monitor)/launch/velodyne_monitor.launch">
+  <include file="$(find velodyne_monitor)/launch/velodyne_monitor.launch" if="$(arg launch_driver)">
     <arg name="ip_address" value="$(arg device_ip)" />
   </include>
 </launch>
