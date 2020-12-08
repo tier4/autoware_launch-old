@@ -21,17 +21,8 @@
 
     <!-- Error Monitor -->
     <include file="$(find-pkg-share autoware_error_monitor)/launch/autoware_error_monitor.launch.xml">
-      <arg name="config_file" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.param.yaml" />
-
-      <arg name="agg_config_file_discard" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/_discard.yaml" />
-      <arg name="agg_config_file_control" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/control.yaml" />
-      <arg name="agg_config_file_localization" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/localization.yaml" />
-      <arg name="agg_config_file_map" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/map.yaml" />
-      <arg name="agg_config_file_perception" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/perception.yaml" />
-      <arg name="agg_config_file_planning" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/planning.yaml" />
-      <arg name="agg_config_file_sensing" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/sensing.yaml" />
-      <arg name="agg_config_file_system" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/system.yaml" />
-      <arg name="agg_config_file_vehicle" default="$(find-pkg-share system_launch)/config/diagnostic_aggregator/vehicle.yaml" />
+      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='online'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.yaml" />
+      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='planning_simulation'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.planning_simulation.yaml" />
     </include>
 
     <!-- Emergency Handler -->
