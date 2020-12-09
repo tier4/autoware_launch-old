@@ -38,6 +38,7 @@
     <param name="use_predicted_path_outside_lanelet" value="false" />
     <param name="use_all_predicted_path" value="false" />
     <param name="refine_goal_search_radius_range" value="7.5" />
+    <param name="enable_blocked_by_obstacle" value="false" />
   </node>
 
   <node pkg="rostopic" type="rostopic" name="auto_approve_lane_change" args="pub /planning/scenario_planning/lane_driving/lane_change_approval std_msgs/Bool 'data: true' -r 10" />
