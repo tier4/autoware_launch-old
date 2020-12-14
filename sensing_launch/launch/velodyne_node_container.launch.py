@@ -70,7 +70,9 @@ def generate_launch_description():
         name='velodyne_convert_node',
         parameters=[create_parameter_dict('velodyne_points', 'velodyne_points_ex', 'calibration',
                                           'min_range', 'max_range', 'num_points_thresholds',
-                                          'invalid_intensity')]
+                                          'invalid_intensity', 'sensor_frame')],
+        remappings=[('velodyne_points', 'pointcloud_raw'),
+                    ('velodyne_points_ex', 'pointcloud_raw_ex')],
     )
     )
 

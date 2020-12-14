@@ -16,7 +16,11 @@
 
 
     <!-- Relay -->
-    <node pkg="topic_tools" exec="relay" name="relay" args="/sensing/imu/tamagawa/imu_raw /sensing/imu/imu_data" />
+    <node pkg="topic_tools" exec="relay" name="twist_relay" output="log" >
+      <param name="input_topic" value="/sensing/imu/tamagawa/imu_raw" />
+      <param name="output_topic" value="/sensing/imu/imu_data" />
+      <param name="type" value="sensor_msgs/msg/Imu" />
+    </node>
   </group>
 
 </launch>

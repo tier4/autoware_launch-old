@@ -14,9 +14,9 @@
 # limitations under the License.
 
 import launch
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-
 
 def generate_launch_description():
 
@@ -51,8 +51,8 @@ def generate_launch_description():
       ],
       parameters=[
           {
-              'input_frame': 'base_link',
-              'output_frame': 'base_link',
+              'input_frame': LaunchConfiguration('base_frame'),
+              'output_frame': LaunchConfiguration('base_frame'),
               'min_x': -50.0,
               'max_x': 100.0,
               'min_y': -50.0,
