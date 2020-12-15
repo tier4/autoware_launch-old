@@ -27,9 +27,9 @@ repositories:
     type: git
     url: https://github.com/ApexAI/topic_tools.git
     version: autoware
-  dependencies/Pilot.Auto:
+  vendor/tamagawa_imu_driver:
     type: git
-    url: https://github.com/tier4/Pilot.Auto.git
+    url: https://github.com/tier4/tamagawa_imu_driver.git
     version: ros2
   vendor/usb_cam:
     type: git
