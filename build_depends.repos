@@ -31,6 +31,10 @@ repositories:
     type: git
     url: https://github.com/tier4/tamagawa_imu_driver.git
     version: ros2
+  vendor/livox-driver:
+    type: git
+    url: https://github.com/fred-apex-ai/livox_ros2_driver.git
+    version: master
   vendor/usb_cam:
     type: git
     url: https://github.com/flynneva/usb_cam.git
