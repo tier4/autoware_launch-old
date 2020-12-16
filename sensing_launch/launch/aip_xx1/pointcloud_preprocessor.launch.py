@@ -14,14 +14,22 @@
 # limitations under the License.
 
 import launch
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
-
 def generate_launch_description():
 
   pkg = 'pointcloud_preprocessor'
+
+  launch_arguments = []
+
+  def add_launch_arg(name: str, default_value=None):
+    # a default_value of None is equivalent to not passing that kwarg at all
+    launch_arguments.append(DeclareLaunchArgument(name, default_value=default_value))
+
+  add_launch_arg('base_frame', 'base_link')
 
   # set concat filter as a component
   concat_component = ComposableNode(
@@ -47,7 +55,7 @@ def generate_launch_description():
       name='crop_box_filter',
       remappings=[
           ('/input', 'concatenated/pointcloud'),
-          ('/output', "mesurement_range_cropped/pointcloud"),
+          ('/output', 'mesurement_range_cropped/pointcloud'),
           ('/min_z', '/vehicle_info/min_height_offset'),
           ('/max_z', '/vehicle_info/max_height_offset'),
       ],
@@ -105,6 +113,4 @@ def generate_launch_description():
       output='screen',
   )
 
-  return launch.LaunchDescription([
-      container,
-  ])
+  return launch.LaunchDescription(launch_arguments + [container])
