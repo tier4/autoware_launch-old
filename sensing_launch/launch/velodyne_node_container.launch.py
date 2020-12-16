@@ -53,6 +53,10 @@ def generate_launch_description():
     add_launch_arg('laserscan_resolution', '0.007')
     add_launch_arg('num_points_thresholds', '300')
     add_launch_arg('invalid_intensity')
+    add_launch_arg('frame_id', 'velodyne')
+    add_launch_arg('gps_time', 'False')
+    add_launch_arg('input_frame', LaunchConfiguration('base_frame'))
+    add_launch_arg('output_frame', LaunchConfiguration('base_frame'))
 
     def create_parameter_dict(*args):
         result = {}
@@ -68,9 +72,8 @@ def generate_launch_description():
         package='velodyne_pointcloud',
         plugin='velodyne_pointcloud::Convert',
         name='velodyne_convert_node',
-        parameters=[create_parameter_dict('velodyne_points', 'velodyne_points_ex', 'calibration',
-                                          'min_range', 'max_range', 'num_points_thresholds',
-                                          'invalid_intensity', 'sensor_frame')],
+        parameters=[create_parameter_dict('calibration', 'min_range', 'max_range',
+                                          'num_points_thresholds', 'invalid_intensity', 'sensor_frame')],
         remappings=[('velodyne_points', 'pointcloud_raw'),
                     ('velodyne_points_ex', 'pointcloud_raw_ex')],
     )
@@ -150,8 +153,9 @@ def generate_launch_description():
         plugin='velodyne_driver::VelodyneDriver',
         # node is created in a global context, need to avoid name clash
         name='velodyne_driver',
-        parameters=[create_parameter_dict('device_ip', 'frame_id', 'model', 'pcap', 'port',
-                                          'read_fast', 'read_once', 'repeat_delay', 'rpm')],
+        parameters=[create_parameter_dict('device_ip', 'gps_time', 'read_once', 'read_fast',
+                                          'repeat_delay', 'frame_id', 'model', 'rpm', 'port',
+                                          'pcap')],
     )
 
     # one way to add a ComposableNode conditional on a launch argument to a
