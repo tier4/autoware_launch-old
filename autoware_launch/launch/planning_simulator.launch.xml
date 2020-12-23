@@ -53,7 +53,7 @@
   <include file="$(find-pkg-share awapi_awiv_adapter)/launch/awapi_awiv_adapter.launch.xml" />
 
   <!-- Rviz -->
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware_ros2.rviz" if="$(var rviz)" />
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz" if="$(var rviz)" />
 
   <!-- TODO (mitsudome-r): Port and test web controller -->
   <!-- Web Controller -->
