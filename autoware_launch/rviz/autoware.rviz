@@ -623,7 +623,7 @@ Visualization Manager:
               Max Value: 1
               Median window: 5
               Min Value: 0
-              Name: Image
+              Name: RecognitionResultOnImage
               Normalize Range: true
               Queue Size: 2
               Transport Hint: raw
@@ -632,7 +632,7 @@ Visualization Manager:
             - Class: rviz/MarkerArray
               Enabled: true
               Marker Topic: /perception/traffic_light_recognition/traffic_light_map_based_detector/debug/markers
-              Name: Beam
+              Name: MapBasedDetectionResult
               Namespaces: {}
               Queue Size: 100
               Value: true
