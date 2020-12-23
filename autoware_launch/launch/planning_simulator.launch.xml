@@ -6,7 +6,6 @@
   <arg name="sensor_model"/>
   <!-- Optional parameters -->
   <arg name="rviz" default="true" doc="launch rviz"/>
-  <arg name="rviz_args" default="-d $(find-pkg-share autoware_launch)/rviz/autoware_ros2.rviz"/>
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" />
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" />
   <!-- Optional parameters for scenario simulation -->
@@ -54,7 +53,7 @@
   <include file="$(find-pkg-share awapi_awiv_adapter)/launch/awapi_awiv_adapter.launch.xml" />
 
   <!-- Rviz -->
-  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="$(var rviz_args)" if="$(var rviz)" />
+  <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware_ros2.rviz" if="$(var rviz)" />
 
   <!-- TODO (mitsudome-r): Port and test web controller -->
   <!-- Web Controller -->
