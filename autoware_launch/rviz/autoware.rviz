@@ -743,7 +743,7 @@ Visualization Manager:
               Max Value: 1
               Median window: 5
               Min Value: 0
-              Name: Image
+              Name: RecognitionResultOnImage
               Normalize Range: true
               Topic:
                 Depth: 5
@@ -754,7 +754,7 @@ Visualization Manager:
               Value: true
             - Class: rviz_default_plugins/MarkerArray
               Enabled: true
-              Name: Beam
+              Name: MapBasedDetectionResult
               Namespaces:
                 {}
               Topic:
