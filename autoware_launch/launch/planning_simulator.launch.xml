@@ -42,10 +42,13 @@
   </include>
 
   <!-- Planning -->
-  <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml" />
+  <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml">
+    <arg name="vehicle_model" value="$(var vehicle_model)" />
+  </include>
 
   <!-- Control -->
   <include file="$(find-pkg-share control_launch)/launch/control.launch.xml">
+    <arg name="vehicle_model" value="$(var vehicle_model)" />
     <arg name="lateral_controller_mode" value="mpc_follower" doc="options: mpc_follower, pure_pursuit"/>
   </include>
 
