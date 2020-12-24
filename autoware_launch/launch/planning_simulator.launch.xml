@@ -23,10 +23,9 @@
   </include>
 
   <!-- System -->
-  <!-- TODO (mitsudome-r): port system_launch -->
-  <!-- <include file="$(find-pkg-share system_launch)/launch/system.launch.xml">
+  <include file="$(find-pkg-share system_launch)/launch/system.launch.xml">
     <arg name="run_mode" value="planning_simulation"/>
-  </include> -->
+  </include>
 
   <!-- Map -->
   <include file="$(find-pkg-share map_launch)/launch/map.launch.xml">
@@ -58,10 +57,6 @@
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz" if="$(var rviz)" />
 
-  <!-- TODO (mitsudome-r): Port and test web controller -->
   <!-- Web Controller -->
-  <!-- <include file="$(find-pkg-share roswww)/launch/roswww.launch.xml">
-    <arg name="cached" value="false"/>
-  </include>
-  <include file="$(find-pkg-share rosbridge_server)/launch/rosbridge_websocket.launch.xml" /> -->
+  <include file="$(find-pkg-share autoware_web_controller)/launch/autoware_web_controller.launch.xml" />
 </launch>
