@@ -1,5 +1,5 @@
 <launch>
-  <arg name="vehicle_model" />
+  <arg name="vehicle_param_file" />
   <!-- planning module -->
   <group>
     <push-ros-namespace namespace="planning"/>
@@ -7,7 +7,6 @@
     <group>
       <push-ros-namespace namespace="mission_planning"/>
       <include file="$(find-pkg-share planning_launch)/launch/mission_planning/mission_planning.launch.xml">
-        <arg name="vehicle_model" value="$(var vehicle_model)" />
       </include>
     </group>
 
@@ -15,7 +14,7 @@
     <group>
       <push-ros-namespace namespace="scenario_planning"/>
       <include file="$(find-pkg-share planning_launch)/launch/scenario_planning/scenario_planning.launch.xml">
-        <arg name="vehicle_model" value="$(var vehicle_model)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
   </group>

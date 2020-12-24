@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="vehicle_model" />
+  <arg name="vehicle_param_file" />
 
   <!-- common parameters -->
   <arg name="lateral_controller_mode" default="mpc_follower" doc="options: mpc_follower, pure_pursuit"/>
@@ -47,7 +47,7 @@
 
     <!-- vehicle cmd gate -->
     <include file="$(find-pkg-share vehicle_cmd_gate)/launch/vehicle_cmd_gate.launch.xml">
-      <arg name="vehicle_model" value="$(var vehicle_model)" />
+      <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
     </include>
 
     <!-- remote_cmd_converter -->
