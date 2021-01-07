@@ -440,7 +440,7 @@ Visualization Manager:
                   Scale: 1
                   Value: true
                 Value: true
-              Enabled: true
+              Enabled: false
               Head Length: 0.4000000059604645
               Head Radius: 0.6000000238418579
               Name: PoseWithCovInitial
@@ -470,7 +470,7 @@ Visualization Manager:
                   Scale: 1
                   Value: true
                 Value: true
-              Enabled: true
+              Enabled: false
               Head Length: 0.4000000059604645
               Head Radius: 0.6000000238418579
               Name: PoseWithCovAligned
@@ -482,11 +482,12 @@ Visualization Manager:
               Value: true
             - Buffer Size: 200
               Class: rviz_plugins::PoseHistory
-              Enabled: true
+              Enabled: false
               Line:
                 Color: 170; 255; 127
                 Value: true
                 Width: 0.10000000149011612
+                Alpha: 0.999
               Name: PoseHistory
               Topic: /localization/pose_estimator/pose
               Value: true
@@ -568,6 +569,7 @@ Visualization Manager:
                 Color: 0; 255; 255
                 Value: true
                 Width: 0.10000000149011612
+                Alpha: 0.999
               Name: PoseHistory
               Topic: /localization/pose_twist_fusion_filter/pose
               Value: true
