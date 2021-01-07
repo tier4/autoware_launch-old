@@ -1137,17 +1137,17 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /clicked_point
     - Class: rviz_plugins/PedestrianInitialPoseTool
-      Pose Topic: /simulation/dummy_perceotion/publisher/object_info
+      Pose Topic: /simulation/dummy_perception_publisher/object_info
       Theta std deviation: 0.0872664600610733
       Velocity: 0
       X std deviation: 0.029999999329447746
       Y std deviation: 0.029999999329447746
-      Z position: 0
+      Z position: 1
       Z std deviation: 0.029999999329447746
     - Class: rviz_plugins/CarInitialPoseTool
-      Pose Topic: /simulation/dummy_perception/publisher/object_info
+      Pose Topic: /simulation/dummy_perception_publisher/object_info
       Theta std deviation: 0.0872664600610733
-      Velocity: 0
+      Velocity: 3
       X std deviation: 0.029999999329447746
       Y std deviation: 0.029999999329447746
       Z position: 0
@@ -1159,7 +1159,7 @@ Visualization Manager:
       Y std deviation: 0.5
       Z position: 0
     - Class: rviz_plugins/DeleteAllObjectsTool
-      Pose Topic: /simulation/dummy_perception/publisher/object_info
+      Pose Topic: /simulation/dummy_perception_publisher/object_info
   Transformation:
     Current:
       Class: rviz_default_plugins/TF
