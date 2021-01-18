@@ -585,7 +585,13 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /perception/object_recognition/detection/objects/visualization
               Name: DynamicObjects
-              Namespaces: {}
+              Namespaces:
+                label: true
+                path: false
+                path confidence: true
+                position covariance: true
+                shape: true
+                twist: true
               Queue Size: 100
               Value: true
           Enabled: false
@@ -596,7 +602,13 @@ Visualization Manager:
               Enabled: true
               Marker Topic: /perception/object_recognition/tracking/objects/visualization
               Name: DynamicObjects
-              Namespaces: {}
+              Namespaces:
+                label: true
+                path: false
+                path confidence: true
+                position covariance: true
+                shape: true
+                twist: true
               Queue Size: 100
               Value: true
           Enabled: false
@@ -611,6 +623,7 @@ Visualization Manager:
                 label: true
                 path: true
                 path confidence: true
+                position covariance: false
                 shape: true
                 twist: true
               Queue Size: 100
