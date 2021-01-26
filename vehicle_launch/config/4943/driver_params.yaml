@@ -1,0 +1,4 @@
+/**:
+  ros__parameters:
+    vehicle_type: "LEXUS_RX_450H"
+    frame_id: "pacmod"
