@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    hardware_id: 3
+    circuit_id: 0
+    bit_rate: 500000
+    enable_echo: false
+
