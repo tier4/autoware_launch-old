@@ -3,6 +3,7 @@
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
   <arg name="use_radius_search" default="false" />
+  <arg name="vehicle_param_file" />
 
   <group>
     <push-ros-namespace namespace="lidar"/>
@@ -24,6 +25,7 @@
         <arg name="bd_list" value="$(env LIVOX_FRONT_LEFT_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
@@ -34,6 +36,7 @@
         <arg name="bd_list" value="$(env LIVOX_FRONT_CENTER_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
@@ -44,6 +47,7 @@
         <arg name="bd_list" value="$(env LIVOX_FRONT_RIGHT_ID)" if="$(arg launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
@@ -52,6 +56,7 @@
       <arg name="base_frame" value="base_link" />
       <arg name="use_concat_filter" value="$(var use_concat_filter)" />
       <arg name="use_radius_search" value="$(var use_radius_search)" />
+      <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
     </include>
 
   </group>

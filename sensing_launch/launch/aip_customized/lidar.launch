@@ -2,6 +2,7 @@
 
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
+  <arg name="vehicle_param_file" />
 
   <group>
     <push-ros-namespace namespace="lidar"/>
@@ -39,6 +40,7 @@
     <include file="$(find-pkg-share sensing_launch)/launch/aip_customized/pointcloud_preprocessor.launch.py">
       <arg name="base_frame" value="base_link" />
       <arg name="use_concat_filter" value="$(var use_concat_filter)" />
+      <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
     </include>
 
   </group>
