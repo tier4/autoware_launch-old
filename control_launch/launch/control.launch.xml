@@ -42,7 +42,7 @@
       </node>
 
       <!-- lane departure checker -->
-      <include file="$(find lane_departure_checker)/launch/lane_departure_checker.launch">
+      <include file="$(find-pkg-share lane_departure_checker)/launch/lane_departure_checker.launch">
       </include>
     </group>
 
