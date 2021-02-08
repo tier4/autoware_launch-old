@@ -11,6 +11,7 @@
   <arg name="base_frame" default="base_link" />
   <arg name="manager" default="livox_nodelet_manager" />
   <arg name="launch_driver" default="true" />
+  <arg name="vehicle_param_file" />
 
   <group if="$(var launch_driver)">
     <node name="livox_lidar_publisher" pkg="livox_ros2_driver" exec="livox_ros2_driver_node" output="screen">
@@ -29,6 +30,7 @@
 
   <include file="$(find-pkg-share sensing_launch)/launch/livox_holizon_pointcloud_preprocessor.launch.py">
     <arg name="base_frame" value="$(var base_frame)" />
+    <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
   </include>
 
 </launch>

@@ -59,12 +59,12 @@ def generate_launch_description():
         remappings=[
             ('/input', 'top/outlier_filtered/pointcloud'),
             ('/output', 'concatenated/pointcloud'),
-            ('/min_z', '/vehicle_info/min_height_offset'),
-            ('/max_z', '/vehicle_info/max_height_offset'),
         ],
         parameters=[
             {
                 'output_frame': 'base_link',
+                'min_z': "/vehicle_info/min_height_offset", # TODO
+                'max_z': "/vehicle_info/max_height_offset", # TODO
             }
         ]
     )
@@ -77,8 +77,6 @@ def generate_launch_description():
       remappings=[
           ('/input', 'concatenated/pointcloud'),
           ('/output', 'mesurement_range_cropped/pointcloud'),
-          ('/min_z', '/vehicle_info/min_height_offset'),
-          ('/max_z', '/vehicle_info/max_height_offset'),
       ],
       parameters=[
           {
@@ -88,6 +86,8 @@ def generate_launch_description():
               'max_x': 100.0,
               'min_y': -50.0,
               'max_y': 50.0,
+              'min_z': "/vehicle_info/min_height_offset", # TODO
+              'max_z': "/vehicle_info/max_height_offset", # TODO
               'negative': False,
           }
       ]
@@ -100,10 +100,6 @@ def generate_launch_description():
       remappings=[
           ('/input', 'mesurement_range_cropped/pointcloud'),
           ('/output', 'no_ground/pointcloud_with_outlier'),
-          ('min_x', '/vehicle_info/min_longitudinal_offset'),
-          ('max_x', '/vehicle_info/max_longitudinal_offset'),
-          ('min_y', '/vehicle_info/min_lateral_offset'),
-          ('max_y', '/vehicle_info/max_lateral_offset')
       ],
       parameters=[{
         "initial_max_slope": 1.0,
@@ -111,6 +107,10 @@ def generate_launch_description():
         "local_max_slope": 10.0,
         "min_height_threshold": 0.1,
         "use_vehicle_footprint": True,
+        "min_x": "/vehicle_info/min_longitudinal_offset",  # TODO get from yaml
+        "max_x": "/vehicle_info/max_longitudinal_offset",  # TODO
+        "min_y": "/vehicle_info/min_lateral_offset",  # TODO
+        "max_y": "/vehicle_info/max_lateral_offset",  # TODO
       }]
   )
 
@@ -126,8 +126,8 @@ def generate_launch_description():
         "voxel_size_x": 0.04,
         "voxel_size_y": 0.04,
         "voxel_size_z": 0.08,
-        "input_frame": "base_link",
-        "output_frame": "base_link",
+        "input_frame": "base_link", # TODO
+        "output_frame": "base_link", # TODO
     }]
   )
 

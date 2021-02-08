@@ -2,6 +2,7 @@
 
   <arg name="launch_driver" default="true" />
   <arg name="use_concat_filter" default="true" />
+  <arg name="vehicle_param_file" />
   <arg name ="vehicle_id" value="$(optenv VEHICLE_ID default)" />
 
   <group>
@@ -67,6 +68,7 @@
         <arg name="bd_list_text" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(var vehicle_id)/livox_front_left_id.txt" if="$(var launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
@@ -78,12 +80,14 @@
         <arg name="bd_list_text" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(var vehicle_id)/livox_front_right_id.txt" if="$(var launch_driver)"/>
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(arg launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
     <include file="$(find-pkg-share sensing_launch)/launch/aip_xx1/pointcloud_preprocessor.launch.py">
       <arg name="base_frame" value="base_link" />
       <arg name="use_concat_filter" value="$(var use_concat_filter)" />
+      <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
     </include>
 
   </group>

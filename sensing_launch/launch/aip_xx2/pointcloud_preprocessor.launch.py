@@ -57,12 +57,12 @@ def generate_launch_description():
         remappings=[
             ('/input', 'top/outlier_filtered/pointcloud'),
             ('/output', 'concatenated/pointcloud'),
-            ('/min_z', '/vehicle_info/min_height_offset'),
-            ('/max_z', '/vehicle_info/max_height_offset'),
         ],
         parameters=[
             {
                 'output_frame': 'base_link',
+                'min_z': '/vehicle_info/min_height_offset', # TODO
+                'max_z': '/vehicle_info/max_height_offset', # TODO
             }
         ]
     )
@@ -75,8 +75,6 @@ def generate_launch_description():
       remappings=[
           ('/input', 'concatenated/pointcloud'),
           ('/output', 'mesurement_range_cropped/pointcloud'),
-          ('/min_z', '/vehicle_info/min_height_offset'),
-          ('/max_z', '/vehicle_info/max_height_offset'),
       ],
       parameters=[
           {
@@ -86,6 +84,8 @@ def generate_launch_description():
               'max_x': 100.0,
               'min_y': -50.0,
               'max_y': 50.0,
+              'min_z': "/vehicle_info/min_height_offset", # TODO
+              'max_z': "/vehicle_info/max_height_offset", # TODO
               'negative': False,
           }
       ]
