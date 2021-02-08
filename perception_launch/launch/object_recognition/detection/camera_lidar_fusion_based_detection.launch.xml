@@ -35,10 +35,10 @@
 
   <group>
     <push-ros-namespace namespace="euclidean"/>
-    <include file="$(find-pkg-shareeuclidean_cluster)/launch/voxel_grid_based_euclidean_cluster.launch.xml" >
+    <include file="$(find-pkg-share euclidean_cluster)/launch/voxel_grid_based_euclidean_cluster.launch.xml" >
       <arg name="output/clusters" default="lidar/clusters"/>
     </include>
-    <include file="$(find-pkg-shareroi_cluster_fusion)/launch/roi_cluster_fusion.launch.xml">
+    <include file="$(find-pkg-share roi_cluster_fusion)/launch/roi_cluster_fusion.launch.xml">
       <arg name="input_camera_info0" default="$(var camera_info0)"/>
       <arg name="input_rois0" default="/perception/object_recognition/detection/rois0"/>
       <arg name="input_camera_info1" default="$(var camera_info1)"/>
@@ -59,13 +59,13 @@
       <arg name="input_clusters" default="lidar/clusters"/>
       <arg name="output" default="camera_lidar_fusion/clusters"/>
     </include>
-    <include file="$(find-pkg-shareshape_estimation)/launch/shape_estimation.launch.xml">
+    <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
       <arg name="use_map_corrent" default="$(var use_vector_map)"/>
       <arg name="input/objects" default="camera_lidar_fusion/clusters" />
       <arg name="output/objects" default="camera_lidar_fusion/objects" />
       <arg name="orientation_reliable" default="false"/>
     </include>
-    <include file="$(find-pkg-shareobject_range_splitter)/launch/object_range_splitter.launch.xml">
+    <include file="$(find-pkg-share object_range_splitter)/launch/object_range_splitter.launch.xml">
       <arg name="input/object" default="camera_lidar_fusion/objects"/>
       <arg name="output/long_range_object" default="camera_lidar_fusion/long_range_objects"/>
       <arg name="output/short_range_object" default="camera_lidar_fusion/short_range_objects"/>
@@ -75,22 +75,22 @@
 
   <group>
     <push-ros-namespace namespace="apollo"/>
-    <include file="$(find-pkg-sharelidar_apollo_instance_segmentation)/launch/lidar_apollo_instance_segmentation.launch.xml">
+    <include file="$(find-pkg-share lidar_apollo_instance_segmentation)/launch/lidar_apollo_instance_segmentation.launch.xml">
       <arg name="output/objects" default="lidar/clusters"/>
     </include>
-    <include file="$(find-pkg-shareshape_estimation)/launch/shape_estimation.launch.xml">
+    <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
       <arg name="use_map_corrent" default="$(var use_vector_map)"/>
       <arg name="input/objects" default="lidar/clusters" />
       <arg name="output/objects" default="lidar/objects" />
       <arg name="orientation_reliable" default="true"/>
     </include>
-    <include file="$(find-pkg-shareobject_range_splitter)/launch/object_range_splitter.launch.xml">
+    <include file="$(find-pkg-share object_range_splitter)/launch/object_range_splitter.launch.xml">
       <arg name="input/object" default="lidar/objects"/>
       <arg name="output/long_range_object" default="lidar/long_range_objects"/>
       <arg name="output/short_range_object" default="lidar/short_range_objects"/>
       <arg name="split_range" default="15"/>
     </include>
-    <include file="$(find-pkg-shareroi_cluster_fusion)/launch/roi_cluster_fusion.launch.xml">
+    <include file="$(find-pkg-share roi_cluster_fusion)/launch/roi_cluster_fusion.launch.xml">
       <arg name="input_camera_info0" default="$(var camera_info0)"/>
       <arg name="input_rois0" default="/perception/object_recognition/detection/rois0"/>
       <arg name="input_camera_info1" default="$(var camera_info1)"/>
@@ -111,14 +111,14 @@
       <arg name="input_clusters" default="lidar/short_range_objects"/>
       <arg name="output" default="camera_lidar_fusion/short_range_objects"/>
     </include>
-    <include file="$(find-pkg-shareobject_merger)/launch/object_association_merger.launch.xml">
+    <include file="$(find-pkg-share object_merger)/launch/object_association_merger.launch.xml">
       <arg name="input/object0" default="camera_lidar_fusion/short_range_objects"/>
       <arg name="input/object1" default="lidar/long_range_objects"/>
       <arg name="output/object" default="camera_lidar_fusion/objects"/>
     </include>
   </group>
 
-  <include file="$(find object_merger)/launch/object_association_merger.launch.xml">
+  <include file="$(find-pkg-share object_merger)/launch/object_association_merger.launch.xml">
     <arg name="input/object0" default="apollo/camera_lidar_fusion/objects"/>
     <arg name="input/object1" default="euclidean/camera_lidar_fusion/short_range_objects"/>
     <arg name="output/object" default="objects"/>
