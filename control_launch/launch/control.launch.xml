@@ -22,16 +22,23 @@
 
       <!-- lateral controller -->
       <group if="$(eval &quot;'$(var lateral_controller_mode)'=='mpc_follower'&quot;)">
-        <include file="$(find-pkg-share mpc_follower)/launch/mpc_follower.launch.xml" pass_all_args="true"/>
+        <include file="$(find-pkg-share mpc_follower)/launch/mpc_follower.launch.xml">
+          <arg name="mpc_follower_param_path" value="$(var mpc_follower_param_path)" />
+          <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        </include>
       </group>
 
       <group if="$(eval &quot;'$(var lateral_controller_mode)'=='pure_pursuit'&quot;)">
-        <include file="$(find-pkg-share pure_pursuit)/launch/pure_pursuit.launch.xml" pass_all_args="true"/>
+        <include file="$(find-pkg-share pure_pursuit)/launch/pure_pursuit.launch.xml">
+          <arg name="pure_pursuit_param_path" value="$(var pure_pursuit_param_path)" />
+          <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        </include>
       </group>
 
       <!-- longitudinal controller -->
       <include file="$(find-pkg-share velocity_controller)/launch/velocity_controller.launch.xml">
         <arg name="velocity_controller_param_path" value="$(var velocity_controller_param_path)"/>
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
 
       <!-- latlon coupler -->
