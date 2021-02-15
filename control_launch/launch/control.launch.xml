@@ -49,7 +49,8 @@
       </node>
 
       <!-- lane departure checker -->
-      <include file="$(find-pkg-share lane_departure_checker)/launch/lane_departure_checker.launch">
+      <include file="$(find-pkg-share lane_departure_checker)/launch/lane_departure_checker.launch.xml">
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
       </include>
     </group>
 
