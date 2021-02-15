@@ -26,7 +26,11 @@
 
   <!-- skip surround obstacle checker -->
   <group unless="$(var use_surround_obstacle_check)">
-    <node pkg="topic_tools" exec="relay" name="skip_surround_obstacle_check_relay" args="obstacle_avoidance_planner/trajectory surround_obstacle_checker/trajectory" />
+    <node pkg="topic_tools" exec="relay" name="skip_surround_obstacle_check_relay" output="log" >
+      <param name="input_topic" value="obstacle_avoidance_planner/trajectory" />
+      <param name="output_topic" value="surround_obstacle_checker/trajectory" />
+      <param name="type" value="autoware_planning_msgs/msg/Trajectory" />
+    </node>
   </group>
 
   <!-- stop velocity planning with obstacle pointcloud info -->
