@@ -18,6 +18,8 @@
   <exec_depend>naive_path_prediction</exec_depend>
   <exec_depend>roi_cluster_fusion</exec_depend>
   <exec_depend>shape_estimation</exec_depend>
+  <exec_depend>tensorrt_yolo</exec_depend>
+  <exec_depend>object_range_splitter</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
