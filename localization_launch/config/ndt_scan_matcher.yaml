@@ -21,7 +21,7 @@
     resolution: 2.0
 
     # The number of iterations required to calculate alignment
-    max_iterations: 30.0
+    max_iterations: 30
 
     # Threshold for deciding whetherto trust the estimation result
     converged_param_transform_probability: 3.0
