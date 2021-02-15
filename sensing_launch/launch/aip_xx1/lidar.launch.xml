@@ -63,10 +63,9 @@
 
     <group>
       <push-ros-namespace namespace="front_left"/>
-      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml">
+      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" >
         <arg name="sensor_frame" value="livox_front_left" />
-<!--        TODO(fred-apex-ai) this variable not defined within repo, only in vehicle environment?-->
-        <arg name="bd_list_text" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(var vehicle_id)/livox_front_left_id.txt" if="$(var launch_driver)"/>
+        <arg name="bd_code_param_path" value="$(find-pkg-share sensing_launch)/config/aipxx1/(env VEHICLE_ID default)/livox_front_left_bd_code.yaml" />
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
         <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
@@ -78,8 +77,7 @@
       <push-ros-namespace namespace="front_right"/>
       <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" >
         <arg name="sensor_frame" value="livox_front_right" />
-        <!--        TODO(fred-apex-ai) this variable not defined within repo, only in vehicle environment?-->
-        <arg name="bd_list_text" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(var vehicle_id)/livox_front_right_id.txt" if="$(var launch_driver)"/>
+        <arg name="bd_code_param_path" value="$(find-pkg-share sensing_launch)/config/aipxx1/(env VEHICLE_ID default)/livox_front_right_bd_code.yaml" />
         <arg name="xfer_format" value="0"/>
         <arg name="launch_driver" value="$(var launch_driver)" />
         <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
