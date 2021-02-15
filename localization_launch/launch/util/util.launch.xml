@@ -31,7 +31,7 @@
 
 
   <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
-  <node pkg="pointcloud_preprocessor" exec="downsample_filter_node" name="voxel_grid_filter" output="log">
+  <node pkg="pointcloud_preprocessor" exec="voxel_grid_downsample_filter_node" name="voxel_grid_filter" output="log">
     <remap from="input" to="$(var output_mesurement_range_sensor_points_topic)" />
     <remap from="output" to="$(var output_voxel_grid_downsample_sensor_points_topic)" />
     <param name="voxel_size_x" value="3.0" />
