@@ -8,8 +8,8 @@
     <!-- System Monitor -->
     <group>
       <push-ros-namespace namespace="system_monitor"/>
-      <include file="$(find system_monitor)/launch/system_monitor.launch">
-        <arg name="config_file" value="$(find system_launch)/config/system_monitor.yaml"/>
+      <include file="$(find-pkg-share system_monitor)/launch/system_monitor.launch.xml">
+        <arg name="config_file" value="$(find-pkg-share system_launch)/config/system_monitor.yaml"/>
       </include>
     </group>
 
