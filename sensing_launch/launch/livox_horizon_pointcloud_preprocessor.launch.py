@@ -70,6 +70,7 @@ def launch_setup(context, *args, **kwargs):
             'min_z': vehicle_info['min_height_offset'],
             'max_z': vehicle_info['max_height_offset'],
             'negative': True,
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
         }]
     )
 
@@ -92,6 +93,7 @@ def launch_setup(context, *args, **kwargs):
             'min_z': vehicle_mirror_info['min_height_offset'],
             'max_z': vehicle_mirror_info['max_height_offset'],
             'negative': True,
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
         }]
     )
 
@@ -106,6 +108,9 @@ def launch_setup(context, *args, **kwargs):
             cropbox_mirror_component,
         ],
         output='screen',
+        parameters=[{
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
+        }],
     )
 
     return [container]
@@ -121,5 +126,11 @@ def generate_launch_description():
     add_launch_arg('base_frame', 'base_link')
     add_launch_arg('vehicle_param_file')
     add_launch_arg('vehicle_mirror_param_file')
+
+    if str.upper(str(os.environ.get('AW_ROS2_USE_SIM_TIME'))) == 'TRUE':
+        tmp_use_sim_time = 'True'
+    else:
+        tmp_use_sim_time = 'False'
+    add_launch_arg('use_sim_time', tmp_use_sim_time)
 
     return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
