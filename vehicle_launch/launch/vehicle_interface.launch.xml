@@ -19,7 +19,8 @@
 
   <!-- real mode -->
   <group unless="$(var simulation)">
-    <include file="$(var vehicle_model_pkg)/launch/vehicle_interface.launch.xml" pass_all_args="true">
+    <include file="$(var vehicle_model_pkg)/launch/vehicle_interface.launch.xml">
+      <arg name="vehicle_id" value="$(var vehicle_id)"/>
     </include>
   </group>
 </launch>
