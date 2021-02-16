@@ -49,6 +49,7 @@
     <remap from="output/turn_signal_cmd" to="/planning/turn_signal_decider/turn_signal_cmd" />
     <param name="lane_change_search_distance" value="30.0" />
     <param name="intersection_search_distance" value="30.0" />
+    <param from="$(var vehicle_param_file)" />
   </node>
 
   <include file="$(find-pkg-share behavior_velocity_planner)/launch/behavior_velocity_planner.launch.xml">
