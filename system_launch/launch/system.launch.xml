@@ -21,8 +21,8 @@
 
     <!-- Error Monitor -->
     <include file="$(find-pkg-share autoware_error_monitor)/launch/autoware_error_monitor.launch.xml">
-      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='online'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.yaml" />
-      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='planning_simulation'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.planning_simulation.yaml" />
+      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='online'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.param.yaml" />
+      <arg name="config_file" if="$(eval &quot;'$(var run_mode)'=='planning_simulation'&quot;)" value="$(find-pkg-share autoware_error_monitor)/config/autoware_error_monitor.planning_simulation.param.yaml" />
     </include>
 
     <!-- Emergency Handler -->
