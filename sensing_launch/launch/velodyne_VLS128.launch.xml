@@ -25,7 +25,7 @@
   </include>
 
   <!-- Velodyne Monitor -->
-  <include file="$(find-pkg-share velodyne_monitor)/launch/velodyne_monitor.launch" if="$(var launch_driver)">
+  <include file="$(find-pkg-share velodyne_monitor)/launch/velodyne_monitor.launch.xml" if="$(var launch_driver)">
     <arg name="ip_address" value="$(var device_ip)" />
   </include>
 </launch>
