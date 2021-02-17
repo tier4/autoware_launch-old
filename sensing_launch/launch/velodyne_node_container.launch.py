@@ -75,7 +75,7 @@ def generate_launch_description():
         name='velodyne_convert_node',
         parameters=[{**create_parameter_dict('calibration', 'min_range', 'max_range',
                                           'num_points_thresholds', 'invalid_intensity', 'sensor_frame'),
-                         'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+                     'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }],
         remappings=[('velodyne_points', 'pointcloud_raw'),
                     ('velodyne_points_ex', 'pointcloud_raw_ex')],
@@ -170,7 +170,7 @@ def generate_launch_description():
         parameters=[{**create_parameter_dict('device_ip', 'gps_time', 'read_once', 'read_fast',
                                           'repeat_delay', 'frame_id', 'model', 'rpm', 'port',
                                           'pcap'),
-                         'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+                     'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }],
     )
 
