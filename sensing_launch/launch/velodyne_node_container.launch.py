@@ -18,8 +18,8 @@ from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
+from launch.substitutions import EnvironmentVariable
 import uuid
-import os
 
 
 def acceptable_unique_name(prefix):
@@ -59,12 +59,6 @@ def generate_launch_description():
     add_launch_arg('input_frame', LaunchConfiguration('base_frame'))
     add_launch_arg('output_frame', LaunchConfiguration('base_frame'))
 
-    if str.upper(str(os.environ.get('AW_ROS2_USE_SIM_TIME'))) == 'TRUE':
-        tmp_use_sim_time = 'True'
-    else:
-        tmp_use_sim_time = 'False'
-    add_launch_arg('use_sim_time', tmp_use_sim_time)
-
     def create_parameter_dict(*args):
         result = {}
         for x in args:
@@ -79,15 +73,19 @@ def generate_launch_description():
         package='velodyne_pointcloud',
         plugin='velodyne_pointcloud::Convert',
         name='velodyne_convert_node',
-        parameters=[create_parameter_dict('calibration', 'min_range', 'max_range', 'use_sim_time',
-                                          'num_points_thresholds', 'invalid_intensity', 'sensor_frame')],
+        parameters=[{**create_parameter_dict('calibration', 'min_range', 'max_range',
+                                          'num_points_thresholds', 'invalid_intensity', 'sensor_frame'),
+                         'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }],
         remappings=[('velodyne_points', 'pointcloud_raw'),
                     ('velodyne_points_ex', 'pointcloud_raw_ex')],
     )
     )
 
-    cropbox_parameters = create_parameter_dict('input_frame', 'output_frame', 'use_sim_time')
+    cropbox_parameters = create_parameter_dict('input_frame', 'output_frame')
+
     cropbox_parameters['negative'] = True
+    cropbox_parameters['use_sim_time'] = EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False')
 
     cropbox_remappings = [
         ('/min_x', '/vehicle_info/min_longitudinal_offset'),
@@ -131,7 +129,9 @@ def generate_launch_description():
                 ('velodyne_points_interpolate', 'rectified/pointcloud'),
                 ('velodyne_points_interpolate_ex', 'rectified/pointcloud_ex'),
             ],
-            parameters=[create_parameter_dict('use_sim_time')],
+            parameters=[{
+                'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+            }],
         )
         )
 
@@ -143,7 +143,9 @@ def generate_launch_description():
             ('/input', 'rectified/pointcloud_ex'),
             ('/output', 'outlier_filtered/pointcloud')
         ],
-        parameters=[create_parameter_dict('use_sim_time')],
+        parameters=[{
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }],
     )
     )
 
@@ -155,7 +157,9 @@ def generate_launch_description():
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=nodes,
-        parameters=[create_parameter_dict('use_sim_time')],
+        parameters=[{
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }],
     )
 
     driver_component = ComposableNode(
@@ -163,9 +167,11 @@ def generate_launch_description():
         plugin='velodyne_driver::VelodyneDriver',
         # node is created in a global context, need to avoid name clash
         name='velodyne_driver',
-        parameters=[create_parameter_dict('device_ip', 'gps_time', 'read_once', 'read_fast',
+        parameters=[{**create_parameter_dict('device_ip', 'gps_time', 'read_once', 'read_fast',
                                           'repeat_delay', 'frame_id', 'model', 'rpm', 'port',
-                                          'pcap','use_sim_time')],
+                                          'pcap'),
+                         'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }],
     )
 
     # one way to add a ComposableNode conditional on a launch argument to a

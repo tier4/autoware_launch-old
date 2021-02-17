@@ -21,6 +21,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
+from launch.substitutions import EnvironmentVariable
 
 
 def get_vehicle_info(context):
@@ -63,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
                                 '/sensing/lidar/left/outlier_filtered/pointcloud',
                                 '/sensing/lidar/right/outlier_filtered/pointcloud'],
                 'output_frame': 'base_link',
-                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
             }]
         )
     else:
@@ -79,7 +80,7 @@ def launch_setup(context, *args, **kwargs):
                 'output_frame': 'base_link',
                 'min_z': vehicle_info['min_height_offset'],
                 'max_z': vehicle_info['max_height_offset'],
-                'use_sim_time': LaunchConfiguration('use_sim_time'),
+                'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
             }]
         )
 
@@ -103,7 +104,7 @@ def launch_setup(context, *args, **kwargs):
             'min_z': vehicle_info['min_height_offset'],
             'max_z': vehicle_info['max_height_offset'],
             'negative': False,
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
 
@@ -119,7 +120,7 @@ def launch_setup(context, *args, **kwargs):
             "general_max_slope": 10.0,
             "local_max_slope": 10.0,
             "min_height_threshold": 0.2,
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
 
@@ -131,7 +132,7 @@ def launch_setup(context, *args, **kwargs):
             "input_topic": "/sensing/lidar/top/rectified/pointcloud",
             "output_topic": "/sensing/lidar/pointcloud",
             "type": "sensor_msgs/msg/PointCloud2",
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }],
     )
 
@@ -149,7 +150,7 @@ def launch_setup(context, *args, **kwargs):
         ],
         output='screen',
         parameters=[{
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }],
     )
 
@@ -166,11 +167,5 @@ def generate_launch_description():
     add_launch_arg('base_frame', 'base_link')
     add_launch_arg('use_concat_filter', 'use_concat_filter')
     add_launch_arg('vehicle_param_file')
-
-    if str.upper(str(os.environ.get('AW_ROS2_USE_SIM_TIME'))) == 'TRUE':
-        tmp_use_sim_time = 'True'
-    else:
-        tmp_use_sim_time = 'False'
-    add_launch_arg('use_sim_time', tmp_use_sim_time)
 
     return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
