@@ -83,7 +83,6 @@ def generate_launch_description():
     )
 
     cropbox_parameters = create_parameter_dict('input_frame', 'output_frame')
-
     cropbox_parameters['negative'] = True
     cropbox_parameters['use_sim_time'] = EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False')
 
