@@ -21,6 +21,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 from launch.launch_context import LaunchContext
+from launch.substitutions import EnvironmentVariable
 
 
 def get_vehicle_info(context):
@@ -70,6 +71,7 @@ def launch_setup(context, *args, **kwargs):
             'min_z': vehicle_info['min_height_offset'],
             'max_z': vehicle_info['max_height_offset'],
             'negative': True,
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
 
@@ -92,6 +94,7 @@ def launch_setup(context, *args, **kwargs):
             'min_z': vehicle_mirror_info['min_height_offset'],
             'max_z': vehicle_mirror_info['max_height_offset'],
             'negative': True,
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
 
@@ -106,6 +109,9 @@ def launch_setup(context, *args, **kwargs):
             cropbox_mirror_component,
         ],
         output='screen',
+        parameters=[{
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }],
     )
 
     return [container]
