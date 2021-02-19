@@ -3,20 +3,20 @@
 <launch>
   <arg name="image_raw0" default="/image_raw"/>
   <arg name="camera_info0" default="/camera_info"/>
-  <arg name="image_raw1" default=""/>
-  <arg name="camera_info1" default=""/>
-  <arg name="image_raw2" default=""/>
-  <arg name="camera_info2" default=""/>
-  <arg name="image_raw3" default=""/>
-  <arg name="camera_info3" default=""/>
-  <arg name="image_raw4" default=""/>
-  <arg name="camera_info4" default=""/>
-  <arg name="image_raw5" default=""/>
-  <arg name="camera_info5" default=""/>
-  <arg name="image_raw6" default=""/>
-  <arg name="camera_info6" default=""/>
-  <arg name="image_raw7" default=""/>
-  <arg name="camera_info7" default=""/>
+  <arg name="image_raw1" default="/image_raw1"/>
+  <arg name="camera_info1" default="/camera_info1"/>
+  <arg name="image_raw2" default="/image_raw2"/>
+  <arg name="camera_info2" default="/camera_info2"/>
+  <arg name="image_raw3" default="/image_raw3"/>
+  <arg name="camera_info3" default="/camera_info3"/>
+  <arg name="image_raw4" default="/image_raw4"/>
+  <arg name="camera_info4" default="/camera_info4"/>
+  <arg name="image_raw5" default="/image_raw5"/>
+  <arg name="camera_info5" default="/camera_info5"/>
+  <arg name="image_raw6" default="/image_raw6"/>
+  <arg name="camera_info6" default="/camera_info6"/>
+  <arg name="image_raw7" default="/image_raw7"/>
+  <arg name="camera_info7" default="/camera_info7"/>
   <arg name="image_number" default="1"/>
   <arg name="use_vector_map" default="true"/>
 
