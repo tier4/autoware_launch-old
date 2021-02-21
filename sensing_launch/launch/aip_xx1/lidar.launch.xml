@@ -15,10 +15,12 @@
         <arg name="sensor_frame" value="velodyne_top" />
         <arg name="device_ip" value="192.168.1.201"/>
         <arg name="port" value="2368"/>
-          <!-- TODO(fred-apex-ai) scan_phase and sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
-<!--        <arg name="scan_phase" value="300.0" />-->
+        <arg name="scan_phase" value="300.0" />
+          <!-- TODO(fred-apex-ai) sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
 <!--        <arg name="sensor_timestamp" value="false" />-->
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)" />
       </include>
     </group>
 
@@ -28,10 +30,12 @@
         <arg name="sensor_frame" value="velodyne_left" />
         <arg name="device_ip" value="192.168.1.202"/>
         <arg name="port" value="2369"/>
-        <!-- TODO(fred-apex-ai) scan_phase and sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
-<!--        <arg name="scan_phase" value="180.0" />-->
+        <arg name="scan_phase" value="180.0" />
+        <!-- TODO(fred-apex-ai) sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
 <!--        <arg name="sensor_timestamp" value="false" />-->
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)" />
       </include>
     </group>
 
@@ -41,10 +45,12 @@
         <arg name="sensor_frame" value="velodyne_right" />
         <arg name="device_ip" value="192.168.1.203"/>
         <arg name="port" value="2370"/>
-        <!-- TODO(fred-apex-ai) scan_phase and sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
-<!--        <arg name="scan_phase" value="180.0" />-->
+        <arg name="scan_phase" value="180.0" />
+        <!-- TODO(fred-apex-ai) sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
 <!--        <arg name="sensor_timestamp" value="false" />-->
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)" />
       </include>
     </group>
 
@@ -54,10 +60,12 @@
         <arg name="sensor_frame" value="velodyne_rear" />
         <arg name="device_ip" value="192.168.1.204"/>
         <arg name="port" value="2371"/>
-        <!-- TODO(fred-apex-ai) scan_phase and sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
-<!--        <arg name="scan_phase" value="180.0" />-->
+        <arg name="scan_phase" value="180.0" />
+        <!-- TODO(fred-apex-ai) sensor_timestamp not supported anymore in ros2 driver but default values changed here -->
 <!--        <arg name="sensor_timestamp" value="false" />-->
         <arg name="launch_driver" value="$(var launch_driver)" />
+        <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+        <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)" />
       </include>
     </group>
 
