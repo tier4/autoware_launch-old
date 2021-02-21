@@ -14,13 +14,11 @@
 # limitations under the License.
 
 import launch
-import os
 import yaml
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-from launch.launch_context import LaunchContext
 from launch.substitutions import EnvironmentVariable
 
 
@@ -37,6 +35,7 @@ def get_vehicle_info(context):
     p['min_height_offset'] = 0.0
     p['max_height_offset'] = p['rear_overhang']
     return p
+
 
 def get_vehicle_mirror_info(context):
     path = LaunchConfiguration('vehicle_mirror_param_file').perform(context)
@@ -58,8 +57,8 @@ def launch_setup(context, *args, **kwargs):
         plugin='pointcloud_preprocessor::CropBoxFilterComponent',
         name='self_crop_box_filter',
         remappings=[
-            ('/input', 'livox/lidar'),
-            ('/output', 'self_cropped/pointcloud'),
+            ('input', 'livox/lidar'),
+            ('output', 'self_cropped/pointcloud'),
         ],
         parameters=[{
             'input_frame': LaunchConfiguration('base_frame'),
@@ -81,8 +80,8 @@ def launch_setup(context, *args, **kwargs):
         plugin='pointcloud_preprocessor::CropBoxFilterComponent',
         name='mirror_crop_box_filter',
         remappings=[
-            ('/input', 'self_cropped/pointcloud'),
-            ('/output', 'mirror_cropped/pointcloud'),
+            ('input', 'self_cropped/pointcloud'),
+            ('output', 'mirror_cropped/pointcloud'),
         ],
         parameters=[{
             'input_frame': LaunchConfiguration('base_frame'),
