@@ -3,7 +3,7 @@
   <arg name="use_gnss" default="false" />
   <arg name="launch_driver" default="true" />
 
-    <group if="$(arg use_gnss)">
+    <group if="$(var use_gnss)">
       <push-ros-namespace namespace="gnss"/>
 
       <!-- Ublox Driver -->

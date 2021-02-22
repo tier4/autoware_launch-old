@@ -33,14 +33,14 @@ def get_vehicle_info(context):
     p['min_lateral_offset'] = -(p['wheel_tread'] / 2.0 + p['right_overhang'])
     p['max_lateral_offset'] = p['wheel_tread'] / 2.0 + p['left_overhang']
     p['min_height_offset'] = 0.0
-    p['max_height_offset'] = p['rear_overhang']
+    p['max_height_offset'] = p['vehicle_height']
     return p
 
 
 def get_vehicle_mirror_info(context):
     path = LaunchConfiguration('vehicle_mirror_param_file').perform(context)
     with open(path, 'r') as f:
-        p = yaml.safe_load(f)
+        p = yaml.safe_load(f)['/**']['ros__parameters']
     return p
 
 

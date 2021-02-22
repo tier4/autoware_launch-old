@@ -18,8 +18,9 @@ import yaml
 
 import launch
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
 from launch.substitutions import EnvironmentVariable
 
@@ -34,7 +35,7 @@ def get_vehicle_info(context):
     p['min_lateral_offset'] = -(p['wheel_tread'] / 2.0 + p['right_overhang'])
     p['max_lateral_offset'] = p['wheel_tread'] / 2.0 + p['left_overhang']
     p['min_height_offset'] = 0.0
-    p['max_height_offset'] = p['rear_overhang']
+    p['max_height_offset'] = p['vehicle_height']
     return p
 
 def get_vehicle_mirror_info(context):
@@ -51,36 +52,35 @@ def launch_setup(context, *args, **kwargs):
     vehicle_info = get_vehicle_info(context)
 
     # set concat filter as a component
-    if (LaunchConfiguration('use_concat_filter')):
-        concat_component = ComposableNode(
-            package=pkg,
-            plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
-            name='concatenate_data',
-            remappings=[('/output', 'concatenated/pointcloud')],
-            parameters=[{
-                'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
-                                '/sensing/lidar/left/outlier_filtered/pointcloud',
-                                '/sensing/lidar/right/outlier_filtered/pointcloud'],
-                'output_frame': 'base_link',
-                'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
-            }]
-        )
-    else:
-        concat_component = ComposableNode(
-            package=pkg,
-            plugin='pointcloud_preprocessor::PassThroughFilterComponent',
-            name='passthrough_filter',
-            remappings=[
-                ('/input', 'top/outlier_filtered/pointcloud'),
-                ('/output', 'concatenated/pointcloud'),
-            ],
-            parameters=[{
-                'output_frame': 'base_link',
-                'min_z': vehicle_info['min_height_offset'],
-                'max_z': vehicle_info['max_height_offset'],
-                'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
-            }]
-        )
+    concat_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
+        name='concatenate_data',
+        remappings=[('output', 'concatenated/pointcloud')],
+        parameters=[{
+            'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
+                            '/sensing/lidar/left/outlier_filtered/pointcloud',
+                            '/sensing/lidar/right/outlier_filtered/pointcloud'],
+            'output_frame': 'base_link',
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }]
+    )
+
+    passthrough_component = ComposableNode(
+        package=pkg,
+        plugin='pointcloud_preprocessor::PassThroughFilterComponent',
+        name='passthrough_filter',
+        remappings=[
+            ('input', 'top/outlier_filtered/pointcloud'),
+            ('output', 'concatenated/pointcloud'),
+        ],
+        parameters=[{
+            'output_frame': 'base_link',
+            'min_z': vehicle_info['min_height_offset'],
+            'max_z': vehicle_info['max_height_offset'],
+            'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
+        }]
+    )
 
     # set crop box filter as a component
     cropbox_component = ComposableNode(
@@ -88,8 +88,8 @@ def launch_setup(context, *args, **kwargs):
         plugin='pointcloud_preprocessor::CropBoxFilterComponent',
         name='crop_box_filter',
         remappings=[
-            ('/input', 'concatenated/pointcloud'),
-            ('/output', 'measurement_range_cropped/pointcloud'),
+            ('input', 'concatenated/pointcloud'),
+            ('output', 'measurement_range_cropped/pointcloud'),
         ],
         parameters=[{
             'input_frame': LaunchConfiguration('base_frame'),
@@ -110,8 +110,8 @@ def launch_setup(context, *args, **kwargs):
         plugin='pointcloud_preprocessor::RayGroundFilterComponent',
         name='ray_ground_filter',
         remappings=[
-            ('/input', 'measurement_range_cropped/pointcloud'),
-            ('/output', 'no_ground/pointcloud')
+            ('input', 'measurement_range_cropped/pointcloud'),
+            ('output', 'no_ground/pointcloud')
         ],
         parameters=[{
             "general_max_slope": 10.0,
@@ -140,7 +140,6 @@ def launch_setup(context, *args, **kwargs):
         package='rclcpp_components',
         executable='component_container',
         composable_node_descriptions=[
-            concat_component,
             cropbox_component,
             ground_component,
             relay_component,
@@ -151,7 +150,20 @@ def launch_setup(context, *args, **kwargs):
         }],
     )
 
-    return [container]
+    # load concat or passthrough filter
+    concat_loader = LoadComposableNodes(
+        composable_node_descriptions=[concat_component],
+        target_container=container,
+        condition=launch.conditions.IfCondition(LaunchConfiguration('use_concat_filter')),
+    )
+
+    passthrough_loader = LoadComposableNodes(
+        composable_node_descriptions=[passthrough_component],
+        target_container=container,
+        condition=launch.conditions.UnlessCondition(LaunchConfiguration('use_concat_filter')),
+    )
+
+    return [container, concat_loader, passthrough_loader]
 
 def generate_launch_description():
 

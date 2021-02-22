@@ -32,14 +32,14 @@ def get_vehicle_info(context):
     p['min_lateral_offset'] = -(p['wheel_tread'] / 2.0 + p['right_overhang'])
     p['max_lateral_offset'] = p['wheel_tread'] / 2.0 + p['left_overhang']
     p['min_height_offset'] = 0.0
-    p['max_height_offset'] = p['rear_overhang']
+    p['max_height_offset'] = p['vehicle_height']
     return p
 
 
 def get_vehicle_mirror_info(context):
     path = LaunchConfiguration('vehicle_mirror_param_file').perform(context)
     with open(path, 'r') as f:
-        p = yaml.safe_load(f)
+        p = yaml.safe_load(f)['/**']['ros__parameters']
     return p
 
 
@@ -61,7 +61,7 @@ def launch_setup(context, *args, **kwargs):
         name='velodyne_convert_node',
         parameters=[{**create_parameter_dict('calibration', 'min_range', 'max_range',
                                              'num_points_thresholds', 'invalid_intensity',
-                                             'sensor_frame', 'scan_phase'),
+                                             'frame_id', 'scan_phase'),
                      'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME',
                                                          default_value='False'),
         }],
@@ -88,7 +88,8 @@ def launch_setup(context, *args, **kwargs):
         plugin='pointcloud_preprocessor::CropBoxFilterComponent',
         name='crop_box_filter_self',
         remappings=[('input', 'pointcloud_raw_ex'),
-                    ('output', 'self_cropped/pointcloud_ex')
+                    ('output', 'self_cropped/pointcloud_ex'),
+                    ('crop_box_polygon', 'self_cropped/crop_box_polygon'),
                     ],
         parameters=[cropbox_parameters],
     )
@@ -108,6 +109,7 @@ def launch_setup(context, *args, **kwargs):
         name='crop_box_filter_mirror',
         remappings=[('input', 'self_cropped/pointcloud_ex'),
                     ('output', 'mirror_cropped/pointcloud_ex'),
+                    ('crop_box_polygon', 'mirror_cropped/crop_box_polygon'),
                     ],
         parameters=[cropbox_parameters],
     )
@@ -190,7 +192,6 @@ def generate_launch_description():
     add_launch_arg('launch_driver', 'True')
     add_launch_arg('calibration')
     add_launch_arg('device_ip', '192.168.1.201')
-    add_launch_arg('sensor_frame', 'velodyne')
     add_launch_arg('scan_phase', '0.0')
     add_launch_arg('base_frame', 'base_link')
     add_launch_arg('container_name', 'velodyne_composable_node_container')
