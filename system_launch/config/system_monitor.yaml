@@ -11,7 +11,8 @@ cpu_monitor:
 hdd_monitor:
   ros__parameters:
     hdd_reader_port: 7635
-    disks:  # Until multi type lists are allowed, name N the disks as disk0...disk{N-1}
+    num_disks: 2
+    disks: # Until multi type lists are allowed, name N the disks as disk0...disk{N-1}
       disk0:
         name: /dev/sda
         temp_warn: 55.0
