@@ -570,6 +570,21 @@ Visualization Manager:
                 Reliability Policy: Reliable
                 Value: /localization/pose_estimator/pose_with_covariance
               Value: true
+            - Buffer Size: 200
+              Class: rviz_plugins::PoseHistory
+              Enabled: true
+              Line:
+                Color: 170; 255; 127
+                Value: true
+                Width: 0.10000000149011612
+              Name: PoseHistory
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /localization/pose_estimator/pose
+              Value: true
             - Alpha: 0.999
               Autocompute Intensity Bounds: true
               Autocompute Value Bounds:
@@ -651,7 +666,22 @@ Visualization Manager:
           Enabled: true
           Name: NDT
         - Class: rviz_common/Group
-          Displays: ~
+          Displays:
+            - Buffer Size: 1000
+              Class: rviz_plugins::PoseHistory
+              Enabled: true
+              Line:
+                Color: 0; 255; 255
+                Value: true
+                Width: 0.10000000149011612
+              Name: PoseHistory
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /localization/pose_twist_fusion_filter/pose
+              Value: true
           Enabled: true
           Name: EKF
       Enabled: true
