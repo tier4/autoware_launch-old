@@ -696,7 +696,12 @@ Visualization Manager:
               Enabled: true
               Name: DynamicObjects
               Namespaces:
-                {}
+                label: true
+                path: false
+                path confidence: true
+                position covariance: true
+                shape: true
+                twist: true
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
@@ -712,7 +717,12 @@ Visualization Manager:
               Enabled: true
               Name: DynamicObjects
               Namespaces:
-                {}
+                label: true
+                path: false
+                path confidence: true
+                position covariance: true
+                shape: true
+                twist: true
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
@@ -728,7 +738,12 @@ Visualization Manager:
               Enabled: true
               Name: DynamicObjects
               Namespaces:
-                {}
+                label: true
+                path: false
+                path confidence: true
+                position covariance: true
+                shape: true
+                twist: true
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
