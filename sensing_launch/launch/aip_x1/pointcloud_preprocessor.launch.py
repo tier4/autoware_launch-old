@@ -64,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
                              '/sensing/lidar/front_left/mirror_cropped/pointcloud',
                              '/sensing/lidar/front_right/mirror_cropped/pointcloud',
                              '/sensing/lidar/front_center/mirror_cropped/pointcloud'],
-            'output_frame': 'base_link',
+            'output_frame': LaunchConfiguration('base_frame'),
             'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
@@ -79,7 +79,7 @@ def launch_setup(context, *args, **kwargs):
             ('output', 'concatenated/pointcloud'),
         ],
         parameters=[{
-            'output_frame': 'base_link',
+            'output_frame': LaunchConfiguration('base_frame'),
             'min_z': vehicle_info['min_height_offset'],
             'max_z': vehicle_info['max_height_offset'],
             'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
@@ -102,7 +102,7 @@ def launch_setup(context, *args, **kwargs):
             'max_x': 100.0,
             'min_y': -50.0,
             'max_y': 50.0,
-            'min_z': vehicle_info['min_height_offset'],
+            'min_z': -0.5,
             'max_z': vehicle_info['max_height_offset'],
             'negative': False,
             'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
@@ -118,10 +118,12 @@ def launch_setup(context, *args, **kwargs):
             ('output', 'rough/no_ground/pointcloud'),
         ],
         parameters=[{
-            "initial_max_slope": 1.0,
+            "initial_max_slope": 10.0,
             "general_max_slope": 10.0,
             "local_max_slope": 10.0,
             "min_height_threshold": 0.3,
+            "radial_devider_angle": 1.0,
+            "concentric_devider_distance": 0.0,
             "use_vehicle_footprint": True,
             "min_x": vehicle_info['min_longitudinal_offset'],
             "max_x": vehicle_info['max_longitudinal_offset'],
@@ -200,7 +202,7 @@ def launch_setup(context, *args, **kwargs):
         parameters=[{
             'input_topics': ['/sensing/lidar/rough/no_ground/pointcloud',
                              '/sensing/lidar/short_height/no_ground/pointcloud'],
-            'output_frame': 'base_link',
+            'output_frame': LaunchConfiguration('base_frame'),
             'use_sim_time': EnvironmentVariable(name='AW_ROS2_USE_SIM_TIME', default_value='False'),
         }]
     )
