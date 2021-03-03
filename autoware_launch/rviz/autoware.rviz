@@ -1082,7 +1082,7 @@ Visualization Manager:
                         Durability Policy: Volatile
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/motion_planning/obststacle_stop_planner/debug/marker
+                        Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_stop_planner/debug/marker
                       Value: true
                     - Class: rviz_default_plugins/MarkerArray
                       Enabled: true
@@ -1139,7 +1139,7 @@ Visualization Manager:
                         Durability Policy: Volatile
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/motion_planning/obststacle_avoidance_planner/debug/marker
+                        Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_avoidance_planner/debug/marker
                       Value: true
                   Enabled: true
                   Name: MotionPlanning
