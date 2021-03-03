@@ -361,7 +361,7 @@ Visualization Manager:
             parking_lots: true
             parking_space: true
             right_lane_bound: true
-            road_lanelets: true
+            road_lanelets: false
             stop_lines: true
             traffic_light: true
             traffic_light_triangle: true
