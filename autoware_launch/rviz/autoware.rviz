@@ -338,8 +338,8 @@ Visualization Manager:
           Position Transformer: XYZ
           Selectable: true
           Size (Pixels): 1
-          Size (m): 0.05000000074505806
-          Style: Points
+          Size (m): 0.1
+          Style: Squares
           Topic:
             Depth: 5
             Durability Policy: Transient Local
@@ -400,8 +400,8 @@ Visualization Manager:
               Position Transformer: XYZ
               Selectable: true
               Size (Pixels): 2
-              Size (m): 0.009999999776482582
-              Style: Points
+              Size (m): 0.1
+              Style: Squares
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
@@ -433,8 +433,8 @@ Visualization Manager:
               Position Transformer: XYZ
               Selectable: true
               Size (Pixels): 5
-              Size (m): 0.009999999776482582
-              Style: Points
+              Size (m): 0.1
+              Style: Squares
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
@@ -608,8 +608,8 @@ Visualization Manager:
               Position Transformer: XYZ
               Selectable: true
               Size (Pixels): 10
-              Size (m): 0.009999999776482582
-              Style: Points
+              Size (m): 0.1
+              Style: Squares
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
@@ -641,8 +641,8 @@ Visualization Manager:
               Position Transformer: XYZ
               Selectable: true
               Size (Pixels): 10
-              Size (m): 0.009999999776482582
-              Style: Points
+              Size (m): 0.1
+              Style: Squares
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
