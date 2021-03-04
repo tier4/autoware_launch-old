@@ -697,7 +697,7 @@ Visualization Manager:
               Name: DynamicObjects
               Namespaces:
                 label: true
-                path: true
+                path: false
                 path confidence: true
                 position covariance: true
                 shape: true
@@ -718,7 +718,7 @@ Visualization Manager:
               Name: DynamicObjects
               Namespaces:
                 label: true
-                path: true
+                path: false
                 path confidence: true
                 position covariance: true
                 shape: true
@@ -741,7 +741,7 @@ Visualization Manager:
                 label: true
                 path: true
                 path confidence: true
-                position covariance: true
+                position covariance: false
                 shape: true
                 twist: true
               Topic:
