@@ -1185,7 +1185,7 @@ Visualization Manager:
                     Durability Policy: Volatile
                     History Policy: Keep Last
                     Reliability Policy: Reliable
-                    Value: /planning/scenario_planning/parking/debug/partial_pose_array
+                    Value: /planning/scenario_planning/parking/freespace_planner/debug/partial_pose_array
                   Value: true
                 - Alpha: 0.999
                   Arrow Length: 0.5
@@ -1205,7 +1205,7 @@ Visualization Manager:
                     Durability Policy: Volatile
                     History Policy: Keep Last
                     Reliability Policy: Reliable
-                    Value: /planning/scenario_planning/parking/debug/pose_array
+                    Value: /planning/scenario_planning/parking/freespace_planner/debug/pose_array
                   Value: true
               Enabled: true
               Name: Parking
