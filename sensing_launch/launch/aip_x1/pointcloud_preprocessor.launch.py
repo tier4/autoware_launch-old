@@ -58,7 +58,12 @@ def launch_setup(context, *args, **kwargs):
         package=pkg,
         plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
         name='concatenate_data',
-        remappings=[('/output', 'concatenated/pointcloud')],
+        remappings=[
+            ('output', 'concatenated/pointcloud'),
+            ('concat_num', 'concatenated/concat_num'),
+            ('not_subscribed_topic_name',
+             'concatenated/not_subscribed_topic_name'),
+        ],
         parameters=[{
             'input_topics': ['/sensing/lidar/top/outlier_filtered/pointcloud',
                              '/sensing/lidar/front_left/mirror_cropped/pointcloud',
@@ -198,7 +203,12 @@ def launch_setup(context, *args, **kwargs):
         package=pkg,
         plugin='pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent',
         name='concatenate_no_ground_data',
-        remappings=[('output', 'no_ground/concatenated/pointcloud')],
+        remappings=[
+            ('output', 'no_ground/concatenated/pointcloud'),
+            ('concat_num', 'no_ground/concatenated/concat_num'),
+            ('not_subscribed_topic_name',
+             'no_ground/concatenated/not_subscribed_topic_name'),
+        ],
         parameters=[{
             'input_topics': ['/sensing/lidar/rough/no_ground/pointcloud',
                              '/sensing/lidar/short_height/no_ground/pointcloud'],
