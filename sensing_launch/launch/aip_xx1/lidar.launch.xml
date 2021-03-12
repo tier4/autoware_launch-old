@@ -71,7 +71,7 @@
 
     <group>
       <push-ros-namespace namespace="front_left"/>
-      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" >
+      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.py" >
         <arg name="sensor_frame" value="livox_front_left" />
         <arg name="bd_code_param_path" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(env VEHICLE_ID default)/livox_front_left_bd_code.param.yaml" />
         <arg name="launch_driver" value="$(var launch_driver)" />
@@ -82,7 +82,7 @@
 
     <group>
       <push-ros-namespace namespace="front_right"/>
-      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.xml" >
+      <include file="$(find-pkg-share sensing_launch)/launch/livox_horizon.launch.py" >
         <arg name="sensor_frame" value="livox_front_right" />
         <arg name="bd_code_param_path" value="$(find-pkg-share sensing_launch)/config/aip_xx1/$(env VEHICLE_ID default)/livox_front_right_bd_code.param.yaml" />
         <arg name="launch_driver" value="$(var launch_driver)" />
