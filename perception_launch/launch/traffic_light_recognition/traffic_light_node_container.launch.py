@@ -84,9 +84,9 @@ def generate_launch_description():
                 parameters=[create_parameter_dict('approximate_sync', 'classifier_type',
                                                   'model_file_path', 'label_file_path',
                                                   'precision', 'input_c', 'input_h', 'input_w')],
-                remappings=[('input/image', LaunchConfiguration('input/image')),
-                            ('input/rois', 'rois'),
-                            ('output/traffic_light_states', 'traffic_light_states')]
+                remappings=[('~/input/image', LaunchConfiguration('input/image')),
+                            ('~/input/rois', 'rois'),
+                            ('~/output/traffic_light_states', 'traffic_light_states')]
             ),
             ComposableNode(
                 package='traffic_light_visualization',
