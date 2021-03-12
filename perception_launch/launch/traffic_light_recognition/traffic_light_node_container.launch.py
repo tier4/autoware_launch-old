@@ -118,9 +118,9 @@ def generate_launch_description():
                 plugin='traffic_light::TrafficLightSSDFineDetectorNodelet',
                 name='traffic_light_ssd_fine_detector',
                 parameters=[ssd_fine_detector_param],
-                remappings=[('input/image', LaunchConfiguration('input/image')),
-                            ('input/rois', 'rough/rois'),
-                            ('output/rois', 'rois')]
+                remappings=[('~/input/image', LaunchConfiguration('input/image')),
+                            ('~/input/rois', 'rough/rois'),
+                            ('~/output/rois', 'rois')]
             ),
         ],
         target_container=container,
