@@ -332,8 +332,8 @@ def generate_launch_description():
         launch_arguments.append(DeclareLaunchArgument(name, default_value=default_value))
 
     add_launch_arg('base_frame', 'base_link')
-    add_launch_arg('use_concat_filter', 'use_concat_filter')
-    add_launch_arg('use_radius_search', 'use_radius_search')
+    add_launch_arg('use_concat_filter', 'true')
+    add_launch_arg('use_radius_search', 'true')
     add_launch_arg('vehicle_param_file')
 
     return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
