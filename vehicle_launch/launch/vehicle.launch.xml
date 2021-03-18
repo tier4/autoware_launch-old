@@ -8,6 +8,11 @@
   <arg name="simulation" default="false" />
   <arg name ="vehicle_id" default="$(env VEHICLE_ID default)" />
 
+  <!-- vehicle info -->
+  <include file="$(find-pkg-share vehicle_info_param_server)/launch/vehicle_info_param_server.launch.xml">
+    <arg name="config_file" value="$(var vehicle_param_file)"/>
+  </include>
+
   <!-- vehicle description -->
   <group>
     <include file="$(find-pkg-share vehicle_launch)/launch/vehicle_description.launch.xml">
