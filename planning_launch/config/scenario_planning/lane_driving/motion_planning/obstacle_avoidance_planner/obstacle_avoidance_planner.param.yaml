@@ -44,7 +44,7 @@
 
     is_publishing_clearance_map: true # publish clearance map as nav_msgs::OccupancyGrid
     is_publishing_area_with_objects: true # publish occupancy map as nav_msgs::OccupancyGrid
-    enable_avoidance: true # enable avoidance function
+    enable_avoidance: false # enable avoidance function
     is_using_vehicle_config: true # use vehicle config
     num_sampling_points: 100 # number of optimizing points
     num_joint_buffer_points: 3 # number of joint buffer points
