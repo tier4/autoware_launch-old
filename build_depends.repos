@@ -37,7 +37,7 @@ repositories:
     version: master
   vendor/usb_cam:
     type: git
-    url: https://github.com/flynneva/usb_cam.git
+    url: https://github.com/tier4/usb_cam.git
     version: foxy
   vendor/rosbridge_suite:
     type: git
