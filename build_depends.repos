@@ -38,7 +38,7 @@ repositories:
   vendor/usb_cam:
     type: git
     url: https://github.com/tier4/usb_cam.git
-    version: foxy
+    version: ros2
   vendor/rosbridge_suite:
     type: git
     url: https://github.com/RobotWebTools/rosbridge_suite.git
