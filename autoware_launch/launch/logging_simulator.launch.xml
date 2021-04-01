@@ -77,19 +77,15 @@
   <!-- Planning -->
   <group>
     <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml" if="$(var planning)">
-      <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
     </include>
   </group>
-
 
   <!-- Control -->
   <group>
     <include file="$(find-pkg-share control_launch)/launch/control.launch.xml" if="$(var control)">
-      <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
       <arg name="lateral_controller_mode" value="mpc_follower" doc="options: mpc_follower, pure_pursuit"/>
     </include>
   </group>
-
 
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png" if="$(var rviz)"  >
