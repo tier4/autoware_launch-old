@@ -8,7 +8,7 @@
     <!-- System Monitor -->
     <group>
       <push-ros-namespace namespace="system_monitor"/>
-      <include file="$(find-pkg-share system_monitor)/launch/system_monitor.launch.xml">
+      <include file="$(find-pkg-share system_monitor)/launch/system_monitor.launch.py">
         <arg name="cpu_monitor_config_file" value="$(find-pkg-share system_launch)/config/system_monitor/cpu_monitor.param.yaml"/>
         <arg name="hdd_monitor_config_file" value="$(find-pkg-share system_launch)/config/system_monitor/hdd_monitor.param.yaml"/>
         <arg name="mem_monitor_config_file" value="$(find-pkg-share system_launch)/config/system_monitor/mem_monitor.param.yaml"/>
@@ -51,7 +51,6 @@
 
     <!-- Autoware Version Publisher-->
     <node pkg="autoware_version" exec="autoware_version" name="autoware_version" output="screen">
-      <param name="use_sim_time" value="$(env AW_ROS2_USE_SIM_TIME false)"/>
     </node>
   </group>
 </launch>
