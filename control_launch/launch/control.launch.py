@@ -20,6 +20,7 @@ from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import UnlessCondition
+from launch.substitutions import EnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
@@ -322,7 +323,9 @@ def generate_launch_description():
         'mpc_follower_param_path',
         [
             FindPackageShare('control_launch'),
-            '/config/mpc_follower/mpc_follower.param.yaml'
+            '/config/mpc_follower/',
+            EnvironmentVariable(name='VEHICLE_ID', default_value='default'),
+            '/mpc_follower.param.yaml'
         ]
     )
     add_launch_arg(
@@ -336,7 +339,9 @@ def generate_launch_description():
         'velocity_controller_param_path',
         [
             FindPackageShare('control_launch'),
-            '/config/velocity_controller/velocity_controller.param.yaml'
+            '/config/velocity_controller/',
+            EnvironmentVariable(name='VEHICLE_ID', default_value='default'),
+            '/velocity_controller.param.yaml'
         ]
     )
     add_launch_arg(
