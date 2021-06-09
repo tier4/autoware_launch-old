@@ -15,15 +15,17 @@
     <remap from="~/output/stop_reasons" to="/planning/scenario_planning/status/stop_reasons" />
     <remap from="~/debug/lane_change_candidate_path" to="/planning/scenario_planning/lane_driving/lane_change_candidate_path" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/lane_change_planner/lane_change_planner.param.yaml" />
-    <param name="enable_abort_lane_change" value="false" />
-    <param name="enable_collision_check_at_prepare_phase" value="false" />
-    <param name="use_predicted_path_outside_lanelet" value="false" />
-    <param name="use_all_predicted_path" value="false" />
-    <param name="enable_blocked_by_obstacle" value="false" />
+    <param name="enable_abort_lane_change" value="$(var disuse_foa)" />
+    <param name="enable_collision_check_at_prepare_phase" value="$(var disuse_foa)" />
+    <param name="use_predicted_path_outside_lanelet" value="$(var disuse_foa)" />
+    <param name="use_all_predicted_path" value="$(var disuse_foa)" />
+    <param name="enable_blocked_by_obstacle" value="$(var disuse_foa)" />
   </node>
 
-  <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/lane_change_approval
-                   autoware_planning_msgs/msg/LaneChangeCommand 'command: true' -r 10"/>
+  <group if="$(var disuse_foa)">
+    <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/lane_change_approval
+                    autoware_planning_msgs/msg/LaneChangeCommand 'command: true' -r 10"/>
+  </group>
 
   <node pkg="turn_signal_decider" exec="turn_signal_decider" name="turn_signal_decider" output="screen">
     <remap from="input/path_with_lane_id" to="path_with_lane_id" />

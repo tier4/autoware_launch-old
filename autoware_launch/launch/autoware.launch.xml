@@ -8,6 +8,7 @@
   <arg name="rviz" default="true" description="launch rviz"/>
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" />
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" />
+  <arg name="use_foa" default="false"/>
 
   <!-- Global parameters -->
   <!-- Vehicle info -->
@@ -53,6 +54,7 @@
 
   <!-- Planning -->
   <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml">
+    <arg name="use_foa" value="$(var use_foa)" />
   </include>
 
   <!-- Control -->

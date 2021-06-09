@@ -67,11 +67,11 @@ def generate_launch_description():
         parameters=[
             lane_change_planner_param,
             {
-                'enable_abort_lane_change': False,
-                'enable_collision_check_at_prepare_phase': False,
-                'use_predicted_path_outside_lanelet': False,
-                'use_all_predicted_path': False,
-                'enable_blocked_by_obstacle': False,
+                'enable_abort_lane_change': LaunchConfiguration('disuse_foa'),
+                'enable_collision_check_at_prepare_phase': LaunchConfiguration('disuse_foa'),
+                'use_predicted_path_outside_lanelet': LaunchConfiguration('disuse_foa'),
+                'use_all_predicted_path': LaunchConfiguration('disuse_foa'),
+                'enable_blocked_by_obstacle': LaunchConfiguration('disuse_foa'),
             }
         ],
         extra_arguments=[
@@ -240,5 +240,7 @@ def generate_launch_description():
             cmd=['ros2', 'topic', 'pub',
                  '/planning/scenario_planning/lane_driving/lane_change_approval',
                  'autoware_planning_msgs/msg/LaneChangeCommand', '{command: true}',
-                 '-r', '10']),
+                 '-r', '10'],
+            condition=IfCondition(LaunchConfiguration('disuse_foa'))
+        ),
     ])

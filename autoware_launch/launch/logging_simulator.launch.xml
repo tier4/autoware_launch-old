@@ -19,6 +19,7 @@
   <arg name="rviz" default="true" description="launch rviz" />
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" />
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" />
+  <arg name="use_foa" default="false" />
   <set_parameter name="use_sim_time" value="true" />
 
   <!-- Global parameters -->
@@ -83,6 +84,7 @@
   <!-- Planning -->
   <group>
     <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml" if="$(var planning)">
+      <arg name="use_foa" value="$(var use_foa)" />
     </include>
   </group>
 

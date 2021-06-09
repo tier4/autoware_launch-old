@@ -14,7 +14,7 @@
     # clearance for unique points
     clearance_for_straight_line: 0.05 # minimum optimizing range around straight points
     clearance_for_joint: 0.1 # minimum optimizing range around joint points
-    clearance_for_only_smoothing: 0.1 # minimum optimizing range when applygin only smoothing
+    clearance_for_only_smoothing: 0.1 # minimum optimizing range when applying only smoothing
     range_for_extend_joint: 0.1 # minimum optimizing range around joint points for extending
     clearance_from_object_for_straight: 10.0 # minimum clearance from object when judging straight line
 
@@ -44,7 +44,7 @@
 
     is_publishing_clearance_map: true # publish clearance map as nav_msgs::OccupancyGrid
     is_publishing_area_with_objects: true # publish occupancy map as nav_msgs::OccupancyGrid
-    enable_avoidance: false # enable avoidance function
+    # enable_avoidance: false # enable avoidance function
     is_using_vehicle_config: true # use vehicle config
     num_sampling_points: 100 # number of optimizing points
     num_joint_buffer_points: 3 # number of joint buffer points
