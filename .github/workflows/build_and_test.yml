@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  BUILD_DEPEND_FILE: https://raw.githubusercontent.com/tier4/autoware.proj/main/autoware.proj.repos
+  BUILD_DEPEND_FILE: https://raw.githubusercontent.com/tier4/autoware.proj/develop/autoware.proj.repos
   SELF_REPO: tier4/autoware_launcher
 
 jobs:
