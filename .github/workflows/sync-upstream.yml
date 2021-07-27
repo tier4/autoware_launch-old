@@ -1,4 +1,4 @@
-name: sync main for develop
+name: sync upstream
 
 on:
   schedule:
@@ -6,12 +6,13 @@ on:
   workflow_dispatch:
 
 env:
-  BASE_BRANCH: develop
+  UPSTREAM_REPO: https://github.com/tier4/autoware_launcher.git
+  BASE_BRANCH: main
   SYNC_TARGET_BRANCH: main
-  SYNC_BRANCH: sync-main-for-develop
+  SYNC_BRANCH: sync-upstream
 
 jobs:
-  sync-main-for-develop:
+  sync-upstream:
     runs-on: ubuntu-20.04
 
     steps:
@@ -28,28 +29,38 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
+      - name: Set git config for private repositories
+        run: |
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          git config --global url.https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com.insteadOf 'https://github.com'
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream "${{ env.UPSTREAM_REPO }}"
+          git fetch -pPtf --all
+
       # To keep the base branch in "create-pull-request", checkout with "BASE_BRANCH" and reset to "SYNC_TARGET_BRANCH"
       - name: Reset to sync target branch
         run: |
-          git reset --hard origin/${{ env.SYNC_TARGET_BRANCH }}
+          git reset --hard upstream/${{ env.SYNC_TARGET_BRANCH }}
 
       - name: Create PR
         id: create_pr
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ steps.generate-token.outputs.token }}
-          commit-message: sync main for develop
+          commit-message: sync upstream
           committer: GitHub <noreply@github.com>
           author: GitHub <noreply@github.com>
           signoff: false
           base: ${{ env.BASE_BRANCH }}
           branch: ${{ env.SYNC_BRANCH }}
           delete-branch: true
-          title: sync main for develop
+          title: sync upstream
           body: |
-            sync main for develop
+            sync upstream
           labels: |
-            sync-main-for-develop
+            sync-upstream
           draft: false
 
       - name: Check outputs
