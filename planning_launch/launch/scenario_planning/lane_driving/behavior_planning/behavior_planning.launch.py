@@ -174,6 +174,14 @@ def generate_launch_description():
     with open(traffic_light_param_path, 'r') as f:
         traffic_light_param = yaml.safe_load(f)['/**']['ros__parameters']
 
+    occlusion_spot_param_path = os.path.join(
+        get_package_share_directory('behavior_velocity_planner'),
+        'config',
+        'occlusion_spot.param.yaml',
+    )
+    with open(occlusion_spot_param_path, 'r') as f:
+        occlusion_spot_param = yaml.safe_load(f)['/**']['ros__parameters']
+
     behavior_velocity_planner_component = ComposableNode(
         package='behavior_velocity_planner',
         plugin='behavior_velocity_planner::BehaviorVelocityPlannerNode',
@@ -189,6 +197,7 @@ def generate_launch_description():
              '/perception/traffic_light_recognition/traffic_light_states'),
             ('~/input/external_traffic_light_states',
              '/awapi/traffic_light/put/traffic_light_status'),
+            ('~/input/occupancy_grid', '/sensing/lidar/occupancy_grid'),
             ('~/output/path', 'path'),
             ('~/output/stop_reasons',
              '/planning/scenario_planning/status/stop_reasons'),
@@ -202,6 +211,7 @@ def generate_launch_description():
                 'launch_intersection': True,
                 'launch_blind_spot': True,
                 'launch_detection_area': True,
+                'launch_occlusion_spot': True,
                 'forward_path_length': 1000.0,
                 'backward_path_length': 5.0,
                 'max_accel': -2.8,
@@ -212,7 +222,8 @@ def generate_launch_description():
             detection_area_param,
             intersection_param,
             stop_line_param,
-            traffic_light_param
+            traffic_light_param,
+            occlusion_spot_param
         ],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
