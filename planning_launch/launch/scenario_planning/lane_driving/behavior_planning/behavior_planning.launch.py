@@ -115,17 +115,14 @@ def generate_launch_description():
             lane_change_param,
             behavior_path_planner_param,
             {
-<<<<<<< HEAD
                 'enable_abort_lane_change': LaunchConfiguration('disuse_foa'),
                 'enable_collision_check_at_prepare_phase': LaunchConfiguration('disuse_foa'),
                 'use_predicted_path_outside_lanelet': LaunchConfiguration('disuse_foa'),
                 'use_all_predicted_path': LaunchConfiguration('disuse_foa'),
                 'enable_blocked_by_obstacle': LaunchConfiguration('disuse_foa'),
-=======
                 'bt_tree_config_path':
                 [FindPackageShare('behavior_path_planner'),
                  '/config/behavior_path_planner_tree.xml']
->>>>>>> upstream/develop
             }
         ],
         extra_arguments=[
@@ -282,16 +279,8 @@ def generate_launch_description():
         container,
         ExecuteProcess(
             cmd=['ros2', 'topic', 'pub',
-<<<<<<< HEAD
-                 '/planning/scenario_planning/lane_driving/lane_change_approval',
-                 'autoware_planning_msgs/msg/LaneChangeCommand', '{command: true}',
-                 '-r', '10'],
-            condition=IfCondition(LaunchConfiguration('disuse_foa'))
-        ),
-=======
                  '/planning/scenario_planning/lane_driving/behavior_planning/'
                  'behavior_path_planner/path_change_approval',
                  'autoware_planning_msgs/msg/Approval', '{approval: true}',
                  '-r', '10']),
->>>>>>> upstream/develop
     ])
