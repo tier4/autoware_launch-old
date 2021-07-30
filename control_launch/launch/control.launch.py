@@ -171,7 +171,6 @@ def launch_setup(context, *args, **kwargs):
         plugin='VehicleCmdGate',
         name='vehicle_cmd_gate',
         remappings=[
-            ('input/engage', '/autoware/engage'),
             ('input/system_emergency', '/system/emergency/is_emergency'),
             ('input/external_emergency_stop', '/remote/emergency_stop'),
             ('input/emergency', '/system/emergency/is_emergency'),
@@ -195,7 +194,13 @@ def launch_setup(context, *args, **kwargs):
             ('output/shift_cmd', '/control/shift_cmd'),
             ('output/turn_signal_cmd', '/control/turn_signal_cmd'),
             ('output/gate_mode', '/control/current_gate_mode'),
+            ('output/engage', '/api/autoware/get/engage'),
 
+            ('~/service/engage', '/api/autoware/set/engage'),
+            ('~/service/external_emergency', '/api/autoware/set/emergency'),
+
+            # TODO(Takagi, Isamu): deprecated
+            ('input/engage', '/autoware/engage'),
             ('~/service/external_emergency_stop', '~/external_emergency_stop'),
             ('~/service/clear_external_emergency_stop', '~/clear_external_emergency_stop'),
         ],
@@ -243,7 +248,7 @@ def launch_setup(context, *args, **kwargs):
     # remote cmd converter
     remote_cmd_converter_component = ComposableNode(
         package='remote_cmd_converter',
-        plugin='RemoteCmdConverter',
+        plugin='remote_cmd_converter::RemoteCmdConverterNode',
         name='remote_cmd_converter',
         remappings=[
             ('in/external_control_cmd', '/external/external_cmd_selector/external_control_cmd'),

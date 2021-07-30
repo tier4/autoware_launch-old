@@ -20,12 +20,11 @@
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" />
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" />
   <arg name="use_foa" default="false" />
-  <set_parameter name="use_sim_time" value="true" />
 
   <!-- Global parameters -->
-  <!-- Vehicle info -->
-  <include file="$(find-pkg-share vehicle_launch)/launch/vehicle_info.launch.py">
-    <arg name="config_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
+  <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
+    <arg name="use_sim_time" value="true" />
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
   </include>
 
   <!-- Vehicle -->
@@ -95,6 +94,11 @@
       <arg name="lateral_controller_mode" value="mpc_follower" />
     </include>
   </group>
+
+  <!-- Autoware API -->
+  <include file="$(find-pkg-share awapi_awiv_adapter)/launch/awapi_awiv_adapter.launch.xml" />
+  <include file="$(find-pkg-share autoware_iv_external_api_adaptor)/launch/external_api_adaptor.launch.py" />
+  <include file="$(find-pkg-share autoware_iv_internal_api_adaptor)/launch/internal_api_adaptor.launch.py" />
 
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png" if="$(var rviz)">

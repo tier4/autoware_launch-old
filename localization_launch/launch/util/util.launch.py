@@ -13,13 +13,22 @@
 # limitations under the License.
 
 import launch
+from launch.actions import DeclareLaunchArgument
+from launch.actions import OpaqueFunction
 from launch.conditions import LaunchConfigurationNotEquals
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
+from launch_ros.substitutions import FindPackageShare
+import yaml
 
 
-def generate_launch_description():
+def launch_setup(context, *args, **kwargs):
+    # https://github.com/ros2/launch_ros/issues/156
+    def load_composable_node_param(param_path):
+        with open(LaunchConfiguration(param_path).perform(context), 'r') as f:
+            return yaml.safe_load(f)['/**']['ros__parameters']
+
     crop_box_component = ComposableNode(
         package='pointcloud_preprocessor',
         plugin='pointcloud_preprocessor::CropBoxFilterComponent',
@@ -27,19 +36,14 @@ def generate_launch_description():
         remappings=[
             ('input', LaunchConfiguration('input_sensor_points_topic')),
             ('output',
-             'measurement_range/pointcloud'),
+             LaunchConfiguration('output_measurement_range_sensor_points_topic')),
         ],
         parameters=[{
             'input_frame': LaunchConfiguration('base_frame'),
             'output_frame': LaunchConfiguration('base_frame'),
-            'min_x': -60.0,
-            'max_x': 60.0,
-            'min_y': -60.0,
-            'max_y': 60.0,
-            'min_z': -30.0,
-            'max_z': 50.0,
-            'negative': False,
-        }],
+        },
+            load_composable_node_param('crop_box_filter_measurement_range_param_path'),
+        ],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
         }],
@@ -50,15 +54,11 @@ def generate_launch_description():
         name='voxel_grid_downsample_filter',
         remappings=[
             ('input',
-             'measurement_range/pointcloud'),
+             LaunchConfiguration('output_measurement_range_sensor_points_topic')),
             ('output',
              LaunchConfiguration('output_voxel_grid_downsample_sensor_points_topic')),
         ],
-        parameters=[{
-            'voxel_size_x': 3.0,
-            'voxel_size_y': 3.0,
-            'voxel_size_z': 3.0,
-        }],
+        parameters=[load_composable_node_param('voxel_grid_downsample_filter_param_path')],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
         }],
@@ -90,4 +90,28 @@ def generate_launch_description():
         composable_node_descriptions=composable_nodes,
         target_container=LaunchConfiguration('container'),
     )
-    return launch.LaunchDescription([load_composable_nodes])
+
+    return [load_composable_nodes]
+
+
+def generate_launch_description():
+    def add_launch_arg(name: str, default_value=None):
+        return DeclareLaunchArgument(name, default_value=default_value)
+
+    return launch.LaunchDescription([
+        add_launch_arg('crop_box_filter_measurement_range_param_path',
+                       [
+                           FindPackageShare('localization_launch'),
+                           '/config/',
+                           LaunchConfiguration('environment_name'),
+                           '/crop_box_filter_measurement_range.param.yaml'
+                       ]),
+        add_launch_arg('voxel_grid_downsample_filter_param_path',
+                       [
+                           FindPackageShare('localization_launch'),
+                           '/config/',
+                           LaunchConfiguration('environment_name'),
+                           '/voxel_grid_filter.param.yaml'
+                       ]),
+        OpaqueFunction(function=launch_setup),
+    ])

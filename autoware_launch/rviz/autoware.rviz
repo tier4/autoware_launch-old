@@ -18,6 +18,11 @@ Panels:
     Splitter Ratio: 0.5
   - Class: autoware_localization_rviz_plugin/InitialPoseButtonPanel
     Name: InitialPoseButtonPanel
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -364,6 +369,7 @@ Visualization Manager:
             road_lanelets: false
             stop_lines: true
             traffic_light: true
+            traffic_light_id: false
             traffic_light_triangle: true
           Topic:
             Depth: 5
@@ -999,34 +1005,16 @@ Visualization Manager:
                         Reliability Policy: Reliable
                         Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/detection_area
                       Value: true
-                    - Class: rviz_default_plugins/MarkerArray
-                      Enabled: true
-                      Name: LaneChange
-                      Namespaces:
-                        candidate_lane_change_path: false
-                        ego_lane_change_path: false
-                        ego_lane_follow_path: false
-                        factor_text: true
-                        object_predicted_path: false
-                        selected_path: false
-                        stop_virtual_wall: true
-                      Topic:
-                        Depth: 5
-                        Durability Policy: Volatile
-                        History Policy: Keep Last
-                        Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/behavior_planning/lane_change_planner/debug/predicted_path_markers
-                      Value: true
                     - Class: rviz_plugins/Path
                       Color Border Vel Max: 3
                       Enabled: true
-                      Name: LaneChangeCanditate
+                      Name: PathChangeCandidate
                       Topic:
                         Depth: 5
                         Durability Policy: Volatile
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/lane_change_candidate_path
+                        Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/output/path_candidate
                       Value: true
                       View Path:
                         Alpha: 0.30000001192092896
@@ -1073,10 +1061,16 @@ Visualization Manager:
                       Namespaces:
                         collision_polygons: false
                         detection_polygons: false
+                        slow_down_polygons: false
+                        slow_down_detection_polygons: false
                         factor_text: true
                         stop_virtual_wall: true
                         stop_obstacle_point: false
                         stop_obstacle_text: false
+                        virtual_wall/slow_down_start: false
+                        factor_text/slow_down_start: false
+                        virtual_wall/slow_down_end: false
+                        factor_text/slow_down_end: false
                       Topic:
                         Depth: 5
                         Durability Policy: Volatile
