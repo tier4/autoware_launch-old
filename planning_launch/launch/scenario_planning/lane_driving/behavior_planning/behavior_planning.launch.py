@@ -196,7 +196,7 @@ def generate_launch_description():
             ('~/input/traffic_light_states',
              '/perception/traffic_light_recognition/traffic_light_states'),
             ('~/input/external_traffic_light_states',
-             '/awapi/traffic_light/put/traffic_light_status'),
+             '/external/traffic_light_recognition/traffic_light_states'),
             ('~/input/occupancy_grid', '/sensing/lidar/occupancy_grid'),
             ('~/output/path', 'path'),
             ('~/output/stop_reasons',
