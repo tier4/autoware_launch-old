@@ -76,7 +76,7 @@
   <group>
     <include file="$(find-pkg-share perception_launch)/launch/perception.launch.xml" if="$(var perception)">
       <!-- options for mode: camera_lidar_fusion, lidar, camera -->
-      <arg name="mode" value="lidar" />
+      <arg name="mode" value="camera_lidar_fusion" />
     </include>
   </group>
 
@@ -96,9 +96,7 @@
   </group>
 
   <!-- Autoware API -->
-  <include file="$(find-pkg-share awapi_awiv_adapter)/launch/awapi_awiv_adapter.launch.xml" />
-  <include file="$(find-pkg-share autoware_iv_external_api_adaptor)/launch/external_api_adaptor.launch.py" />
-  <include file="$(find-pkg-share autoware_iv_internal_api_adaptor)/launch/internal_api_adaptor.launch.py" />
+  <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml" />
 
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png" if="$(var rviz)">
