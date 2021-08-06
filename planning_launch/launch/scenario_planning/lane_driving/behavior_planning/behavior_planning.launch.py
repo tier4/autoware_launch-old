@@ -115,11 +115,11 @@ def generate_launch_description():
             lane_change_param,
             behavior_path_planner_param,
             {
-                'enable_abort_lane_change': LaunchConfiguration('disuse_foa'),
-                'enable_collision_check_at_prepare_phase': LaunchConfiguration('disuse_foa'),
-                'use_predicted_path_outside_lanelet': LaunchConfiguration('disuse_foa'),
-                'use_all_predicted_path': LaunchConfiguration('disuse_foa'),
-                'enable_blocked_by_obstacle': LaunchConfiguration('disuse_foa'),
+                'lane_change.enable_abort_lane_change': LaunchConfiguration('disuse_foa'),
+                'lane_change.enable_collision_check_at_prepare_phase': LaunchConfiguration('disuse_foa'),
+                'lane_change.use_predicted_path_outside_lanelet': LaunchConfiguration('disuse_foa'),
+                'lane_change.use_all_predicted_path': LaunchConfiguration('disuse_foa'),
+                'lane_change.enable_blocked_by_obstacle': LaunchConfiguration('disuse_foa'),
                 'bt_tree_config_path':
                 [FindPackageShare('behavior_path_planner'),
                  '/config/behavior_path_planner_tree_lane_change_only.xml']
