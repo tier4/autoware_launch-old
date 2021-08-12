@@ -64,7 +64,10 @@
   </include>
 
   <!-- Autoware API -->
-  <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml" />
+  <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml">
+    <arg name="init_simulator_pose" value="true"/>
+    <arg name="init_localization_pose" value="false"/>
+  </include>
 
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_config) -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png" if="$(var rviz)"/>
