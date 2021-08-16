@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ament_index_python.packages import get_package_share_directory
+import os
 
+from ament_index_python.packages import get_package_share_directory
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import GroupAction
@@ -24,8 +25,6 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import PushRosNamespace
 from launch_ros.descriptions import ComposableNode
-
-import os
 import yaml
 
 
@@ -120,8 +119,10 @@ def generate_launch_description():
     )
 
     return launch.LaunchDescription([
-        DeclareLaunchArgument('use_intra_process', default_value='false'),
-        DeclareLaunchArgument('use_multithread', default_value='false'),
+        DeclareLaunchArgument('use_intra_process', default_value='false',
+                              description='use ROS2 component container communication'),
+        DeclareLaunchArgument('use_multithread', default_value='false',
+                              description='use multithread'),
         set_container_executable,
         set_container_mt_executable,
         GroupAction([
