@@ -40,8 +40,8 @@ function find_package_from_file() {
   return 1
 }
 
-# Find modified files after merging origin/develop
-merge_base=$(git merge-base HEAD origin/develop)
+# Find modified files after merging origin/develop/ros2
+merge_base=$(git merge-base HEAD origin/develop/ros2)
 modified_files=$(git diff --name-only "$merge_base")
 
 # Find modified packages
