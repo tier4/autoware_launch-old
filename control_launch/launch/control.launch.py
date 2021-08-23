@@ -208,6 +208,7 @@ def launch_setup(context, *args, **kwargs):
             {
                 'use_emergency_handling': LaunchConfiguration('use_emergency_handling'),
                 'use_external_emergency_stop': LaunchConfiguration('use_external_emergency_stop'),
+                'use_start_request': LaunchConfiguration('use_start_request'),
             }
         ],
         extra_arguments=[{
@@ -368,6 +369,7 @@ def generate_launch_description():
     # vehicle cmd gate
     add_launch_arg('use_emergency_handling', 'false', 'use emergency handling')
     add_launch_arg('use_external_emergency_stop', 'true', 'use external emergency stop')
+    add_launch_arg('use_start_request', 'false', 'use start request service')
 
     # external cmd selector
     add_launch_arg('initial_selector_mode', '1', '0: Local, 1: Remote')
