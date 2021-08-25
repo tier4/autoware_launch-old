@@ -16,10 +16,10 @@
       </include>
     </group>
 
-    <!-- planing error monitor -->
+    <!-- planning error monitor -->
     <group>
-      <push-ros-namespace namespace="planing_error_monitor"/>
-      <include file="$(find-pkg-share planning_launch)/launch/planning_error_monitor/planning_error_monitor.launch.xml">
+      <push-ros-namespace namespace="planning_diagnostics"/>
+      <include file="$(find-pkg-share planning_launch)/launch/planning_diagnostics/planning_error_monitor.launch.xml">
       </include>
     </group>    
   </group>
