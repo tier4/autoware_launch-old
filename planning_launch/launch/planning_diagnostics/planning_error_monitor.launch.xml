@@ -1,6 +1,6 @@
 <launch>
 
-  <!-- planing_error_monitor -->
+  <!-- planning_error_monitor -->
   <group>
     <group>
       <include file="$(find-pkg-share planning_error_monitor)/launch/planning_error_monitor.launch.xml">
