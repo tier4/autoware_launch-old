@@ -259,7 +259,7 @@ def launch_setup(context, *args, **kwargs):
             ('in/current_gate_mode', '/control/current_gate_mode'),
             ('in/twist', '/localization/twist'),
             ('out/control_cmd', '/external/selected/control_cmd'),
-            ('out/latest_remote_control_cmd', '/external/selected/latest_external_control_cmd'),
+            ('out/latest_external_control_cmd', '/external/selected/latest_external_control_cmd'),
         ],
         parameters=[
             {
