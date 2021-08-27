@@ -337,7 +337,7 @@ def generate_launch_description():
     # velocity controller
     add_launch_arg('control_rate', '30.0', 'control rate')
     add_launch_arg('show_debug_info', 'false', 'show debug information')
-    add_launch_arg('enable_smooth_stop', 'true',
+    add_launch_arg('enable_smooth_stop', 'false',
                    'enable smooth stop (in velocity controller state)')
     add_launch_arg('enable_pub_debug', 'true', 'enable to publish debug information')
 

@@ -6,7 +6,7 @@
     backward_fixing_distance: 3.0 # backward fixing length from base_link[m]
 
     # clearance(distance) when generating trajectory
-    clearance_from_road: 0.2 # clearance from road boundary[m]
+    clearance_from_road: 0.1 # clearance from road boundary[m]
     clearance_from_object: 1.0 # clearance from object[m]
     min_object_clearance_for_joint: 3.2 # minimum clearance from object[m] when judging is_including_only_smooth_range
     extra_desired_clearance_from_road: 0.0 # extra desired clearance from road
@@ -44,7 +44,7 @@
 
     is_publishing_clearance_map: true # publish clearance map as nav_msgs::OccupancyGrid
     is_publishing_area_with_objects: true # publish occupancy map as nav_msgs::OccupancyGrid
-    enable_avoidance: true # enable avoidance function
+    enable_avoidance: false # enable avoidance function
     is_using_vehicle_config: true # use vehicle config
     num_sampling_points: 100 # number of optimizing points
     num_joint_buffer_points: 3 # number of joint buffer points
@@ -59,7 +59,7 @@
 
     # mpt param
     # vehicle param for mpt
-    max_steer_deg: 40.0 # max steering angle [deg]
+    max_steer_deg: 28.0 # max steering angle [deg]
     steer_tau: 0.1 # steering dynamics time constant (1d approximation) [s]
 
     # trajectory param for mpt
