@@ -5,10 +5,6 @@ on:
     - cron: "0 19 * * *" # run at 4 AM JST
   workflow_dispatch:
 
-env:
-  BUILD_DEPEND_FILE: https://raw.githubusercontent.com/tier4/autoware.proj/develop/autoware.proj.repos
-  SELF_REPO: tier4/autoware_launcher
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest

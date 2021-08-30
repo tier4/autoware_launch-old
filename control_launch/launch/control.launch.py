@@ -47,6 +47,10 @@ def launch_setup(context, *args, **kwargs):
         LaunchConfiguration('vehicle_cmd_gate_param_path').perform(context)
     with open(vehicle_cmd_gate_param_path, 'r') as f:
         vehicle_cmd_gate_param = yaml.safe_load(f)['/**']['ros__parameters']
+    lane_departure_checker_param_path = \
+        LaunchConfiguration('lane_departure_checker_param_path').perform(context)
+    with open(lane_departure_checker_param_path, 'r') as f:
+        lane_departure_checker_param = yaml.safe_load(f)['/**']['ros__parameters']
     # mpc follower
     mpc_follower_component = ComposableNode(
         package='mpc_follower',
@@ -139,12 +143,10 @@ def launch_setup(context, *args, **kwargs):
             ('~/input/route', '/planning/mission_planning/route'),
             ('~/input/reference_trajectory', '/planning/scenario_planning/trajectory'),
             ('~/input/predicted_trajectory', '/control/trajectory_follower/predicted_trajectory'),
+            ('~/input/covariance', '/localization/pose_with_covariance')
         ],
         parameters=[
-            [
-                FindPackageShare('lane_departure_checker'),
-                '/config/lane_departure_checker.param.yaml'
-            ]
+            lane_departure_checker_param
         ],
         extra_arguments=[{
             'use_intra_process_comms': LaunchConfiguration('use_intra_process')
@@ -299,7 +301,7 @@ def launch_setup(context, *args, **kwargs):
         composable_node_descriptions=[mpc_follower_component],
         target_container=container,
         condition=LaunchConfigurationEquals(
-            'lateral_control_mode', 'mpc_follower'
+            'lateral_controller_mode', 'mpc_follower'
         ),
     )
 
@@ -307,7 +309,7 @@ def launch_setup(context, *args, **kwargs):
         composable_node_descriptions=[pure_pursuit_component],
         target_container=container,
         condition=LaunchConfigurationEquals(
-            'lateral_control_mode', 'pure_pursuit'
+            'lateral_controller_mode', 'pure_pursuit'
         ),
     )
 
@@ -327,8 +329,8 @@ def generate_launch_description():
     def add_launch_arg(name: str, default_value=None, description=None):
         launch_arguments.append(DeclareLaunchArgument(
             name, default_value=default_value, description=description))
-    add_launch_arg('lateral_control_mode', 'mpc_follower',
-                   'lateral control mode: `mpc_follower` or `pure_pursuit`')
+    add_launch_arg('lateral_controller_mode', 'mpc_follower',
+                   'lateral controller mode: `mpc_follower` or `pure_pursuit`')
     add_launch_arg(
         'mpc_follower_param_path',
         [
@@ -364,6 +366,13 @@ def generate_launch_description():
             '/config/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml'
         ],
         'path to the parameter file of vehicle_cmd_gate'
+    )
+    add_launch_arg(
+        'lane_departure_checker_param_path',
+        [
+            FindPackageShare('lane_departure_checker'),
+            '/config/lane_departure_checker.param.yaml'
+        ]
     )
 
     # velocity controller
