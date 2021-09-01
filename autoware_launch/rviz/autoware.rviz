@@ -369,6 +369,7 @@ Visualization Manager:
             road_lanelets: false
             stop_lines: true
             traffic_light: true
+            traffic_light_id: false
             traffic_light_triangle: true
           Topic:
             Depth: 5
@@ -1006,32 +1007,32 @@ Visualization Manager:
                       Value: true
                     - Class: rviz_default_plugins/MarkerArray
                       Enabled: true
-                      Name: LaneChange
+                      Name: OcclusionSpot
                       Namespaces:
-                        candidate_lane_change_path: false
-                        ego_lane_change_path: false
-                        ego_lane_follow_path: false
-                        factor_text: true
-                        object_predicted_path: false
-                        selected_path: false
-                        stop_virtual_wall: true
+                        arrow: false
+                        occlusion spot slow down: true
+                        collision: false
+                        info_obstacle: false
+                        obstacle: false
+                        sidewalk: false
+                        slow factor_text: true
                       Topic:
                         Depth: 5
                         Durability Policy: Volatile
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/behavior_planning/lane_change_planner/debug/predicted_path_markers
+                        Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/occlusion_spot
                       Value: true
                     - Class: rviz_plugins/Path
                       Color Border Vel Max: 3
                       Enabled: true
-                      Name: LaneChangeCanditate
+                      Name: PathChangeCandidate
                       Topic:
                         Depth: 5
                         Durability Policy: Volatile
                         History Policy: Keep Last
                         Reliability Policy: Reliable
-                        Value: /planning/scenario_planning/lane_driving/lane_change_candidate_path
+                        Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/output/path_candidate
                       Value: true
                       View Path:
                         Alpha: 0.30000001192092896
@@ -1074,14 +1075,25 @@ Visualization Manager:
                         Value: true
                     - Class: rviz_default_plugins/MarkerArray
                       Enabled: true
-                      Name: ObstaclePointCLoudStop
+                      Name: ObstacleStop
                       Namespaces:
                         collision_polygons: false
                         detection_polygons: false
-                        factor_text: true
-                        stop_virtual_wall: true
+                        slow_down_polygons: false
+                        slow_down_detection_polygons: false
                         stop_obstacle_point: false
                         stop_obstacle_text: false
+                        slow_down_obstacle_point: false
+                        slow_down_obstacle_text: false
+                        slow_down_start_virtual_wall: false
+                        slow_down_start_factor_text: false
+                        slow_down_end_virtual_wall: false
+                        slow_down_end_factor_text: false
+                        slow_down_end: false
+                        stop_virtual_wall: true 
+                        stop_factor_text: true
+                        slow_down_virtual_wall: true
+                        slow_down_factor_text: true
                       Topic:
                         Depth: 5
                         Durability Policy: Volatile
@@ -1116,11 +1128,11 @@ Visualization Manager:
                         bounds_candidate_top_text: false
                         constrain_rect: false
                         constrain_rect_text: false
-                        constrain_rectlocation: false
+                        constrain_rect_location: false
                         current_vehicle_footprint: false
                         extending_constrain_rect: false
                         extending_constrain_rect_text: false
-                        extending_constrain_rectlocation: false
+                        extending_constrain_rect_location: false
                         fixed_mpt_points: false
                         fixed_points_for_extending: false
                         fixed_points_marker: false
