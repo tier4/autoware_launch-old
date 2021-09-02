@@ -250,7 +250,7 @@ def launch_setup(context, *args, **kwargs):
         }],
     )
 
-    # remote cmd converter
+    # external cmd converter
     external_cmd_converter_component = ComposableNode(
         package='external_cmd_converter',
         plugin='external_cmd_converter::ExternalCmdConverterNode',
