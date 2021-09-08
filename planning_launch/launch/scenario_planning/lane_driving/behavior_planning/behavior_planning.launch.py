@@ -174,6 +174,14 @@ def generate_launch_description():
     with open(traffic_light_param_path, 'r') as f:
         traffic_light_param = yaml.safe_load(f)['/**']['ros__parameters']
 
+    virtual_traffic_light_param_path = os.path.join(
+        get_package_share_directory('behavior_velocity_planner'),
+        'config',
+        'virtual_traffic_light.param.yaml',
+    )
+    with open(virtual_traffic_light_param_path, 'r') as f:
+        virtual_traffic_light_param = yaml.safe_load(f)['/**']['ros__parameters']
+
     occlusion_spot_param_path = os.path.join(
         get_package_share_directory('behavior_velocity_planner'),
         'config',
@@ -197,10 +205,14 @@ def generate_launch_description():
              '/perception/traffic_light_recognition/traffic_light_states'),
             ('~/input/external_traffic_light_states',
              '/external/traffic_light_recognition/traffic_light_states'),
+            ('~/input/virtual_traffic_light_states',
+             '/awapi/tmp/virtual_traffic_light_states'),
             ('~/input/occupancy_grid', '/sensing/lidar/occupancy_grid'),
             ('~/output/path', 'path'),
             ('~/output/stop_reasons',
              '/planning/scenario_planning/status/stop_reasons'),
+            ('~/output/infrastructure_commands',
+             '/planning/scenario_planning/status/infrastructure_commands'),
             ('~/output/traffic_light_state', 'debug/traffic_light_state'),
         ],
         parameters=[
@@ -211,6 +223,7 @@ def generate_launch_description():
                 'launch_intersection': True,
                 'launch_blind_spot': True,
                 'launch_detection_area': True,
+                'launch_virtual_traffic_light': True,
                 'launch_occlusion_spot': True,
                 'forward_path_length': 1000.0,
                 'backward_path_length': 5.0,
@@ -223,6 +236,7 @@ def generate_launch_description():
             intersection_param,
             stop_line_param,
             traffic_light_param,
+            virtual_traffic_light_param,
             occlusion_spot_param
         ],
         extra_arguments=[{
