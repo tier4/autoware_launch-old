@@ -15,11 +15,13 @@
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import GroupAction
+from launch.actions import IncludeLaunchDescription
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import UnlessCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import EnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
@@ -173,8 +175,7 @@ def launch_setup(context, *args, **kwargs):
         plugin='VehicleCmdGate',
         name='vehicle_cmd_gate',
         remappings=[
-            ('input/system_emergency', '/system/emergency/is_emergency'),
-            ('input/emergency', '/system/emergency/is_emergency'),
+            ('input/emergency_state', '/system/emergency/emergency_state'),
             ('input/steering', '/vehicle/status/steering'),
 
             ('input/auto/control_cmd', 'trajectory_follower/control_cmd'),
@@ -184,7 +185,7 @@ def launch_setup(context, *args, **kwargs):
             ('input/external/control_cmd', '/external/selected/control_cmd'),
             ('input/external/turn_signal_cmd', '/external/selected/turn_signal_cmd'),
             ('input/external/shift_cmd', '/external/selected/shift_cmd'),
-            ('input/external_emergency_stop', '/external/selected/heartbeat'),
+            ('input/external_emergency_stop_heartbeat', '/external/selected/heartbeat'),
             ('input/gate_mode', '/control/gate_mode_cmd'),
 
             ('input/emergency/control_cmd', '/system/emergency/control_cmd'),
@@ -220,64 +221,26 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # external cmd selector
-    external_cmd_selector_component = ComposableNode(
-        package='external_cmd_selector',
-        plugin='ExternalCmdSelector',
-        name='external_cmd_selector',
-        remappings=[
-            ('~/service/select_external_command', '~/select_external_command'),
-            ('~/input/local/control_cmd', '/external/local/control_cmd'),
-            ('~/input/local/shift_cmd', '/external/local/shift_cmd'),
-            ('~/input/local/turn_signal_cmd', '/external/local/turn_signal_cmd'),
-            ('~/input/local/heartbeat', '/external/local/heartbeat'),
-            ('~/input/remote/control_cmd', '/external/remote/control_cmd'),
-            ('~/input/remote/shift_cmd', '/external/remote/shift_cmd'),
-            ('~/input/remote/turn_signal_cmd', '/external/remote/turn_signal_cmd'),
-            ('~/input/remote/heartbeat', '/external/remote/heartbeat'),
-            ('~/output/control_cmd', '/external/selected/external_control_cmd'),
-            ('~/output/shift_cmd', '/external/selected/shift_cmd'),
-            ('~/output/turn_signal_cmd', '/external/selected/turn_signal_cmd'),
-            ('~/output/heartbeat', '/external/selected/heartbeat'),
-            ('~/output/current_selector_mode', '~/current_selector_mode'),
+    external_cmd_selector_loader = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            FindPackageShare('external_cmd_selector'), '/launch/external_cmd_selector.launch.py'
+        ]),
+        launch_arguments=[
+            ('use_intra_process', LaunchConfiguration('use_intra_process')),
+            ('target_container', '/control/control_container'),
+            ('initial_selector_mode', 'remote'),
         ],
-        parameters=[
-            {
-                'initial_selector_mode': LaunchConfiguration('initial_selector_mode'),
-            }
-        ],
-        extra_arguments=[{
-            'use_intra_process_comms': LaunchConfiguration('use_intra_process')
-        }],
     )
 
     # external cmd converter
-    external_cmd_converter_component = ComposableNode(
-        package='external_cmd_converter',
-        plugin='external_cmd_converter::ExternalCmdConverterNode',
-        name='external_cmd_converter',
-        remappings=[
-            ('in/external_control_cmd', '/external/selected/external_control_cmd'),
-            ('in/shift_cmd', '/external/selected/shift_cmd'),
-            ('in/emergency_stop', '/remote/emergency_stop'),
-            ('in/current_gate_mode', '/control/current_gate_mode'),
-            ('in/twist', '/localization/twist'),
-            ('out/control_cmd', '/external/selected/control_cmd'),
-            ('out/latest_external_control_cmd', '/external/selected/latest_external_control_cmd'),
+    external_cmd_converter_loader = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            FindPackageShare('external_cmd_converter'), '/launch/external_cmd_converter.launch.py'
+        ]),
+        launch_arguments=[
+            ('use_intra_process', LaunchConfiguration('use_intra_process')),
+            ('target_container', '/control/control_container'),
         ],
-        parameters=[
-            {
-                'csv_path_accel_map': LaunchConfiguration('csv_path_accel_map'),
-                'csv_path_brake_map': LaunchConfiguration('csv_path_brake_map'),
-
-                'ref_vel_gain': LaunchConfiguration('ref_vel_gain'),
-                'wait_for_first_topic': LaunchConfiguration('wait_for_first_topic'),
-                'control_command_timeout': LaunchConfiguration('control_command_timeout'),
-                'emergency_stop_timeout': LaunchConfiguration('emergency_stop_timeout'),
-            }
-        ],
-        extra_arguments=[{
-            'use_intra_process_comms': LaunchConfiguration('use_intra_process')
-        }],
     )
 
     # set container to run all required components in the same process
@@ -292,8 +255,6 @@ def launch_setup(context, *args, **kwargs):
             lane_departure_component,
             shift_decider_component,
             vehicle_cmd_gate_component,
-            external_cmd_converter_component,
-            external_cmd_selector_component,
         ],
     )
 
@@ -316,6 +277,8 @@ def launch_setup(context, *args, **kwargs):
     group = GroupAction([
         PushRosNamespace('control'),
         container,
+        external_cmd_selector_loader,
+        external_cmd_converter_loader,
         mpc_follower_loader,
         pure_pursuit_loader
     ])
@@ -390,29 +353,7 @@ def generate_launch_description():
     # external cmd selector
     add_launch_arg('initial_selector_mode', 'remote', 'local or remote')
 
-    # remote cmd converter
-    add_launch_arg(
-        'csv_path_accel_map',
-        [
-            FindPackageShare('raw_vehicle_cmd_converter'),
-            '/data/default/accel_map.csv'
-        ],
-        'csv file path for accel map'
-    )
-    add_launch_arg(
-        'csv_path_brake_map',
-        [
-            FindPackageShare('raw_vehicle_cmd_converter'),
-            '/data/default/brake_map.csv'
-        ],
-        'csv file path for brake map'
-    )
-    add_launch_arg('ref_vel_gain', '3.0', 'gain for remote command accel')
-    add_launch_arg('wait_for_first_topic', 'true',
-                   'disable topic disruption detection until subscribing first topics')
-    add_launch_arg('control_command_timeout', '1.0', 'remote control command timeout')
-    add_launch_arg('emergency_stop_timeout', '3.0', 'emergency stop timeout for remote heartbeat')
-
+    # component
     add_launch_arg('use_intra_process', 'false', 'use ROS2 component container communication')
     add_launch_arg('use_multithread', 'false', 'use multithread')
     set_container_executable = SetLaunchConfiguration(
