@@ -1,0 +1,4 @@
+/**:
+  ros__parameters:
+    devices: [ 'enp8s0', 'enp9s0', 'enp10s0', 'logging_bond0' ]
+    usage_warn: 0.95
