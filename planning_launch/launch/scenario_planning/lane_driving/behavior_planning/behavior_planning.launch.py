@@ -23,6 +23,7 @@ from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import SetParameter
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
 import yaml
@@ -122,9 +123,7 @@ def generate_launch_description():
                 LaunchConfiguration('disuse_foa'),
                 'lane_change.use_all_predicted_path': LaunchConfiguration('disuse_foa'),
                 'lane_change.enable_blocked_by_obstacle': LaunchConfiguration('disuse_foa'),
-                'bt_tree_config_path':
-                [FindPackageShare('behavior_path_planner'),
-                 '/config/behavior_path_planner_tree_lane_change_only.xml']
+                'bt_tree_config_path': LaunchConfiguration('bt_tree_config_path')
             }
         ],
         extra_arguments=[
@@ -274,6 +273,20 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_multithread')),
     )
 
+    set_bt_tree_config_path_without_foa = SetLaunchConfiguration(
+        'bt_tree_config_path',
+        [FindPackageShare('behavior_path_planner'),
+         '/config/behavior_path_planner_tree.xml'],
+        condition=IfCondition(LaunchConfiguration('disuse_foa')),
+    )
+
+    set_bt_tree_config_path_with_foa = SetLaunchConfiguration(
+        'bt_tree_config_path',
+        [FindPackageShare('behavior_path_planner'),
+         '/config/behavior_path_planner_tree_lane_change_only.xml'],
+        condition=UnlessCondition(LaunchConfiguration('disuse_foa')),
+    )
+
     return launch.LaunchDescription([
         DeclareLaunchArgument(
             'input_route_topic_name',
@@ -292,6 +305,18 @@ def generate_launch_description():
         ),
         set_container_executable,
         set_container_mt_executable,
+        SetParameter(
+            name='avoidance.threshold_distance_object_is_on_center',
+            value=1.0,
+            condition=IfCondition(LaunchConfiguration('disuse_foa'))
+        ),
+        SetParameter(
+            name='avoidance.threshold_distance_object_is_on_center',
+            value=0.0,
+            condition=UnlessCondition(LaunchConfiguration('disuse_foa'))
+        ),
+        set_bt_tree_config_path_without_foa,
+        set_bt_tree_config_path_with_foa,
         container,
         ExecuteProcess(
             cmd=['ros2', 'topic', 'pub',

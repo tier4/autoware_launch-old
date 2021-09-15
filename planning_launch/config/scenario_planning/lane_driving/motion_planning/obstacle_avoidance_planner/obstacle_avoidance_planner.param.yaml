@@ -3,7 +3,7 @@
     # trajectory total/fixing length
     trajectory_length: 300 # total trajectory length[m]
     forward_fixing_distance: 5.0 # forward fixing length from base_link[m]
-    backward_fixing_distance: 3.0 # backward fixing length from base_link[m]
+    backward_fixing_distance: 10.0 # backward fixing length from base_link[m]
 
     # clearance(distance) when generating trajectory
     clearance_from_road: 0.2 # clearance from road boundary[m]

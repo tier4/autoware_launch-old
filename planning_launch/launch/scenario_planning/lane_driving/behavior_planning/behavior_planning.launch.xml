@@ -7,6 +7,9 @@
                     autoware_planning_msgs/msg/LaneChangeCommand 'command: true' -r 10" />
   </group>
 
+  <set_parameter name="avoidance.threshold_distance_object_is_on_center" value="0.5" if="$(var disuse_foa)" />
+  <set_parameter name="avoidance.threshold_distance_object_is_on_center" value="0.0" unless="$(var disuse_foa)" />
+
   <node pkg="behavior_path_planner" exec="behavior_path_planner" name="behavior_path_planner" output="screen">
     <remap from="~/input/route" to="$(var input_route_topic_name)" />
     <remap from="~/input/vector_map" to="$(var map_topic_name)" />

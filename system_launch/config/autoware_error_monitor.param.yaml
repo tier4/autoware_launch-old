@@ -17,7 +17,7 @@
       autonomous_driving:
         names: [
             "/autoware/control/autonomous_driving/alive_monitoring",
-            "/autoware/control/autonomous_driving/lane_departure",
+            # "/autoware/control/autonomous_driving/lane_departure",
             # '/autoware/control/autonomous_driving/trajectory_deviation', # Unstable
             "/autoware/control/command_gate/alive_monitoring",
             "/autoware/localization/alive_monitoring",
