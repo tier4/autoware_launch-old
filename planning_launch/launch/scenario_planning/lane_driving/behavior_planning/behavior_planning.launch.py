@@ -307,7 +307,7 @@ def generate_launch_description():
         set_container_mt_executable,
         SetParameter(
             name='avoidance.threshold_distance_object_is_on_center',
-            value=1.0,
+            value=0.5,
             condition=IfCondition(LaunchConfiguration('disuse_foa'))
         ),
         SetParameter(

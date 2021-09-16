@@ -20,6 +20,7 @@
             # "/autoware/control/autonomous_driving/lane_departure",
             # '/autoware/control/autonomous_driving/trajectory_deviation', # Unstable
             "/autoware/control/command_gate/alive_monitoring",
+            "/autoware/control/remote_control/alive_monitoring/joy_controller_connection",
             "/autoware/localization/alive_monitoring",
             "/autoware/localization/matching_score",
             "/autoware/localization/localization_accuracy",
@@ -73,6 +74,7 @@
           [
             "/autoware/control/command_gate/alive_monitoring",
             "/autoware/control/remote_control/alive_monitoring",
+            "/autoware/control/remote_control/alive_monitoring/joy_controller_connection",
             "/autoware/system/alive_monitoring",
             "/autoware/system/emergency_stop_operation",
             "/autoware/vehicle/alive_monitoring",
