@@ -16,6 +16,7 @@
       enable_collision_check_at_prepare_phase: false
       use_predicted_path_outside_lanelet: false
       use_all_predicted_path: false
+      use_dynamic_object: false
       enable_blocked_by_obstacle: false
       pull_out_search_distance: 30.0
       before_pull_out_straight_distance: 5.0
