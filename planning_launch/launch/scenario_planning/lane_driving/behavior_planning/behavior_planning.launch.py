@@ -108,7 +108,6 @@ def generate_launch_description():
     with open(pull_out_param_path, 'r') as f:
         pull_out_param = yaml.safe_load(f)['/**']['ros__parameters']
 
-
     behavior_path_planner_param_path = os.path.join(
         get_package_share_directory('planning_launch'),
         'config',
@@ -120,7 +119,6 @@ def generate_launch_description():
     )
     with open(behavior_path_planner_param_path, 'r') as f:
         behavior_path_planner_param = yaml.safe_load(f)['/**']['ros__parameters']
-
 
     behavior_path_planner_component = ComposableNode(
         package='behavior_path_planner',
