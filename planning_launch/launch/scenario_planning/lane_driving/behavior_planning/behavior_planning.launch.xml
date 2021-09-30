@@ -24,6 +24,7 @@
     <remap from="~/output/turn_signal_cmd" to="/planning/turn_signal_decider/turn_signal_cmd" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/side_shift/side_shift.param.yaml" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/avoidance/avoidance.param.yaml" />
+    <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/lane_following/lane_following.param.yaml" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/lane_change/lane_change.param.yaml" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner.param.yaml" />
     <param name="enable_abort_lane_change" value="$(var disuse_foa)" />
