@@ -159,7 +159,7 @@ def generate_launch_description():
             {
                 'bt_tree_config_path':
                 [FindPackageShare('behavior_path_planner'),
-                 '/config/behavior_path_planner_tree_pull_out_.xml']
+                 '/config/behavior_path_planner_tree_pull_out.xml']
             }
         ],
         extra_arguments=[
