@@ -343,6 +343,6 @@ def generate_launch_description():
             cmd=['ros2', 'topic', 'pub',
                  '/planning/scenario_planning/lane_driving/behavior_planning/'
                  'behavior_path_planner/path_change_approval',
-                 'autoware_planning_msgs/msg/Approval', '{approval: true}',
+                 'autoware_planning_msgs/msg/Approval', '{approval: false}',
                  '-r', '10']),
     ])
