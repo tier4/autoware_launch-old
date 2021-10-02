@@ -83,6 +83,32 @@ def generate_launch_description():
     with open(lane_following_param_path, 'r') as f:
         lane_following_param = yaml.safe_load(f)['/**']['ros__parameters']
 
+    pull_over_param_path = os.path.join(
+        get_package_share_directory('planning_launch'),
+        'config',
+        'scenario_planning',
+        'lane_driving',
+        'behavior_planning',
+        'behavior_path_planner',
+        'pull_over',
+        'pull_over.param.yaml',
+    )
+    with open(pull_over_param_path, 'r') as f:
+        pull_over_param = yaml.safe_load(f)['/**']['ros__parameters']
+
+    pull_out_param_path = os.path.join(
+        get_package_share_directory('planning_launch'),
+        'config',
+        'scenario_planning',
+        'lane_driving',
+        'behavior_planning',
+        'behavior_path_planner',
+        'pull_out',
+        'pull_out.param.yaml',
+    )
+    with open(pull_out_param_path, 'r') as f:
+        pull_out_param = yaml.safe_load(f)['/**']['ros__parameters']
+
     behavior_path_planner_param_path = os.path.join(
         get_package_share_directory('planning_launch'),
         'config',
@@ -128,8 +154,11 @@ def generate_launch_description():
             avoidance_param,
             lane_change_param,
             lane_following_param,
+            pull_over_param,
+            pull_out_param,
             behavior_path_planner_param,
             {
+                'planning_hz': 10.0,
                 'lane_change.enable_abort_lane_change': LaunchConfiguration('disuse_foa'),
                 'lane_change.enable_collision_check_at_prepare_phase':
                 LaunchConfiguration('disuse_foa'),
@@ -297,7 +326,7 @@ def generate_launch_description():
     set_bt_tree_config_path_with_foa = SetLaunchConfiguration(
         'bt_tree_config_path',
         [FindPackageShare('behavior_path_planner'),
-         '/config/behavior_path_planner_tree_lane_change_only.xml'],
+         '/config/behavior_path_planner_tree.xml'],
         condition=UnlessCondition(LaunchConfiguration('disuse_foa')),
     )
 
