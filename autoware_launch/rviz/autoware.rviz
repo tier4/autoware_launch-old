@@ -1047,6 +1047,23 @@ Visualization Manager:
                         Reliability Policy: Reliable
                         Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/occlusion_spot
                       Value: true
+                    - Class: rviz_default_plugins/MarkerArray
+                      Enabled: true
+                      Name: NoStoppingArea
+                      Namespaces:
+                        no_stopping_area_correspondence: false
+                        no_stopping_id: false
+                        no_stopping_area_polygon: false
+                        factor_text: true
+                        obstacles: false
+                        stop_virtual_wall: true
+                      Topic:
+                        Depth: 5
+                        Durability Policy: Volatile
+                        History Policy: Keep Last
+                        Reliability Policy: Reliable
+                        Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/no_stopping_area
+                      Value: true
                     - Class: rviz_plugins/Path
                       Color Border Vel Max: 3
                       Enabled: true
