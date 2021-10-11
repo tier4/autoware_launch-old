@@ -1052,10 +1052,11 @@ Visualization Manager:
                       Name: NoStoppingArea
                       Namespaces:
                         no_stopping_area_correspondence: false
-                        no_stopping_id: false
+                        no_stopping_area_id: false
                         no_stopping_area_polygon: false
-                        factor_text: true
-                        obstacles: false
+                        stuck_points_detection_area: false
+                        stuck_points: false
+                        stop_factor_text: true
                         stop_virtual_wall: true
                       Topic:
                         Depth: 5
