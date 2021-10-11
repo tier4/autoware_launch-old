@@ -19,7 +19,7 @@
     qp_solver_type: "osqp"                       # optimization solver type. option is unconstraint_fast, unconstraint, and qpoases_hotstart and osqp
     mpc_prediction_horizon: 50                   # prediction horizon step
     mpc_prediction_dt: 0.1                       # prediction horizon period [s]
-    mpc_weight_lat_error: 0.05                   # lateral error weight in matrix Q
+    mpc_weight_lat_error: 0.2                   # lateral error weight in matrix Q
     mpc_weight_heading_error: 0.0                # heading error weight in matrix Q
     mpc_weight_heading_error_squared_vel: 0.03   # heading error * velocity weight in matrix Q
     mpc_weight_steering_input: 1.0               # steering error weight in matrix R
