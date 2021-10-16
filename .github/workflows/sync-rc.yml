@@ -50,7 +50,7 @@ jobs:
             target_branch="$1"
 
             main_base=$(git merge-base "${target_branch}" origin/main)
-            develop_base=$(git merge-base "${target_branch}" origin/develop)
+            develop_base=$(git merge-base "${target_branch}" origin/develop/ros2)
 
             return $(test "${main_base}" = "${develop_base}")
           }
@@ -58,7 +58,7 @@ jobs:
           if is_main_base "origin/${{ env.SYNC_TARGET_BRANCH }}"; then
             base_branch=main
           else
-            base_branch=develop
+            base_branch=develop/ros2
           fi
 
           echo "BASE_BRANCH=${base_branch}" >> $GITHUB_ENV
