@@ -28,6 +28,17 @@ import yaml
 
 
 def generate_launch_description():
+    # planning common param path
+    common_param_path = os.path.join(
+        get_package_share_directory('planning_launch'),
+        'config',
+        'scenario_planning',
+        'common',
+        'common.param.yaml',
+    )
+    with open(common_param_path, 'r') as f:
+        common_param = yaml.safe_load(f)['/**']['ros__parameters']
+
     # obstacle avoidance planner
     obstacle_avoidance_planner_param_path = os.path.join(
         get_package_share_directory('planning_launch'),
@@ -146,6 +157,10 @@ def generate_launch_description():
              '/planning/scenario_planning/status/stop_reason'),
             ('~/output/stop_reasons',
              '/planning/scenario_planning/status/stop_reasons'),
+            ('~/output/max_velocity',
+             '/planning/scenario_planning/max_velocity_candidates'),
+            ('~/output/velocity_limit_clear_command',
+             '/planning/scenario_planning/clear_velocity_limit'),
             ('~/output/trajectory',
              '/planning/scenario_planning/lane_driving/trajectory'),
             ('~/input/pointcloud', '/sensing/lidar/no_ground/pointcloud'),
@@ -154,6 +169,7 @@ def generate_launch_description():
             ('~/input/trajectory', 'surround_obstacle_checker/trajectory'),
         ],
         parameters=[
+            common_param,
             obstacle_stop_planner_param,
             obstacle_stop_planner_acc_param,
             {'enable_slow_down': False}
