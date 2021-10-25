@@ -342,7 +342,7 @@ def generate_launch_description():
     add_launch_arg('enable_pub_debug', 'true', 'enable to publish debug information')
 
     # vehicle cmd gate
-    add_launch_arg('use_emergency_handling', 'false', 'use emergency handling')
+    add_launch_arg('use_emergency_handling', 'true', 'use emergency handling')
     add_launch_arg('use_external_emergency_stop', 'true', 'use external emergency stop')
     add_launch_arg('use_start_request', 'false', 'use start request service')
 
