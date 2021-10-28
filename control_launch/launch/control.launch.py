@@ -344,7 +344,7 @@ def generate_launch_description():
     # vehicle cmd gate
     add_launch_arg('use_emergency_handling', 'true', 'use emergency handling')
     add_launch_arg('use_external_emergency_stop', 'true', 'use external emergency stop')
-    add_launch_arg('use_start_request', 'false', 'use start request service')
+    add_launch_arg('use_start_request', 'true', 'use start request service')
 
     # external cmd selector
     add_launch_arg('initial_selector_mode', 'remote', 'local or remote')
