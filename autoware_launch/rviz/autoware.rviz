@@ -1054,7 +1054,8 @@ Visualization Manager:
                         no_stopping_area_correspondence: false
                         no_stopping_area_id: false
                         no_stopping_area_polygon: false
-                        stuck_points_detection_area: false
+                        stuck_vehicle_detect_area: false
+                        stop_line_detect_area: false
                         stuck_points: false
                         stop_factor_text: true
                         stop_virtual_wall: true
