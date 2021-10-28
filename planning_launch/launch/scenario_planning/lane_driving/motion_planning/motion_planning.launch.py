@@ -63,6 +63,7 @@ def generate_launch_description():
         ],
         parameters=[
             obstacle_avoidance_planner_param,
+            {'enable_avoidance': LaunchConfiguration('disuse_foa')},
             {'is_showing_debug_info': False},
             {'is_stopping_if_outside_drivable_area': True},
         ],
@@ -218,7 +219,7 @@ def generate_launch_description():
             default_value='/planning/scenario_planning/lane_driving/behavior_planning/path'),
         DeclareLaunchArgument(
             'use_surround_obstacle_check',
-            default_value='true'
+            default_value='false'
         ),
         DeclareLaunchArgument(
             'use_intra_process',

@@ -4,9 +4,9 @@
   <arg name="lateral_controller_mode" default="mpc_follower" description="options: mpc_follower, pure_pursuit"/>
 
   <!-- control parameter -->
-  <arg name="mpc_follower_param_path" default="$(find-pkg-share control_launch)/config/mpc_follower/mpc_follower.param.yaml"/>
+  <arg name="mpc_follower_param_path" default="$(find-pkg-share control_launch)/config/mpc_follower/$(env VEHICLE_ID default)/mpc_follower.param.yaml"/>
   <arg name="pure_pursuit_param_path" default="$(find-pkg-share control_launch)/config/pure_pursuit/pure_pursuit.param.yaml"/>
-  <arg name="velocity_controller_param_path" default="$(find-pkg-share control_launch)/config/velocity_controller/velocity_controller.param.yaml"/>
+  <arg name="velocity_controller_param_path" default="$(find-pkg-share control_launch)/config/velocity_controller/$(env VEHICLE_ID default)/velocity_controller.param.yaml"/>
   <arg name="vehicle_cmd_gate_param_path" default="$(find-pkg-share control_launch)/config/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml"/>
 
   <!-- control module -->
