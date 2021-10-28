@@ -337,14 +337,14 @@ def generate_launch_description():
     # velocity controller
     add_launch_arg('control_rate', '30.0', 'control rate')
     add_launch_arg('show_debug_info', 'false', 'show debug information')
-    add_launch_arg('enable_smooth_stop', 'true',
+    add_launch_arg('enable_smooth_stop', 'false',
                    'enable smooth stop (in velocity controller state)')
     add_launch_arg('enable_pub_debug', 'true', 'enable to publish debug information')
 
     # vehicle cmd gate
-    add_launch_arg('use_emergency_handling', 'false', 'use emergency handling')
+    add_launch_arg('use_emergency_handling', 'true', 'use emergency handling')
     add_launch_arg('use_external_emergency_stop', 'true', 'use external emergency stop')
-    add_launch_arg('use_start_request', 'false', 'use start request service')
+    add_launch_arg('use_start_request', 'true', 'use start request service')
 
     # external cmd selector
     add_launch_arg('initial_selector_mode', 'remote', 'local or remote')

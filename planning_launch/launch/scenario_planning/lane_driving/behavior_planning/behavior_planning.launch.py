@@ -159,7 +159,7 @@ def generate_launch_description():
             {
                 'bt_tree_config_path':
                 [FindPackageShare('behavior_path_planner'),
-                 '/config/behavior_path_planner_tree.xml'],
+                 '/config/behavior_path_planner_tree_lane_change_only.xml'],
                 'planning_hz': 10.0,
             }
         ],
@@ -329,10 +329,10 @@ def generate_launch_description():
         set_container_executable,
         set_container_mt_executable,
         container,
-        ExecuteProcess(
-            cmd=['ros2', 'topic', 'pub',
-                 '/planning/scenario_planning/lane_driving/behavior_planning/'
-                 'behavior_path_planner/path_change_approval',
-                 'autoware_planning_msgs/msg/Approval', '{approval: true}',
-                 '-r', '10']),
+        # ExecuteProcess(
+        #     cmd=['ros2', 'topic', 'pub',
+        #          '/planning/scenario_planning/lane_driving/behavior_planning/'
+        #          'behavior_path_planner/path_change_approval',
+        #          'autoware_planning_msgs/msg/Approval', '{approval: true}',
+        #          '-r', '10']),
     ])

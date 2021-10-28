@@ -5,7 +5,13 @@
     disks: # Until multi type lists are allowed, name N the disks as disk0...disk{N-1}
       disk0:
         name: /dev/sda
-        temp_warn: 55.0
-        temp_error: 70.0
+        temp_warn: 70.0
+        temp_error: 80.0
+        usage_warn: 0.95
+        usage_error: 0.99
+      disk1:
+        name: /dev/sdb
+        temp_warn: 70.0
+        temp_error: 80.0
         usage_warn: 0.95
         usage_error: 0.99
