@@ -7,7 +7,7 @@ on:
 
 env:
   UPSTREAM_REPO: https://github.com/tier4/autoware_launcher.git
-  BASE_BRANCH: develop
+  BASE_BRANCH: develop/ros2
   SYNC_TARGET_BRANCH: develop
   SYNC_BRANCH: sync-upstream-develop
 
