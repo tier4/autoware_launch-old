@@ -1022,6 +1022,8 @@ Visualization Manager:
                       Enabled: true
                       Name: Intersection
                       Namespaces:
+                        candidate_collision_ego_lane_polygon: false
+                        candidate_collision_object_polygons: false
                         conflicting_targets: false
                         detection_area: false
                         ego_lane: false
