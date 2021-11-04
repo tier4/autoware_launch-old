@@ -24,6 +24,7 @@
     <group>
       <include file="$(find-pkg-share lidar_centerpoint)/launch/lidar_centerpoint.launch.xml">
         <arg name="input/pointcloud" value="/sensing/lidar/concatenated/pointcloud"/>
+        <arg name="model_name" value="aip_x2" />
       </include>
     </group>
     <group>
