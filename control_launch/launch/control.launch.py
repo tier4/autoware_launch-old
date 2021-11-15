@@ -57,10 +57,11 @@ def launch_setup(context, *args, **kwargs):
         namespace="trajectory_follower",
         remappings=[
             ("~/input/reference_trajectory", "/planning/scenario_planning/trajectory"),
-            ("~/input/current_velocity", "/localization/kinematic_state"),
+            ("~/input/current_odometry", "/localization/kinematic_state"),
             ("~/input/current_steering", "/vehicle/status/steering"),
-            ("~/output/control_raw", "lateral/control_cmd"),
-            ("~/output/predicted_trajectory", "predicted_trajectory"),
+            ("~/output/control_cmd", "lateral/control_cmd"),
+            ("~/output/predicted_trajectory", "lateral/predicted_trajectory"),
+            ("~/output/diagnostic", "lateral/diagnostic"),
         ],
         parameters=[
             lat_controller_param,
@@ -75,9 +76,11 @@ def launch_setup(context, *args, **kwargs):
         name="longitudinal_controller_node_exe",
         namespace="trajectory_follower",
         remappings=[
-            ("~/current_velocity", "/localization/kinematic_state"),
-            ("~/control_cmd", "longitudinal/control_cmd"),
-            ("~/current_trajectory", "/planning/scenario_planning/trajectory"),
+            ("~/input/current_trajectory", "/planning/scenario_planning/trajectory"),
+            ("~/input/current_odometry", "/localization/kinematic_state"),
+            ("~/output/control_cmd", "longitudinal/control_cmd"),
+            ("~/output/slope_angle", "longitudinal/slope_angle"),
+            ("~/output/diagnostic", "longitudinal/diagnostic"),
         ],
         parameters=[
             lon_controller_param,
