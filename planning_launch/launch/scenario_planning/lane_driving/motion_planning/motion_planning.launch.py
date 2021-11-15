@@ -93,7 +93,7 @@ def generate_launch_description():
             ("~/output/trajectory", "surround_obstacle_checker/trajectory"),
             ("~/input/pointcloud", "/sensing/lidar/no_ground/pointcloud"),
             ("~/input/objects", "/perception/object_recognition/objects"),
-            ("~/input/twist", "/localization/twist"),
+            ("~/input/odometry", "/localization/kinematic_state"),
             ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
         ],
         parameters=[
@@ -157,7 +157,7 @@ def generate_launch_description():
             ("~/output/trajectory", "/planning/scenario_planning/lane_driving/trajectory"),
             ("~/input/pointcloud", "/sensing/lidar/no_ground/pointcloud"),
             ("~/input/objects", "/perception/object_recognition/objects"),
-            ("~/input/twist", "/localization/twist"),
+            ("~/input/odometry", "/localization/kinematic_state"),
             ("~/input/trajectory", "surround_obstacle_checker/trajectory"),
         ],
         parameters=[
