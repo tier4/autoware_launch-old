@@ -19,7 +19,6 @@ from launch.actions import IncludeLaunchDescription
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
-from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -42,10 +41,14 @@ def launch_setup(context, *args, **kwargs):
     with open(latlon_muxer_param_path, "r") as f:
         latlon_muxer_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
-    vehicle_cmd_gate_param_path = LaunchConfiguration("vehicle_cmd_gate_param_path").perform(context)
+    vehicle_cmd_gate_param_path = LaunchConfiguration("vehicle_cmd_gate_param_path").perform(
+        context
+    )
     with open(vehicle_cmd_gate_param_path, "r") as f:
         vehicle_cmd_gate_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    lane_departure_checker_param_path = LaunchConfiguration("lane_departure_checker_param_path").perform(context)
+    lane_departure_checker_param_path = LaunchConfiguration(
+        "lane_departure_checker_param_path"
+    ).perform(context)
     with open(lane_departure_checker_param_path, "r") as f:
         lane_departure_checker_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
@@ -259,7 +262,10 @@ def generate_launch_description():
 
     add_launch_arg(
         "lat_controller_param_path",
-        [FindPackageShare("control_launch"), "/config/trajectory_follower/lateral_controller.param.yaml"],
+        [
+            FindPackageShare("control_launch"),
+            "/config/trajectory_follower/lateral_controller.param.yaml",
+        ],
         "path to the parameter file of lateral controller",
     )
     add_launch_arg(
