@@ -223,7 +223,7 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    # lat controller is seperated since it may be another controller (e.g. purepursit)
+    # lateral controller is separated since it may be another controller (e.g. pure pursuit)
     lat_controller_loader = LoadComposableNodes(
         composable_node_descriptions=[lat_controller_component],
         target_container=container,
