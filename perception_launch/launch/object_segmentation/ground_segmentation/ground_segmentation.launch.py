@@ -54,10 +54,10 @@ def create_additional_pipeline(vehicle_info, lidar_name):
     cropbox_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
-        name=lidar_name + "_crop_box_filter",
+        name=f"{lidar_name}_crop_box_filter",
         remappings=[
-            ("input", "/sensing/lidar/" + lidar_name + "/outlier_filtered/pointcloud"),
-            ("output", lidar_name + "/measurement_range_cropped/pointcloud"),
+            ("input", f"/sensing/lidar/{lidar_name}/outlier_filtered/pointcloud"),
+            ("output", f"{lidar_name}/measurement_range_cropped/pointcloud"),
         ],
         parameters=[
             {
@@ -78,10 +78,10 @@ def create_additional_pipeline(vehicle_info, lidar_name):
     ground_component = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
-        name=lidar_name + "_scan_ground_filter",
+        name=f"{lidar_name}_scan_ground_filter",
         remappings=[
-            ("input", lidar_name + "/measurement_range_cropped/pointcloud"),
-            ("output", lidar_name + "/no_ground/pointcloud"),
+            ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
+            ("output", f"{lidar_name}/no_ground/pointcloud"),
         ],
         parameters=[
             {
@@ -155,7 +155,7 @@ def launch_setup(context, *args, **kwargs):
 
     ground_concat_topics = ["concatenated/no_ground/pointcloud"]
     for lidar_name in pipeline_param["additional_lidar"]:
-        ground_concat_topics.extend([lidar_name + "/no_ground/pointcloud"])
+        ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
 
     ground_concat_component = ComposableNode(
         package="pointcloud_preprocessor",
