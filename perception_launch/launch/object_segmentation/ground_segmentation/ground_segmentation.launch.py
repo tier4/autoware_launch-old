@@ -191,7 +191,7 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    load_laserscan_to_occupancy_grid_map = IncludeLaunchDescription(
+    laserscan_to_occupancy_grid_map_loader = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
                 FindPackageShare("laserscan_to_occupancy_grid_map"),
@@ -267,7 +267,7 @@ def launch_setup(context, *args, **kwargs):
         additional_pipeline_loader,
         customized_component_loader,
         reference_component_loader,
-        load_laserscan_to_occupancy_grid_map,
+        laserscan_to_occupancy_grid_map_loader,
     ]
 
 
