@@ -106,7 +106,7 @@ def launch_setup(context, *args, **kwargs):
         pipeline_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     additional_pipeline_components = []
-    for lidar_name in pipeline_param["additional_lidar"]:
+    for lidar_name in pipeline_param["additional_lidars"]:
         additional_pipeline_components.extend(create_additional_pipeline(vehicle_info, lidar_name))
 
     cropbox_component = ComposableNode(
@@ -154,7 +154,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     ground_concat_topics = ["concatenated/no_ground/pointcloud"]
-    for lidar_name in pipeline_param["additional_lidar"]:
+    for lidar_name in pipeline_param["additional_lidars"]:
         ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
 
     ground_concat_component = ComposableNode(
@@ -237,7 +237,7 @@ def launch_setup(context, *args, **kwargs):
         target_container=container,
         condition=IfCondition(
             LaunchConfiguration(
-                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+                "use_additional_pipeline", default=bool(pipeline_param["additional_lidars"])
             )
         ),
     )
@@ -247,7 +247,7 @@ def launch_setup(context, *args, **kwargs):
         target_container=container,
         condition=IfCondition(
             LaunchConfiguration(
-                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+                "use_additional_pipeline", default=bool(pipeline_param["additional_lidars"])
             )
         ),
     )
@@ -257,7 +257,7 @@ def launch_setup(context, *args, **kwargs):
         target_container=container,
         condition=UnlessCondition(
             LaunchConfiguration(
-                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+                "use_additional_pipeline", default=bool(pipeline_param["additional_lidars"])
             )
         ),
     )
