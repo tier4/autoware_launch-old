@@ -160,7 +160,7 @@ def launch_setup(context, *args, **kwargs):
             ("input/auto/gear_cmd", "/control/shift_decider/gear_cmd"),
             ("input/external/control_cmd", "/external/selected/control_cmd"),
             ("input/external/turn_indicators_cmd", "/external/selected/turn_indicators_cmd"),
-            # ("input/external/hazard_lights_cmd", "/external/selected/hazard_lights_cmd"),
+            ("input/external/hazard_lights_cmd", "/external/selected/hazard_lights_cmd"),
             ("input/external/gear_cmd", "/external/selected/gear_cmd"),
             ("input/external_emergency_stop_heartbeat", "/external/selected/heartbeat"),
             ("input/gate_mode", "/control/gate_mode_cmd"),
