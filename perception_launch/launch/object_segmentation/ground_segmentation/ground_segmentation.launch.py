@@ -12,13 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
 import launch
-
-from ament_index_python.packages import get_package_share_directory
-from launch.actions import IncludeLaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
@@ -52,6 +48,7 @@ def get_vehicle_mirror_info(context):
     with open(path, "r") as f:
         p = yaml.safe_load(f)
     return p
+
 
 def create_additional_pipeline(vehicle_info, lidar_name):
     cropbox_component = ComposableNode(
@@ -98,7 +95,7 @@ def create_additional_pipeline(vehicle_info, lidar_name):
     )
 
     return [cropbox_component, ground_component]
-    
+
 
 def launch_setup(context, *args, **kwargs):
 
@@ -160,7 +157,6 @@ def launch_setup(context, *args, **kwargs):
     ground_concat_topics = ["concatenated/no_ground/pointcloud"]
     for lidar_name in pipeline_param["additional_lidar"]:
         ground_concat_topics.extend([lidar_name + "/no_ground/pointcloud"])
-
 
     ground_concat_component = ComposableNode(
         package="pointcloud_preprocessor",
@@ -234,16 +230,16 @@ def launch_setup(context, *args, **kwargs):
     )
 
     ground_concat_loader = LoadComposableNodes(
-            composable_node_descriptions=[ground_concat_component] + additional_pipeline_nodes,
-            target_container=container,
-            condition=IfCondition(LaunchConfiguration("use_additional_pipeline")),
-            )
+        composable_node_descriptions=[ground_concat_component] + additional_pipeline_nodes,
+        target_container=container,
+        condition=IfCondition(LaunchConfiguration("use_additional_pipeline")),
+    )
 
     relay_loader = LoadComposableNodes(
-            composable_node_descriptions=[relay_component],
-            target_container=container,
-            condition=UnlessCondition(LaunchConfiguration("use_additional_pipeline")),
-            )
+        composable_node_descriptions=[relay_component],
+        target_container=container,
+        condition=UnlessCondition(LaunchConfiguration("use_additional_pipeline")),
+    )
 
     return [
         container,
