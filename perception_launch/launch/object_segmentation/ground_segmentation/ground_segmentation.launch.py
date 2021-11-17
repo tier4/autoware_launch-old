@@ -114,7 +114,7 @@ def launch_setup(context, *args, **kwargs):
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="crop_box_filter",
         remappings=[
-            ("input", "/sensing/lidar/pointcloud_preprocessor/concatenated/pointcloud"),
+            ("input", "/sensing/lidar/concatenated/pointcloud"),
             ("output", "measurement_range_cropped/pointcloud"),
         ],
         parameters=[
@@ -201,7 +201,7 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments={
             "container": "/perception/object_segmentation/ground_segmentation/perception_pipeline_container",
             "input/obstacle_pointcloud": "no_ground/oneshot/pointcloud",
-            "input/raw_pointcloud": "/sensing/lidar/pointcloud_preprocessor/concatenated/pointcloud",
+            "input/raw_pointcloud": "/sensing/lidar/concatenated/pointcloud",
             "output": "occupancy_grid",
             "use_intra_process": LaunchConfiguration("use_intra_process"),
         }.items(),
