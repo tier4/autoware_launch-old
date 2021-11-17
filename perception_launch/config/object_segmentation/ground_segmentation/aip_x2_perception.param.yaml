@@ -1,3 +1,4 @@
 /**:
   ros__parameters:
+    use_additional_pipeline: True
     additional_lidar: ["front_upper", "front_lower"]

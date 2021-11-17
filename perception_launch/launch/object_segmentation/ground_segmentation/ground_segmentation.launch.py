@@ -105,11 +105,10 @@ def launch_setup(context, *args, **kwargs):
     with open(path, "r") as f:
         pipeline_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
-    additional_pipeline_nodes = []
+    additional_pipeline_components = []
     for lidar_name in pipeline_param["additional_lidar"]:
-        additional_pipeline_nodes.extend(create_additional_pipeline(vehicle_info, lidar_name))
+        additional_pipeline_components.extend(create_additional_pipeline(vehicle_info, lidar_name))
 
-    # set crop box filter as a component
     cropbox_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
@@ -134,7 +133,7 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_component = ComposableNode(
+    customized_ground_component = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
         name="scan_ground_filter",
@@ -172,16 +171,21 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    relay_component = ComposableNode(
-        package="topic_tools",
-        plugin="topic_tools::RelayNode",
-        name="skip_concatenate_relay",
-        namespace="",
+    ground_component = ComposableNode(
+        package="ground_segmentation",
+        plugin="ground_segmentation::ScanGroundFilterComponent",
+        name="scan_ground_filter",
+        remappings=[
+            ("input", "measurement_range_cropped/pointcloud"),
+            ("output", "no_ground/oneshot/pointcloud"),
+        ],
         parameters=[
             {
-                "input_topic": "concatenated/no_ground/pointcloud",
-                "output_topic": "no_ground/oneshot/pointcloud",
-                "type": "sensor_msgs/msg/PointCloud2",
+                "global_slope_max_angle_deg": 10.0,
+                "local_slope_max_angle_deg": 30.0,
+                "split_points_distance_tolerance": 0.2,
+                "split_height_distance": 0.2,
+                "use_virtual_ground_point": False,
             }
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -210,7 +214,7 @@ def launch_setup(context, *args, **kwargs):
         remappings=[
             ("~/input/occupancy_grid_map", "occupancy_grid"),
             ("~/input/pointcloud", "no_ground/oneshot/pointcloud"),
-            ("~/output/pointcloud", "no_ground/pointcloud"),
+            ("~/output/pointcloud", "/perception/object_segmentation/pointcloud"),
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -218,33 +222,51 @@ def launch_setup(context, *args, **kwargs):
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
         name="perception_pipeline_container",
-        namespace="ground_segmentation",
+        namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             cropbox_component,
-            ground_component,
             occupancy_grid_map_outlier_component,
         ],
         output="screen",
     )
 
-    ground_concat_loader = LoadComposableNodes(
-        composable_node_descriptions=[ground_concat_component] + additional_pipeline_nodes,
+    additional_pipeline_loader = LoadComposableNodes(
+        composable_node_descriptions=additional_pipeline_components,
         target_container=container,
-        condition=IfCondition(LaunchConfiguration("use_additional_pipeline")),
+        condition=IfCondition(
+            LaunchConfiguration(
+                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+            )
+        ),
     )
 
-    relay_loader = LoadComposableNodes(
-        composable_node_descriptions=[relay_component],
+    customized_component_loader = LoadComposableNodes(
+        composable_node_descriptions=[customized_ground_component, ground_concat_component],
         target_container=container,
-        condition=UnlessCondition(LaunchConfiguration("use_additional_pipeline")),
+        condition=IfCondition(
+            LaunchConfiguration(
+                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+            )
+        ),
+    )
+
+    reference_component_loader = LoadComposableNodes(
+        composable_node_descriptions=[ground_component],
+        target_container=container,
+        condition=UnlessCondition(
+            LaunchConfiguration(
+                "use_additional_pipeline", default=pipeline_param["use_additional_pipeline"]
+            )
+        ),
     )
 
     return [
         container,
-        ground_concat_loader,
-        relay_loader,
+        additional_pipeline_loader,
+        customized_component_loader,
+        reference_component_loader,
         load_laserscan_to_occupancy_grid_map,
     ]
 
@@ -259,7 +281,6 @@ def generate_launch_description():
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("vehicle_param_file")
     add_launch_arg("perception_config_file")
-    add_launch_arg("use_additional_pipeline", "use_additional_pipeline")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
 

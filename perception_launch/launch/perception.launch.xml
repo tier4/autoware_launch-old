@@ -24,7 +24,6 @@
   <arg name="image_number" default="6" description="choose image raw number(0-7)"/>
   <arg name="use_vector_map" default="true" description="use vector map in prediction"/>
   <arg name="use_empty_dynamic_object_publisher" default="false" description="if use_empty_dynamic_object_publisher:=true, /perception/object_recognition/objects topic has an empty DynamicObjectArray"/>
-  <arg name="use_additional_pipeline" default="true"/>
 
   <!-- perception module -->
   <group>
@@ -35,9 +34,9 @@
       <push-ros-namespace namespace="object_segmentation"/>
       <!-- ground segmentation module -->
       <group>
+        <push-ros-namespace namespace="ground_segmentation"/>
         <include file="$(find-pkg-share perception_launch)/launch/object_segmentation/ground_segmentation/ground_segmentation.launch.py">
           <arg name="base_frame" value="base_link" />
-          <arg name="use_additional_pipeline" value="$(var use_additional_pipeline)" />
           <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
           <arg name="use_intra_process" value="true" />
           <arg name="use_multithread" value="true" />

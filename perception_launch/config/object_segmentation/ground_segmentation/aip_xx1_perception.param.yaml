@@ -1,3 +1,4 @@
 /**:
   ros__parameters:
+    use_additional_pipeline: False
     additional_lidar: []
