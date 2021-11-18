@@ -133,13 +133,13 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_filter_component_use_additional_pipeline = ComposableNode(
+    ground_filter_component = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
         name="scan_ground_filter",
         remappings=[
             ("input", "measurement_range_cropped/pointcloud"),
-            ("output", "concatenated/no_ground/pointcloud"),
+            ("output", "no_ground/pointcloud"),
         ],
         parameters=[
             {
@@ -153,7 +153,7 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_concat_topics = ["concatenated/no_ground/pointcloud"]
+    ground_concat_topics = ["no_ground/pointcloud"]
     for lidar_name in pipeline_param["additional_lidars"]:
         ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
 
@@ -171,26 +171,6 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_filter_component = ComposableNode(
-        package="ground_segmentation",
-        plugin="ground_segmentation::ScanGroundFilterComponent",
-        name="scan_ground_filter",
-        remappings=[
-            ("input", "measurement_range_cropped/pointcloud"),
-            ("output", "no_ground/oneshot/pointcloud"),
-        ],
-        parameters=[
-            {
-                "global_slope_max_angle_deg": 10.0,
-                "local_slope_max_angle_deg": 30.0,
-                "split_points_distance_tolerance": 0.2,
-                "split_height_distance": 0.2,
-                "use_virtual_ground_point": False,
-            }
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
     laserscan_to_occupancy_grid_map_loader = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [
@@ -200,7 +180,9 @@ def launch_setup(context, *args, **kwargs):
         ),
         launch_arguments={
             "container": "/perception/object_segmentation/ground_segmentation/perception_pipeline_container",
-            "input/obstacle_pointcloud": "no_ground/oneshot/pointcloud",
+            "input/obstacle_pointcloud": "no_ground/oneshot/pointcloud"
+            if bool(pipeline_param["additional_lidars"])
+            else "no_ground/pointcloud",
             "input/raw_pointcloud": "/sensing/lidar/concatenated/pointcloud",
             "output": "occupancy_grid",
             "use_intra_process": LaunchConfiguration("use_intra_process"),
@@ -213,7 +195,12 @@ def launch_setup(context, *args, **kwargs):
         name="occupancy_grid_map_outlier_filter",
         remappings=[
             ("~/input/occupancy_grid_map", "occupancy_grid"),
-            ("~/input/pointcloud", "no_ground/oneshot/pointcloud"),
+            (
+                "~/input/pointcloud",
+                "no_ground/oneshot/pointcloud"
+                if bool(pipeline_param["additional_lidars"])
+                else "no_ground/pointcloud",
+            ),
             ("~/output/pointcloud", "/perception/object_segmentation/pointcloud"),
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -227,6 +214,7 @@ def launch_setup(context, *args, **kwargs):
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             crop_box_filter_component,
+            ground_filter_component,
             occupancy_grid_map_outlier_component,
         ],
         output="screen",
@@ -242,23 +230,10 @@ def launch_setup(context, *args, **kwargs):
         ),
     )
 
-    customized_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[
-            ground_filter_component_use_additional_pipeline,
-            concat_data_component,
-        ],
+    concat_data_component_loader = LoadComposableNodes(
+        composable_node_descriptions=[concat_data_component],
         target_container=container,
         condition=IfCondition(
-            LaunchConfiguration(
-                "use_additional_pipeline", default=bool(pipeline_param["additional_lidars"])
-            )
-        ),
-    )
-
-    reference_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[ground_filter_component],
-        target_container=container,
-        condition=UnlessCondition(
             LaunchConfiguration(
                 "use_additional_pipeline", default=bool(pipeline_param["additional_lidars"])
             )
@@ -268,8 +243,7 @@ def launch_setup(context, *args, **kwargs):
     return [
         container,
         additional_pipeline_loader,
-        customized_component_loader,
-        reference_component_loader,
+        concat_data_component_loader,
         laserscan_to_occupancy_grid_map_loader,
     ]
 
