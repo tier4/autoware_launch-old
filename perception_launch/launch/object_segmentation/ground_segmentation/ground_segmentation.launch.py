@@ -51,7 +51,7 @@ def get_vehicle_mirror_info(context):
 
 
 def create_additional_pipeline(vehicle_info, lidar_name):
-    cropbox_component = ComposableNode(
+    crop_box_filter_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name=f"{lidar_name}_crop_box_filter",
@@ -75,7 +75,7 @@ def create_additional_pipeline(vehicle_info, lidar_name):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_component = ComposableNode(
+    ground_filter_component = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
         name=f"{lidar_name}_scan_ground_filter",
@@ -94,7 +94,7 @@ def create_additional_pipeline(vehicle_info, lidar_name):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    return [cropbox_component, ground_component]
+    return [crop_box_filter_component, ground_filter_component]
 
 
 def launch_setup(context, *args, **kwargs):
@@ -109,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
     for lidar_name in pipeline_param["additional_lidars"]:
         additional_pipeline_components.extend(create_additional_pipeline(vehicle_info, lidar_name))
 
-    cropbox_component = ComposableNode(
+    crop_box_filter_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="crop_box_filter",
@@ -133,7 +133,7 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    customized_ground_component = ComposableNode(
+    ground_filter_component_use_additional_pipeline = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
         name="scan_ground_filter",
@@ -157,10 +157,10 @@ def launch_setup(context, *args, **kwargs):
     for lidar_name in pipeline_param["additional_lidars"]:
         ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
 
-    ground_concat_component = ComposableNode(
+    concat_data_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-        name="concatenate_data_front",
+        name="concatenate_data",
         remappings=[("output", "no_ground/oneshot/pointcloud")],
         parameters=[
             {
@@ -171,7 +171,7 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_component = ComposableNode(
+    ground_filter_component = ComposableNode(
         package="ground_segmentation",
         plugin="ground_segmentation::ScanGroundFilterComponent",
         name="scan_ground_filter",
@@ -226,7 +226,7 @@ def launch_setup(context, *args, **kwargs):
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
-            cropbox_component,
+            crop_box_filter_component,
             occupancy_grid_map_outlier_component,
         ],
         output="screen",
@@ -243,7 +243,10 @@ def launch_setup(context, *args, **kwargs):
     )
 
     customized_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[customized_ground_component, ground_concat_component],
+        composable_node_descriptions=[
+            ground_filter_component_use_additional_pipeline,
+            concat_data_component,
+        ],
         target_container=container,
         condition=IfCondition(
             LaunchConfiguration(
@@ -253,7 +256,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     reference_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[ground_component],
+        composable_node_descriptions=[ground_filter_component],
         target_container=container,
         condition=UnlessCondition(
             LaunchConfiguration(
