@@ -326,7 +326,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /control/turn_signal_cmd
+                Value: /vehicle/status/turn_indicators_status
               Value: true
               Width: 512
           Enabled: true
@@ -466,7 +466,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Best Effort
-                Value: /sensing/lidar/no_ground/pointcloud
+                Value: /perception/object_segmentation/pointcloud
               Use Fixed Frame: true
               Use rainbow: true
               Value: true
@@ -1022,6 +1022,8 @@ Visualization Manager:
                       Enabled: true
                       Name: Intersection
                       Namespaces:
+                        candidate_collision_ego_lane_polygon: false
+                        candidate_collision_object_polygons: false
                         conflicting_targets: false
                         detection_area: false
                         ego_lane: false
