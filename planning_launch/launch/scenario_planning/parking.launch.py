@@ -86,7 +86,7 @@ def generate_launch_description():
             ),
             ComposableNode(
                 package="freespace_planner",
-                plugin="freespace_planner::FreespacePlannerNode",
+                plugin="autoware::planning::freespace_planner::FreespacePlannerNode",
                 name="freespace_planner",
                 remappings=[
                     ("~/input/route", "/planning/mission_planning/route"),
