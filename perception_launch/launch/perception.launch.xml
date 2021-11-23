@@ -38,6 +38,7 @@
         <include file="$(find-pkg-share perception_launch)/launch/object_segmentation/ground_segmentation/ground_segmentation.launch.py">
           <arg name="base_frame" value="base_link" />
           <arg name="vehicle_param_file" value="$(var vehicle_param_file)" />
+          <arg name="use_compare_map" value="false" />
           <arg name="use_intra_process" value="true" />
           <arg name="use_multithread" value="true" />
           <arg name="perception_config_file" value="$(find-pkg-share perception_launch)/config/object_segmentation/ground_segmentation/$(var sensor_model)_perception.param.yaml"/>
