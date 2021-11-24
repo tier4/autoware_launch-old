@@ -164,6 +164,74 @@ def create_ransac_pipeline(ground_segmentation_param):
     ]
 
 
+def create_elevation_map_filter_components():
+    compare_elevation_map_filter_component = ComposableNode(
+        package="compare_map_segmentation",
+        plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
+        name="compare_elevation_map_filter",
+        remappings=[
+            ("input", "no_ground/oneshot/pointcloud"),
+            ("output", "map_filtered/pointcloud"),
+            ("input/elevation_map", "/map/elevation_map"),
+        ],
+        parameters=[
+            {
+                "map_frame": "map",
+                "map_layer_name": "elevation",
+                "height_diff_thresh": 0.15,
+                "input_frame": "map",
+                "output_frame": "base_link",
+            }
+        ],
+        extra_arguments=[{"use_intra_process_comms": False}],  # can't use this with transient_local
+    )
+
+    downsampling_component = ComposableNode(
+        package="pointcloud_preprocessor",
+        plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
+        name="voxel_grid_filter",
+        remappings=[
+            ("input", "map_filtered/pointcloud"),
+            ("output", "voxel_grid_filtered/pointcloud"),
+        ],
+        parameters=[
+            {
+                "input_frame": LaunchConfiguration("base_frame"),
+                "output_frame": LaunchConfiguration("base_frame"),
+                "voxel_size_x": 0.04,
+                "voxel_size_y": 0.04,
+                "voxel_size_z": 0.08,
+            }
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
+    voxel_grid_outlier_filter_component = ComposableNode(
+        package="pointcloud_preprocessor",
+        plugin="pointcloud_preprocessor::VoxelGridOutlierFilterComponent",
+        name="voxel_grid_outlier_filter",
+        remappings=[
+            ("input", "voxel_grid_filtered/pointcloud"),
+            ("output", "/perception/object_segmentation/pointcloud"),
+        ],
+        parameters=[
+            {
+                "voxel_size_x": 0.4,
+                "voxel_size_y": 0.4,
+                "voxel_size_z": 100.0,
+                "voxel_points_threshold": 5,
+            }
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
+    return [
+        compare_elevation_map_filter_component,
+        downsampling_component,
+        voxel_grid_outlier_filter_component,
+    ]
+
+
 def launch_setup(context, *args, **kwargs):
 
     vehicle_info = get_vehicle_info(context)
@@ -270,66 +338,6 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    compare_elevation_map_filter_component = ComposableNode(
-        package="compare_map_segmentation",
-        plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
-        name="compare_elevation_map_filter",
-        remappings=[
-            ("input", "no_ground/oneshot/pointcloud"),
-            ("output", "map_filtered/pointcloud"),
-            ("input/elevation_map", "/map/elevation_map"),
-        ],
-        parameters=[
-            {
-                "map_frame": "map",
-                "map_layer_name": "elevation",
-                "height_diff_thresh": 0.15,
-                "input_frame": "map",
-                "output_frame": "base_link",
-            }
-        ],
-        extra_arguments=[{"use_intra_process_comms": False}],  # can't use this with transient_local
-    )
-
-    downsampling_component = ComposableNode(
-        package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
-        name="voxel_grid_filter",
-        remappings=[
-            ("input", "map_filtered/pointcloud"),
-            ("output", "voxel_grid_filtered/pointcloud"),
-        ],
-        parameters=[
-            {
-                "input_frame": LaunchConfiguration("base_frame"),
-                "output_frame": LaunchConfiguration("base_frame"),
-                "voxel_size_x": 0.04,
-                "voxel_size_y": 0.04,
-                "voxel_size_z": 0.08,
-            }
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
-    voxel_grid_outlier_filter_component = ComposableNode(
-        package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::VoxelGridOutlierFilterComponent",
-        name="voxel_grid_outlier_filter",
-        remappings=[
-            ("input", "voxel_grid_filtered/pointcloud"),
-            ("output", "/perception/object_segmentation/pointcloud"),
-        ],
-        parameters=[
-            {
-                "voxel_size_x": 0.4,
-                "voxel_size_y": 0.4,
-                "voxel_size_z": 100.0,
-                "voxel_points_threshold": 5,
-            }
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
         name="perception_pipeline_container",
@@ -366,11 +374,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     compare_map_component_loader = LoadComposableNodes(
-        composable_node_descriptions=[
-            compare_elevation_map_filter_component,
-            downsampling_component,
-            voxel_grid_outlier_filter_component,
-        ],
+        composable_node_descriptions=create_elevation_map_filter_components(),
         target_container=container,
         condition=IfCondition(LaunchConfiguration("use_compare_map")),
     )
