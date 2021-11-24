@@ -293,7 +293,7 @@ def generate_launch_description():
                 "launch_intersection": True,
                 "launch_blind_spot": True,
                 "launch_detection_area": True,
-                "launch_virtual_traffic_light": True,
+                "launch_virtual_traffic_light": False,
                 "launch_occlusion_spot": False,
                 "launch_no_stopping_area": True,
                 "forward_path_length": 1000.0,
