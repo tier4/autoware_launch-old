@@ -17,6 +17,7 @@
   <arg name="scenario_simulation" default="false" description="use scenario simulation"/>
   <!-- Optional parameters for vcu emulation -->
   <arg name="vehicle_simulation" default="true" description="use vehicle simulation"/>
+  <let name="use_sim_time" value="true" /> <!-- use /clock published by the SVL simulator -->
 
   <!-- Global parameters -->
   <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
@@ -88,6 +89,6 @@
     <arg name="sensing/visible_range" value="$(var sensing/visible_range)"/>
     <arg name="vehicle_simulation" value="$(var vehicle_simulation)"/>
     <arg name="vehicle_model" value="$(var vehicle_model)"/>
-    <arg name="initial_engage_state" value="$(var initial_engage_state)"/>
+    <arg name="initial_engage_state" value="$(var initial_engage_state)"/> <!-- not working -->
   </include>
 </launch>
