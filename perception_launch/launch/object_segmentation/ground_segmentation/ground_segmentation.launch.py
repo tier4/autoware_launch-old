@@ -52,7 +52,7 @@ def get_vehicle_mirror_info(context):
     return p
 
 
-def create_additional_pipeline(vehicle_info, lidar_name, additional_pipeline_param):
+def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_param):
     crop_box_filter_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
@@ -79,13 +79,13 @@ def create_additional_pipeline(vehicle_info, lidar_name, additional_pipeline_par
 
     ground_filter_component = ComposableNode(
         package="ground_segmentation",
-        plugin=additional_pipeline_param[f"{lidar_name}_ground_filter"]["plugin"],
+        plugin=ground_segmentation_param[f"{lidar_name}_ground_filter"]["plugin"],
         name=f"{lidar_name}_ground_filter",
         remappings=[
             ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
             ("output", f"{lidar_name}/no_ground/pointcloud"),
         ],
-        parameters=[additional_pipeline_param[f"{lidar_name}_ground_filter"]["parameters"]],
+        parameters=[ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
@@ -191,24 +191,20 @@ def launch_setup(context, *args, **kwargs):
 
     vehicle_info = get_vehicle_info(context)
 
-    common_pipeline_path = os.path.join(
+    ground_segmentation_param_path = os.path.join(
         get_package_share_directory("perception_launch"),
-        "config/object_segmentation/ground_segmentation/common_perception.param.yaml",
+        "config/object_segmentation/ground_segmentation/ground_segmentation.param.yaml",
     )
-    with open(common_pipeline_path, "r") as f:
-        common_pipeline_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-
-    additional_pipeline_path = LaunchConfiguration("perception_config_file").perform(context)
-    with open(additional_pipeline_path, "r") as f:
-        additional_pipeline_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    with open(ground_segmentation_param_path, "r") as f:
+        ground_segmentation_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     additional_pipeline_components = []
-    if additional_pipeline_param["use_ransac_pipeline"]:
+    if ground_segmentation_param["use_ransac_pipeline"]:
         additional_pipeline_components = create_ransac_pipeline()
     else:
-        for lidar_name in additional_pipeline_param["additional_lidars"]:
+        for lidar_name in ground_segmentation_param["additional_lidars"]:
             additional_pipeline_components.extend(
-                create_additional_pipeline(vehicle_info, lidar_name, additional_pipeline_param)
+                create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_param)
             )
 
     crop_box_filter_component = ComposableNode(
@@ -237,18 +233,18 @@ def launch_setup(context, *args, **kwargs):
 
     ground_filter_component = ComposableNode(
         package="ground_segmentation",
-        plugin=common_pipeline_param["common_ground_filter"]["plugin"],
+        plugin=ground_segmentation_param["common_ground_filter"]["plugin"],
         name="common_ground_filter",
         remappings=[
             ("input", "measurement_range_cropped/pointcloud"),
             ("output", "no_ground/pointcloud"),
         ],
-        parameters=[common_pipeline_param["common_ground_filter"]["parameters"]],
+        parameters=[ground_segmentation_param["common_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
     ground_concat_topics = ["no_ground/pointcloud"]
-    for lidar_name in additional_pipeline_param["additional_lidars"]:
+    for lidar_name in ground_segmentation_param["additional_lidars"]:
         ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
 
     concat_data_component = ComposableNode(
@@ -275,7 +271,7 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments={
             "container": "/perception/object_segmentation/ground_segmentation/perception_pipeline_container",
             "input/obstacle_pointcloud": "no_ground/oneshot/pointcloud"
-            if bool(additional_pipeline_param["additional_lidars"])
+            if bool(ground_segmentation_param["additional_lidars"])
             else "no_ground/pointcloud",
             "input/raw_pointcloud": "/sensing/lidar/concatenated/pointcloud",
             "output": "occupancy_grid",
@@ -293,7 +289,7 @@ def launch_setup(context, *args, **kwargs):
             (
                 "~/input/pointcloud",
                 "no_ground/oneshot/pointcloud"
-                if bool(additional_pipeline_param["additional_lidars"])
+                if bool(ground_segmentation_param["additional_lidars"])
                 else "no_ground/pointcloud",
             ),
             ("~/output/pointcloud", "/perception/object_segmentation/pointcloud"),
@@ -380,7 +376,7 @@ def launch_setup(context, *args, **kwargs):
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
-                default=bool(additional_pipeline_param["additional_lidars"]),
+                default=bool(ground_segmentation_param["additional_lidars"]),
             )
         ),
     )
@@ -391,7 +387,7 @@ def launch_setup(context, *args, **kwargs):
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
-                default=bool(additional_pipeline_param["additional_lidars"]),
+                default=bool(ground_segmentation_param["additional_lidars"]),
             )
         ),
     )
@@ -431,7 +427,6 @@ def generate_launch_description():
 
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("vehicle_param_file")
-    add_launch_arg("perception_config_file")
     add_launch_arg("use_compare_map", "False")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
