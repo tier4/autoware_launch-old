@@ -65,14 +65,10 @@ def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_par
             {
                 "input_frame": LaunchConfiguration("base_frame"),
                 "output_frame": LaunchConfiguration("base_frame"),
-                "min_x": -50.0,
-                "max_x": 100.0,
-                "min_y": -50.0,
-                "max_y": 50.0,
                 "min_z": vehicle_info["min_height_offset"],
                 "max_z": vehicle_info["max_height_offset"],
-                "negative": False,
-            }
+            },
+            ground_segmentation_param[f"{lidar_name}_crop_box_filter"]["parameters"],
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -92,7 +88,7 @@ def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_par
     return [crop_box_filter_component, ground_filter_component]
 
 
-def create_ransac_pipeline():
+def create_ransac_pipeline(ground_segmentation_param):
     livox_concat_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
@@ -123,14 +119,8 @@ def create_ransac_pipeline():
             {
                 "input_frame": LaunchConfiguration("base_frame"),
                 "output_frame": LaunchConfiguration("base_frame"),
-                "min_x": 0.0,
-                "max_x": 19.6,  # max_x: 18.0m + base_link2livox_front_center distance 1.6m
-                "min_y": -4.0,
-                "max_y": 4.0,
-                "min_z": -0.5,
-                "max_z": 0.5,
-                "negative": False,
-            }
+            },
+            ground_segmentation_param["short_height_obstacle_detection_area_filter"]["parameters"],
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -162,20 +152,7 @@ def create_ransac_pipeline():
             ("input", "vector_map_filtered/pointcloud"),
             ("output", "short_height/no_ground/pointcloud"),
         ],
-        parameters=[
-            {
-                "outlier_threshold": 0.1,
-                "min_points": 400,
-                "min_inliers": 200,
-                "max_iterations": 50,
-                "height_threshold": 0.15,
-                "plane_slope_threshold": 10.0,
-                "voxel_size_x": 0.2,
-                "voxel_size_y": 0.2,
-                "voxel_size_z": 0.2,
-                "debug": False,
-            }
-        ],
+        parameters=[ground_segmentation_param["ransac_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
@@ -200,7 +177,7 @@ def launch_setup(context, *args, **kwargs):
 
     additional_pipeline_components = []
     if ground_segmentation_param["use_ransac_pipeline"]:
-        additional_pipeline_components = create_ransac_pipeline()
+        additional_pipeline_components = create_ransac_pipeline(ground_segmentation_param)
     else:
         for lidar_name in ground_segmentation_param["additional_lidars"]:
             additional_pipeline_components.extend(
@@ -219,14 +196,10 @@ def launch_setup(context, *args, **kwargs):
             {
                 "input_frame": LaunchConfiguration("base_frame"),
                 "output_frame": LaunchConfiguration("base_frame"),
-                "min_x": -50.0,
-                "max_x": 100.0,
-                "min_y": -50.0,
-                "max_y": 50.0,
                 "min_z": vehicle_info["min_height_offset"],
                 "max_z": vehicle_info["max_height_offset"],
-                "negative": False,
-            }
+            },
+            ground_segmentation_param["common_crop_box_filter"]["parameters"],
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )

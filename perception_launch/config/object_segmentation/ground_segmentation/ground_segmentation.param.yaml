@@ -3,6 +3,14 @@
     additional_lidars: []
     use_ransac_pipeline: False
 
+    common_crop_box_filter:
+      parameters:
+        min_x: -50.0
+        max_x: 100.0
+        min_y: -50.0
+        max_y: 50.0
+        negative: False
+
     common_ground_filter:
       plugin: "ground_segmentation::ScanGroundFilterComponent"
       parameters:
