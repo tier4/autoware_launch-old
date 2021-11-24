@@ -91,4 +91,7 @@
     <arg name="vehicle_model" value="$(var vehicle_model)"/>
     <arg name="initial_engage_state" value="$(var initial_engage_state)"/> <!-- not working -->
   </include>
+
+  <!-- constantly publish the engage command -->
+  <executable cmd="ros2 topic pub /autoware/engage autoware_auto_vehicle_msgs/msg/Engage '{engage: true}'" output="log" />
 </launch>
