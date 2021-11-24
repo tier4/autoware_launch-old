@@ -1,5 +1,8 @@
 /**:
   ros__parameters:
+    additional_lidars: []
+    use_ransac_pipeline: False
+
     common_ground_filter:
       plugin: "ground_segmentation::ScanGroundFilterComponent"
       parameters:

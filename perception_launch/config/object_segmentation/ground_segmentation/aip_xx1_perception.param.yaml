@@ -1,4 +1,0 @@
-/**:
-  ros__parameters:
-    additional_lidars: []
-    use_ransac_pipeline: False
