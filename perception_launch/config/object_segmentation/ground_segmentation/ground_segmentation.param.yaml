@@ -2,6 +2,7 @@
   ros__parameters:
     additional_lidars: []
     use_ransac_pipeline: False
+    use_compare_map_pipeline: False
 
     common_crop_box_filter:
       parameters:

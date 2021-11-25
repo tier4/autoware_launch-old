@@ -164,7 +164,7 @@ def create_ransac_pipeline(ground_segmentation_param):
     ]
 
 
-def create_elevation_map_filter_components():
+def create_elevation_map_filter_pipeline():
     compare_elevation_map_filter_component = ComposableNode(
         package="compare_map_segmentation",
         plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
@@ -318,7 +318,12 @@ def launch_setup(context, *args, **kwargs):
             "output": "occupancy_grid",
             "use_intra_process": LaunchConfiguration("use_intra_process"),
         }.items(),
-        condition=UnlessCondition(LaunchConfiguration("use_compare_map")),
+        condition=UnlessCondition(
+            LaunchConfiguration(
+                "use_compare_map_pipeline",
+                default=ground_segmentation_param["use_compare_map_pipeline"],
+            )
+        ),
     )
 
     occupancy_outlier_filter_component = ComposableNode(
@@ -374,15 +379,25 @@ def launch_setup(context, *args, **kwargs):
     )
 
     compare_map_component_loader = LoadComposableNodes(
-        composable_node_descriptions=create_elevation_map_filter_components(),
+        composable_node_descriptions=create_elevation_map_filter_pipeline(),
         target_container=container,
-        condition=IfCondition(LaunchConfiguration("use_compare_map")),
+        condition=IfCondition(
+            LaunchConfiguration(
+                "use_compare_map_pipeline",
+                default=ground_segmentation_param["use_compare_map_pipeline"],
+            )
+        ),
     )
 
     occupancy_grid_outlier_filter_component_loader = LoadComposableNodes(
         composable_node_descriptions=[occupancy_outlier_filter_component],
         target_container=container,
-        condition=UnlessCondition(LaunchConfiguration("use_compare_map")),
+        condition=UnlessCondition(
+            LaunchConfiguration(
+                "use_compare_map_pipeline",
+                default=ground_segmentation_param["use_compare_map_pipeline"],
+            )
+        ),
     )
 
     return [
@@ -404,7 +419,6 @@ def generate_launch_description():
 
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("vehicle_param_file")
-    add_launch_arg("use_compare_map", "False")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
 
