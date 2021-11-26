@@ -30,6 +30,16 @@
   <include file="$(find-pkg-share lgsvl_interface)/launch/lgsvl.launch.py">
     <arg name="lgsvl_interface_param" value="$(find-pkg-share lgsvl_interface)/param/lgsvl.$(var vehicle_model).param.yaml" />
   </include>
+  <node pkg="topic_tools" exec="relay" name="relay_lgsvl_clock" output="log" if="$(var use_sim_time)">
+    <param name="input_topic" value="/lgsvl/clock" />
+    <param name="output_topic" value="/clock" />
+    <param name="type" value="rosgraph_msgs/msg/Clock" />
+  </node>
+  <node pkg="topic_tools" exec="relay" name="relay_lgsvl_odometry" output="log">
+    <param name="input_topic" value="/lgsvl/gnss_odom" />
+    <param name="output_topic" value="/localization/kinematic_state" />
+    <param name="type" value="nav_msgs/msg/Odometry" />
+  </node>
   <!-- ground truth localization from LGSVL simulation -->
   <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 base_link nav_base" />
   <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 odom base_link" />
