@@ -20,6 +20,8 @@ from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
@@ -163,6 +165,43 @@ def create_ransac_pipeline(ground_segmentation_param):
 
 
 def create_elevation_map_filter_pipeline():
+
+    elevation_map_loader = ComposableNode(
+        package="elevation_map_loader",
+        plugin="ElevationMapLoaderNode",
+        name="elevation_map_loader",
+        remappings=[
+            ("output/elevation_map", "elevation_map"),
+            ("input/pointcloud_map", "pointcloud_map"),
+            ("input/vector_map", "vector_map"),
+        ],
+        parameters=[
+            {
+                "use_lane_filter": False,
+                "use_inpaint": True,
+                "inpaint_radius": 1.0,
+                "param_file_path": PathJoinSubstitution(
+                    [
+                        FindPackageShare(
+                            "perception_launch",
+                            "config",
+                            "object_segmentation",
+                            "ground_segmentation",
+                            "elevation_map_parameters.yaml",
+                        )
+                    ]
+                ),
+                "elevation_map_directory": PathJoinSubstitution(
+                    [FindPackageShare("elevation_map_loader"), "data", "elevation_maps"]
+                ),
+
+                "pointcloud_map_path": LaunchConfiguration("pointcloud_map_path"),
+                "use_elevation_map_cloud_publisher": False,
+            }
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     compare_elevation_map_filter_component = ComposableNode(
         package="compare_map_segmentation",
         plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
@@ -224,6 +263,7 @@ def create_elevation_map_filter_pipeline():
     )
 
     return [
+        elevation_map_loader,
         compare_elevation_map_filter_component,
         downsampling_component,
         voxel_grid_outlier_filter_component,
@@ -409,6 +449,7 @@ def generate_launch_description():
 
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("vehicle_param_file")
+    add_launch_arg("pointcloud_map_path")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
     add_launch_arg("use_pointcloud_container", "False")
