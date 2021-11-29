@@ -35,7 +35,7 @@ def generate_launch_description():
     }
     components = [
         _create_api_node("initial_pose", "InitialPose", parameters=[param_initial_pose]),
-        _create_api_node("iv_state", "IVState"),
+        _create_api_node("iv_state", "IVMsgs"),
         _create_api_node("operator", "Operator"),
         _create_api_node("route", "Route"),
         _create_api_node("velocity", "Velocity"),
