@@ -21,8 +21,8 @@ from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import PathJoinSubstitution
 from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
@@ -204,7 +204,7 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
         name="compare_elevation_map_filter",
         remappings=[
             (
-            "input",
+                "input",
                 "no_ground/oneshot/pointcloud"
                 if bool(ground_segmentation_param["additional_lidars"])
                 else "no_ground/pointcloud",
