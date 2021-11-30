@@ -192,7 +192,6 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
                 "elevation_map_directory": PathJoinSubstitution(
                     [FindPackageShare("elevation_map_loader"), "data", "elevation_maps"]
                 ),
-                "pointcloud_map_path": LaunchConfiguration("pointcloud_map_path"),
                 "use_elevation_map_cloud_publisher": False,
             }
         ],
@@ -451,7 +450,6 @@ def generate_launch_description():
 
     add_launch_arg("base_frame", "base_link")
     add_launch_arg("vehicle_param_file")
-    add_launch_arg("pointcloud_map_path")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
     add_launch_arg("use_pointcloud_container", "False")
