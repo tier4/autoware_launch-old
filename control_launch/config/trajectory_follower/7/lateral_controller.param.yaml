@@ -9,7 +9,7 @@
     admissible_yaw_error_rad: 1.57  # stop mpc calculation when error is larger than the following value
 
     # -- path smoothing --
-    enable_path_smoothing: false   # flag for path smoothing
+    enable_path_smoothing: true    # flag for path smoothing
     path_filter_moving_ave_num: 25 # param of moving average filter for path smoothing
     curvature_smoothing_num_traj: 15        # point-to-point index distance used in curvature calculation (for trajectory): curvature is calculated from three points p(i-num), p(i), p(i+num)
     curvature_smoothing_num_ref_steer: 15   # point-to-point index distance used in curvature calculation (for steer command reference): curvature is calculated from three points p(i-num), p(i), p(i+num)
@@ -56,7 +56,7 @@
 
     # stop state
     stop_state_entry_ego_speed: 0.2
-    stop_state_entry_target_speed: 0.5
+    stop_state_entry_target_speed: 0.2
 
     # vehicle parameters
     vehicle:
