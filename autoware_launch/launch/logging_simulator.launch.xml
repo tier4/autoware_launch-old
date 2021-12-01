@@ -20,6 +20,8 @@
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" description="lanelet2 map file name"/>
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" description="pointcloud map file name"/>
   <arg name="vehicle_simulation" default="true" description="use vehicle simulation"/>
+  <!-- Optional parameters for scenario simulation -->
+  <arg name="scenario_simulation" default="false" description="use scenario simulation"/>
   <arg name="use_foa" default="false" />
 
   <!-- Global parameters -->
@@ -110,4 +112,10 @@
     <include file="$(find-pkg-share autoware_web_controller)/launch/autoware_web_controller.launch.xml" />
   </group>
 
+  <!-- Simulator -->
+  <include file="$(find-pkg-share simulator_launch)/launch/simulator.launch.xml">
+    <arg name="scenario_simulation" value="$(var scenario_simulation)"/>
+    <arg name="vehicle_simulation" value="false"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+  </include>
 </launch>
