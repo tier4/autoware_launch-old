@@ -28,7 +28,7 @@
         "/initialpose3d",
         "/localization/pose_twist_fusion_filter/pose",
         "/perception/object_recognition/objects",
-        "/perception/object_segmentation/pointcloud",
+        "/perception/obstacle_segmentation/pointcloud",
         "/planning/mission_planning/route",
         "/planning/scenario_planning/trajectory",
         "/control/trajectory_follower/control_cmd",
