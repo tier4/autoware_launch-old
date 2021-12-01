@@ -318,7 +318,7 @@ def launch_setup(context, *args, **kwargs):
 
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
-        name="perception_pipeline_container",
+        name=LaunchConfiguration("container_name"),
         namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
@@ -326,12 +326,24 @@ def launch_setup(context, *args, **kwargs):
             crop_box_filter_component,
             ground_filter_component,
         ],
+        condition=UnlessCondition(LaunchConfiguration("use_pointcloud_container")),
         output="screen",
+    )
+
+    composable_nodes_loader = LoadComposableNodes(
+        composable_node_descriptions=[
+            crop_box_filter_component,
+            ground_filter_component,
+        ],
+        target_container=LaunchConfiguration("container_name"),
+        condition=IfCondition(LaunchConfiguration("use_pointcloud_container")),
     )
 
     additional_pipeline_loader = LoadComposableNodes(
         composable_node_descriptions=additional_pipeline_components,
-        target_container=container,
+        target_container=container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name"),
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -342,7 +354,9 @@ def launch_setup(context, *args, **kwargs):
 
     concat_data_component_loader = LoadComposableNodes(
         composable_node_descriptions=[concat_data_component],
-        target_container=container,
+        target_container=container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name"),
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -353,7 +367,9 @@ def launch_setup(context, *args, **kwargs):
 
     compare_map_component_loader = LoadComposableNodes(
         composable_node_descriptions=create_elevation_map_filter_pipeline(),
-        target_container=container,
+        target_container=container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name"),
         condition=IfCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
@@ -364,7 +380,9 @@ def launch_setup(context, *args, **kwargs):
 
     occupancy_grid_outlier_filter_component_loader = LoadComposableNodes(
         composable_node_descriptions=[occupancy_outlier_filter_component],
-        target_container=container,
+        target_container=container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name"),
         condition=UnlessCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
@@ -375,6 +393,7 @@ def launch_setup(context, *args, **kwargs):
 
     return [
         container,
+        composable_nodes_loader,
         additional_pipeline_loader,
         compare_map_component_loader,
         concat_data_component_loader,
@@ -393,6 +412,8 @@ def generate_launch_description():
     add_launch_arg("vehicle_param_file")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
+    add_launch_arg("use_pointcloud_container", "False")
+    add_launch_arg("container_name", "perception_pipeline_container")
 
     set_container_executable = SetLaunchConfiguration(
         "container_executable",
