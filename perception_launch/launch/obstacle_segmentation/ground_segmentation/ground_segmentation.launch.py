@@ -300,8 +300,8 @@ def launch_setup(context, *args, **kwargs):
     )
 
     occupancy_outlier_filter_component = ComposableNode(
-        package="outlier_filter",
-        plugin="outlier_filter::OccupancyGridMapOutlierFilterComponent",
+        package="occupancy_grid_map_outlier_filter",
+        plugin="occupancy_grid_map_outlier_filter::OccupancyGridMapOutlierFilterComponent",
         name="occupancy_grid_map_outlier_filter",
         remappings=[
             ("~/input/occupancy_grid_map", "/perception/occupancy_grid_map/map"),
