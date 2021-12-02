@@ -83,7 +83,7 @@
           # to be defined for a topic. By default this is set to not use have features.
           # type: ["autoware_perception_msgs/msg/DynamicObjectArray", "autoware_perception_msgs/msg/DynamicObjectWithFeatureArray"]
 
-        /perception/object_segmentation/pointcloud:
+        /perception/obstacle_segmentation/pointcloud:
           module: "perception"
           timeout: 1.0
           warn_rate: 5.0
