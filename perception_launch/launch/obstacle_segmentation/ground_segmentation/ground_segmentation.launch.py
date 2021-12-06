@@ -410,7 +410,9 @@ def launch_setup(context, *args, **kwargs):
     )
 
     compare_map_component_loader = LoadComposableNodes(
-        composable_node_descriptions=create_elevation_map_filter_pipeline(ground_segmentation_param),
+        composable_node_descriptions=create_elevation_map_filter_pipeline(
+            ground_segmentation_param
+        ),
         target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
