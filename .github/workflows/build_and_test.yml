@@ -13,7 +13,7 @@ jobs:
       matrix:
         branch:
           - main
-          - develop
+          - develop/ros2
     container: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
 
     steps:

@@ -23,6 +23,7 @@ from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import SetParameter
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
 import yaml
@@ -168,11 +169,15 @@ def generate_launch_description():
             pull_out_param,
             behavior_path_planner_param,
             {
-                "bt_tree_config_path": [
-                    FindPackageShare("behavior_path_planner"),
-                    "/config/behavior_path_planner_tree.xml",
-                ],
                 "planning_hz": 10.0,
+                "lane_change.enable_abort_lane_change": LaunchConfiguration("disuse_foa"),
+                "lane_change.enable_collision_check_at_prepare_phase": LaunchConfiguration(
+                    "disuse_foa"
+                ),
+                "lane_change.use_predicted_path_outside_lanelet": LaunchConfiguration("disuse_foa"),
+                "lane_change.use_all_predicted_path": LaunchConfiguration("disuse_foa"),
+                "lane_change.enable_blocked_by_obstacle": LaunchConfiguration("disuse_foa"),
+                "bt_tree_config_path": LaunchConfiguration("bt_tree_config_path"),
             },
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -294,8 +299,8 @@ def generate_launch_description():
                 "launch_intersection": True,
                 "launch_blind_spot": True,
                 "launch_detection_area": True,
-                "launch_virtual_traffic_light": True,
-                "launch_occlusion_spot": True,
+                "launch_virtual_traffic_light": False,
+                "launch_occlusion_spot": False,
                 "launch_no_stopping_area": True,
                 "forward_path_length": 1000.0,
                 "backward_path_length": 5.0,
@@ -338,6 +343,18 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("use_multithread")),
     )
 
+    set_bt_tree_config_path_without_foa = SetLaunchConfiguration(
+        "bt_tree_config_path",
+        [FindPackageShare("behavior_path_planner"), "/config/behavior_path_planner_tree.xml"],
+        condition=IfCondition(LaunchConfiguration("disuse_foa")),
+    )
+
+    set_bt_tree_config_path_with_foa = SetLaunchConfiguration(
+        "bt_tree_config_path",
+        [FindPackageShare("behavior_path_planner"), "/config/behavior_path_planner_tree.xml"],
+        condition=UnlessCondition(LaunchConfiguration("disuse_foa")),
+    )
+
     return launch.LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -348,6 +365,18 @@ def generate_launch_description():
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
             set_container_mt_executable,
+            SetParameter(
+                name="avoidance.threshold_distance_object_is_on_center",
+                value=0.5,
+                condition=IfCondition(LaunchConfiguration("disuse_foa")),
+            ),
+            SetParameter(
+                name="avoidance.threshold_distance_object_is_on_center",
+                value=0.0,
+                condition=UnlessCondition(LaunchConfiguration("disuse_foa")),
+            ),
+            set_bt_tree_config_path_without_foa,
+            set_bt_tree_config_path_with_foa,
             container,
             ExecuteProcess(
                 cmd=[
@@ -360,7 +389,8 @@ def generate_launch_description():
                     "{approval: true}",
                     "-r",
                     "10",
-                ]
+                ],
+                condition=IfCondition(LaunchConfiguration("disuse_foa")),
             ),
         ]
     )
