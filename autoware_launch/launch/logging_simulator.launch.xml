@@ -33,7 +33,7 @@
 
   <!-- Pointcloud container -->
   <include file="$(find-pkg-share autoware_launch)/launch/pointcloud_container.launch.py" if="$(var use_pointcloud_container)">
-    <arg name="use_multithread" value="false" />
+    <arg name="use_multithread" value="true" />
     <arg name="container_name" value="$(var pointcloud_container_name)"/>
   </include>
 
