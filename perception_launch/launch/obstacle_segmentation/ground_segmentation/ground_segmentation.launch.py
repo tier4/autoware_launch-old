@@ -339,11 +339,15 @@ def launch_setup(context, *args, **kwargs):
         condition=IfCondition(LaunchConfiguration("use_pointcloud_container")),
     )
 
+    target_container = (
+        container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name")
+    )
+
     additional_pipeline_loader = LoadComposableNodes(
         composable_node_descriptions=additional_pipeline_components,
-        target_container=container
-        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
-        else LaunchConfiguration("container_name"),
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -354,9 +358,7 @@ def launch_setup(context, *args, **kwargs):
 
     concat_data_component_loader = LoadComposableNodes(
         composable_node_descriptions=[concat_data_component],
-        target_container=container
-        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
-        else LaunchConfiguration("container_name"),
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -367,9 +369,7 @@ def launch_setup(context, *args, **kwargs):
 
     compare_map_component_loader = LoadComposableNodes(
         composable_node_descriptions=create_elevation_map_filter_pipeline(),
-        target_container=container
-        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
-        else LaunchConfiguration("container_name"),
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
@@ -380,9 +380,7 @@ def launch_setup(context, *args, **kwargs):
 
     occupancy_grid_outlier_filter_component_loader = LoadComposableNodes(
         composable_node_descriptions=[occupancy_outlier_filter_component],
-        target_container=container
-        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
-        else LaunchConfiguration("container_name"),
+        target_container=target_container,
         condition=UnlessCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
