@@ -16,6 +16,7 @@ import os
 from ament_index_python.packages import get_package_share_directory
 import launch
 from launch.actions import DeclareLaunchArgument
+from launch.actions import GroupAction
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
@@ -24,6 +25,7 @@ from launch.substitutions import LaunchConfiguration
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
+from launch_ros.actions import PushRosNamespace
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
 import yaml
@@ -58,7 +60,7 @@ def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_par
         name=f"{lidar_name}_crop_box_filter",
         remappings=[
             ("input", f"/sensing/lidar/{lidar_name}/outlier_filtered/pointcloud"),
-            ("output", f"{lidar_name}/measurement_range_cropped/pointcloud"),
+            ("output", f"{lidar_name}/range_cropped/pointcloud"),
         ],
         parameters=[
             {
@@ -77,8 +79,8 @@ def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_par
         plugin=ground_segmentation_param[f"{lidar_name}_ground_filter"]["plugin"],
         name=f"{lidar_name}_ground_filter",
         remappings=[
-            ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
-            ("output", f"{lidar_name}/no_ground/pointcloud"),
+            ("input", f"{lidar_name}/range_cropped/pointcloud"),
+            ("output", f"{lidar_name}/pointcloud"),
         ],
         parameters=[ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -88,11 +90,11 @@ def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_par
 
 
 def create_ransac_pipeline(ground_segmentation_param):
-    livox_concat_component = ComposableNode(
+    additional_concat_data_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-        name="livox_concatenate_data",
-        remappings=[("output", "livox_concatenated/pointcloud")],
+        name="concatenate_data",
+        remappings=[("output", "concatenated/pointcloud")],
         parameters=[
             {
                 "input_topics": [
@@ -112,8 +114,8 @@ def create_ransac_pipeline(ground_segmentation_param):
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="short_height_obstacle_detection_area_filter",
         remappings=[
-            ("input", "livox_concatenated/pointcloud"),
-            ("output", "short_height_obstacle_detection_area/pointcloud"),
+            ("input", "concatenated/pointcloud"),
+            ("output", "detection_area/pointcloud"),
         ],
         parameters=[
             {
@@ -130,7 +132,7 @@ def create_ransac_pipeline(ground_segmentation_param):
         plugin="pointcloud_preprocessor::Lanelet2MapFilterComponent",
         name="vector_map_filter",
         remappings=[
-            ("input/pointcloud", "short_height_obstacle_detection_area/pointcloud"),
+            ("input/pointcloud", "detection_area/pointcloud"),
             ("input/vector_map", "/map/vector_map"),
             ("output", "vector_map_filtered/pointcloud"),
         ],
@@ -150,14 +152,14 @@ def create_ransac_pipeline(ground_segmentation_param):
         name="ransac_ground_filter",
         remappings=[
             ("input", "vector_map_filtered/pointcloud"),
-            ("output", "short_height/no_ground/pointcloud"),
+            ("output", "pointcloud"),
         ],
         parameters=[ground_segmentation_param["ransac_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
     return [
-        livox_concat_component,
+        additional_concat_data_component,
         short_height_obstacle_detection_area_filter_component,
         vector_map_filter_component,
         ransac_ground_filter_component,
@@ -205,11 +207,11 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
         remappings=[
             (
                 "input",
-                "no_ground/oneshot/pointcloud"
+                "/perception/obstacle_segmentation/all_lidars/pointcloud"
                 if bool(ground_segmentation_param["additional_lidars"])
-                else "no_ground/pointcloud",
+                else "/perception/obstacle_segmentation/single_frame/pointcloud",
             ),
-            ("output", "map_filtered/pointcloud"),
+            ("output", "raw/pointcloud"),
             ("input/elevation_map", "elevation_map"),
         ],
         parameters=[
@@ -229,8 +231,8 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
         plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
         name="voxel_grid_filter",
         remappings=[
-            ("input", "map_filtered/pointcloud"),
-            ("output", "voxel_grid_filtered/pointcloud"),
+            ("input", "raw/pointcloud"),
+            ("output", "downsampled/pointcloud"),
         ],
         parameters=[
             {
@@ -249,7 +251,7 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
         plugin="pointcloud_preprocessor::VoxelGridOutlierFilterComponent",
         name="voxel_grid_outlier_filter",
         remappings=[
-            ("input", "voxel_grid_filtered/pointcloud"),
+            ("input", "downsampled/pointcloud"),
             ("output", "/perception/obstacle_segmentation/pointcloud"),
         ],
         parameters=[
@@ -297,7 +299,7 @@ def launch_setup(context, *args, **kwargs):
         name="crop_box_filter",
         remappings=[
             ("input", "/sensing/lidar/concatenated/pointcloud"),
-            ("output", "measurement_range_cropped/pointcloud"),
+            ("output", "range_cropped/pointcloud"),
         ],
         parameters=[
             {
@@ -316,22 +318,22 @@ def launch_setup(context, *args, **kwargs):
         plugin=ground_segmentation_param["common_ground_filter"]["plugin"],
         name="common_ground_filter",
         remappings=[
-            ("input", "measurement_range_cropped/pointcloud"),
-            ("output", "no_ground/pointcloud"),
+            ("input", "range_cropped/pointcloud"),
+            ("output", "single_frame/pointcloud"),
         ],
         parameters=[ground_segmentation_param["common_ground_filter"]["parameters"]],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    ground_concat_topics = ["no_ground/pointcloud"]
+    ground_concat_topics = ["single_frame/pointcloud"]
     for lidar_name in ground_segmentation_param["additional_lidars"]:
-        ground_concat_topics.extend([f"{lidar_name}/no_ground/pointcloud"])
+        ground_concat_topics.extend([f"{lidar_name}/pointcloud"])
 
     concat_data_component = ComposableNode(
         package="pointcloud_preprocessor",
         plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
         name="concatenate_data",
-        remappings=[("output", "no_ground/oneshot/pointcloud")],
+        remappings=[("output", "all_lidars/pointcloud")],
         parameters=[
             {
                 "input_topics": ground_concat_topics,
@@ -349,9 +351,9 @@ def launch_setup(context, *args, **kwargs):
             ("~/input/occupancy_grid_map", "/perception/occupancy_grid_map/map"),
             (
                 "~/input/pointcloud",
-                "no_ground/oneshot/pointcloud"
+                "all_lidars/pointcloud"
                 if bool(ground_segmentation_param["additional_lidars"])
-                else "no_ground/pointcloud",
+                else "single_frame/pointcloud",
             ),
             ("~/output/pointcloud", "/perception/obstacle_segmentation/pointcloud"),
         ],
@@ -385,6 +387,10 @@ def launch_setup(context, *args, **kwargs):
         container
         if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
         else LaunchConfiguration("container_name")
+    )
+
+    additional_pipeline_namespace = (
+        "plane_fitting" if ground_segmentation_param["use_ransac_pipeline"] else ""
     )
 
     additional_pipeline_loader = LoadComposableNodes(
@@ -436,10 +442,10 @@ def launch_setup(context, *args, **kwargs):
     return [
         container,
         composable_nodes_loader,
-        additional_pipeline_loader,
-        compare_map_component_loader,
         concat_data_component_loader,
         occupancy_grid_outlier_filter_component_loader,
+        GroupAction([PushRosNamespace("elevation_map_filter"), compare_map_component_loader]),
+        GroupAction([PushRosNamespace(additional_pipeline_namespace), additional_pipeline_loader]),
     ]
 
 
