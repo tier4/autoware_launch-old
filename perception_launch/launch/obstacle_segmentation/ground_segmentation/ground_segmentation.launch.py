@@ -163,7 +163,6 @@ def create_ransac_pipeline(ground_segmentation_param):
         ransac_ground_filter_component,
     ]
 
-
 def create_elevation_map_filter_pipeline(ground_segmentation_param):
 
     elevation_map_loader = ComposableNode(
@@ -184,7 +183,7 @@ def create_elevation_map_filter_pipeline(ground_segmentation_param):
                     [
                         FindPackageShare("perception_launch"),
                         "config",
-                        "object_segmentation",
+                        "obstacle_segmentation",
                         "ground_segmentation",
                         "elevation_map_parameters.yaml",
                     ]
