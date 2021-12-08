@@ -257,7 +257,7 @@ class GroundSegmentationPipeline:
 
         if use_additional:
             for lidar_name in additional_lidars:
-                components.extend(self.create_additional_pipeline(self.vehicle_info, lidar_name))
+                components.extend(self.create_additional_pipeline(lidar_name))
             components.append(
                 self.get_additional_lidars_concatenated_component(
                     input_topics=[common_pipeline_output]
@@ -267,7 +267,7 @@ class GroundSegmentationPipeline:
             )
 
         if use_ransac:
-            components.append(self.create_ransac_pipeline())
+            components.extend(self.create_ransac_pipeline())
             components.append(
                 self.get_single_frame_obstacle_segmentation_concatenated_component(
                     input_topics=[
