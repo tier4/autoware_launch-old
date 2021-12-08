@@ -40,7 +40,9 @@ class GroundSegmentationPipeline:
         with open(ground_segmentation_param_path, "r") as f:
             self.ground_segmentation_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
-        self.single_frame_obstacle_seg_output = "/perception/obstacle_segmentation/single_frame/pointcloud_raw"
+        self.single_frame_obstacle_seg_output = (
+            "/perception/obstacle_segmentation/single_frame/pointcloud_raw"
+        )
         self.output_topic = "/perception/obstacle_segmentation/pointcloud"
         self.use_single_frame_filter = self.ground_segmentation_param["use_single_frame_filter"]
         self.use_time_series_filter = self.ground_segmentation_param["use_time_series_filter"]
@@ -85,7 +87,9 @@ class GroundSegmentationPipeline:
                     },
                     self.ground_segmentation_param[f"{lidar_name}_crop_box_filter"]["parameters"],
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -98,8 +102,12 @@ class GroundSegmentationPipeline:
                     ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
                     ("output", f"{lidar_name}/no_ground/pointcloud"),
                 ],
-                parameters=[self.ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                parameters=[
+                    self.ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]
+                ],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -120,7 +128,9 @@ class GroundSegmentationPipeline:
                         "timeout_sec": 1.0,
                     }
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -138,9 +148,13 @@ class GroundSegmentationPipeline:
                         "input_frame": LaunchConfiguration("base_frame"),
                         "output_frame": LaunchConfiguration("base_frame"),
                     },
-                    self.ground_segmentation_param["short_height_obstacle_detection_area_filter"]["parameters"],
+                    self.ground_segmentation_param["short_height_obstacle_detection_area_filter"][
+                        "parameters"
+                    ],
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -175,7 +189,9 @@ class GroundSegmentationPipeline:
                     ("output", "short_height/no_ground/pointcloud"),
                 ],
                 parameters=[self.ground_segmentation_param["ransac_ground_filter"]["parameters"]],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -201,7 +217,9 @@ class GroundSegmentationPipeline:
                     },
                     self.ground_segmentation_param["common_crop_box_filter"]["parameters"],
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -215,7 +233,9 @@ class GroundSegmentationPipeline:
                     ("output", output_topic),
                 ],
                 parameters=[self.ground_segmentation_param["common_ground_filter"]["parameters"]],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
         return components
@@ -226,7 +246,9 @@ class GroundSegmentationPipeline:
         use_ransac = bool(self.ground_segmentation_param["ransac_input_topics"])
         use_additional = bool(additional_lidars)
         relay_topic = "no_ground/oneshot/pointcloud"
-        common_pipeline_output = "no_ground/pointcloud" if use_additional or use_ransac else output_topic
+        common_pipeline_output = (
+            "no_ground/pointcloud" if use_additional or use_ransac else output_topic
+        )
 
         components = self.create_common_pipeline(
             input_topic=input_topic,
@@ -271,7 +293,9 @@ class GroundSegmentationPipeline:
                     ("~/input/pointcloud", input_topic),
                     ("~/output/pointcloud", output_topic),
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -333,7 +357,9 @@ class GroundSegmentationPipeline:
                         "output_frame": "base_link",
                     }
                 ],
-                extra_arguments=[{"use_intra_process_comms": False}],  # can't use this with transient_local
+                extra_arguments=[
+                    {"use_intra_process_comms": False}
+                ],  # can't use this with transient_local
             )
         )
 
@@ -355,7 +381,9 @@ class GroundSegmentationPipeline:
                         "voxel_size_z": 0.08,
                     }
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -376,7 +404,9 @@ class GroundSegmentationPipeline:
                         "voxel_points_threshold": 5,
                     }
                 ],
-                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+                extra_arguments=[
+                    {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
+                ],
             )
         )
 
@@ -432,7 +462,9 @@ def launch_setup(context, *args, **kwargs):
         components.extend(
             pipeline.create_single_frame_outlier_filter_components(
                 input_topic=pipeline.single_frame_obstacle_seg_output,
-                output_topic=relay_topic if pipeline.use_time_series_filter else pipeline.output_topic,
+                output_topic=relay_topic
+                if pipeline.use_time_series_filter
+                else pipeline.output_topic,
             )
         )
     if pipeline.use_time_series_filter:
