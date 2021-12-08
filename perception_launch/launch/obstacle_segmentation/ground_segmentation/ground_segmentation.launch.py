@@ -52,39 +52,44 @@ def get_vehicle_mirror_info(context):
 
 
 def create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_param):
-    crop_box_filter_component = ComposableNode(
-        package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::CropBoxFilterComponent",
-        name=f"{lidar_name}_crop_box_filter",
-        remappings=[
-            ("input", f"/sensing/lidar/{lidar_name}/outlier_filtered/pointcloud"),
-            ("output", f"{lidar_name}/measurement_range_cropped/pointcloud"),
-        ],
-        parameters=[
-            {
-                "input_frame": LaunchConfiguration("base_frame"),
-                "output_frame": LaunchConfiguration("base_frame"),
-                "min_z": vehicle_info["min_height_offset"],
-                "max_z": vehicle_info["max_height_offset"],
-            },
-            ground_segmentation_param[f"{lidar_name}_crop_box_filter"]["parameters"],
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    components = []
+    components.append(
+        ComposableNode(
+            package="pointcloud_preprocessor",
+            plugin="pointcloud_preprocessor::CropBoxFilterComponent",
+            name=f"{lidar_name}_crop_box_filter",
+            remappings=[
+                ("input", f"/sensing/lidar/{lidar_name}/outlier_filtered/pointcloud"),
+                ("output", f"{lidar_name}/measurement_range_cropped/pointcloud"),
+            ],
+            parameters=[
+                {
+                    "input_frame": LaunchConfiguration("base_frame"),
+                    "output_frame": LaunchConfiguration("base_frame"),
+                    "min_z": vehicle_info["min_height_offset"],
+                    "max_z": vehicle_info["max_height_offset"],
+                },
+                ground_segmentation_param[f"{lidar_name}_crop_box_filter"]["parameters"],
+            ],
+            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        )
     )
 
-    ground_filter_component = ComposableNode(
-        package="ground_segmentation",
-        plugin=ground_segmentation_param[f"{lidar_name}_ground_filter"]["plugin"],
-        name=f"{lidar_name}_ground_filter",
-        remappings=[
-            ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
-            ("output", f"{lidar_name}/no_ground/pointcloud"),
-        ],
-        parameters=[ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    components.append(
+        ComposableNode(
+            package="ground_segmentation",
+            plugin=ground_segmentation_param[f"{lidar_name}_ground_filter"]["plugin"],
+            name=f"{lidar_name}_ground_filter",
+            remappings=[
+                ("input", f"{lidar_name}/measurement_range_cropped/pointcloud"),
+                ("output", f"{lidar_name}/no_ground/pointcloud"),
+            ],
+            parameters=[ground_segmentation_param[f"{lidar_name}_ground_filter"]["parameters"]],
+            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        )
     )
 
-    return [crop_box_filter_component, ground_filter_component]
+    return components
 
 
 def create_ransac_pipeline(ground_segmentation_param):
@@ -160,7 +165,7 @@ def create_ransac_pipeline(ground_segmentation_param):
     ]
 
 
-def create_common_pipeline(vehicle_info, ground_segmentation_param, output_topic):
+def create_common_pipeline(vehicle_info, ground_segmentation_param, input_topic, output_topic):
     components = []
     components.append(
         ComposableNode(
@@ -168,7 +173,7 @@ def create_common_pipeline(vehicle_info, ground_segmentation_param, output_topic
             plugin="pointcloud_preprocessor::CropBoxFilterComponent",
             name="crop_box_filter",
             remappings=[
-                ("input", "/sensing/lidar/concatenated/pointcloud"),
+                ("input", input_topic),
                 ("output", "measurement_range_cropped/pointcloud"),
             ],
             parameters=[
@@ -234,26 +239,25 @@ def get_single_frame_obstacle_segmentation_concatenated_component(input_topics, 
 
 
 def create_single_frame_obstacle_segmentation_components(
-    ground_segmentation_param, vehicle_info, output_topic
+    ground_segmentation_param, vehicle_info, input_topic, output_topic
 ):
 
     additional_lidars = ground_segmentation_param["additional_lidars"]
     use_ransac = bool(ground_segmentation_param["ransac_input_topics"])
     use_additional = bool(additional_lidars)
     relay_topic = "no_ground/oneshot/pointcloud"
-    common_pipeline_output = (
-        "no_ground/pointcloud" if use_additional or use_ransac else output_topic
-    )
+    common_pipeline_output = "no_ground/pointcloud" if use_additional or use_ransac else output_topic
 
     components = create_common_pipeline(
-        vehicle_info, ground_segmentation_param, common_pipeline_output
+        vehicle_info,
+        ground_segmentation_param,
+        input_topic=input_topic,
+        output_topic=common_pipeline_output,
     )
 
     if use_additional:
         for lidar_name in additional_lidars:
-            components.extend(
-                create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_param)
-            )
+            components.extend(create_additional_pipeline(vehicle_info, lidar_name, ground_segmentation_param))
         components.append(
             get_additional_lidars_concatenated_component(
                 input_topics=[common_pipeline_output]
@@ -351,9 +355,7 @@ def create_single_frame_outlier_filter_components(input_topic, output_topic):
                     "output_frame": "base_link",
                 }
             ],
-            extra_arguments=[
-                {"use_intra_process_comms": False}
-            ],  # can't use this with transient_local
+            extra_arguments=[{"use_intra_process_comms": False}],  # can't use this with transient_local
         )
     )
 
@@ -414,9 +416,7 @@ def launch_setup(context, *args, **kwargs):
     with open(ground_segmentation_param_path, "r") as f:
         ground_segmentation_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
-    single_frame_obstacle_seg_output = (
-        "/perception/obstacle_segmentation/single_frame/pointcloud_raw"
-    )
+    single_frame_obstacle_seg_output = "/perception/obstacle_segmentation/single_frame/pointcloud_raw"
     use_single_frame_filter = ground_segmentation_param["use_single_frame_filter"]
     use_time_series_filter = ground_segmentation_param["use_time_series_filter"]
     relay_topic = "single_frame/filtered/pointcloud"
@@ -425,7 +425,10 @@ def launch_setup(context, *args, **kwargs):
     components = []
     components.extend(
         create_single_frame_obstacle_segmentation_components(
-            ground_segmentation_param, vehicle_info, single_frame_obstacle_seg_output
+            ground_segmentation_param,
+            vehicle_info,
+            input_topic="/sensing/lidar/concatenated/pointcloud",
+            output_topic=single_frame_obstacle_seg_output,
         )
     )
     if use_single_frame_filter:
@@ -438,9 +441,7 @@ def launch_setup(context, *args, **kwargs):
     if use_time_series_filter:
         components.extend(
             create_time_series_outlier_filter_components(
-                input_topic=relay_topic
-                if use_single_frame_filter
-                else single_frame_obstacle_seg_output,
+                input_topic=relay_topic if use_single_frame_filter else single_frame_obstacle_seg_output,
                 output_topic=output_topic,
             )
         )
