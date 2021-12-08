@@ -106,76 +106,80 @@ class GroundSegmentationPipeline:
         return components
 
     def create_ransac_pipeline(self):
-        livox_concat_component = ComposableNode(
-            package="pointcloud_preprocessor",
-            plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-            name="livox_concatenate_data",
-            remappings=[("output", "livox_concatenated/pointcloud")],
-            parameters=[
-                {
-                    "input_topics": self.ground_segmentation_param["ransac_input_topics"],
-                    "output_frame": LaunchConfiguration("base_frame"),
-                    "timeout_sec": 1.0,
-                }
-            ],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        components = []
+        components.append(
+            ComposableNode(
+                package="pointcloud_preprocessor",
+                plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
+                name="livox_concatenate_data",
+                remappings=[("output", "livox_concatenated/pointcloud")],
+                parameters=[
+                    {
+                        "input_topics": self.ground_segmentation_param["ransac_input_topics"],
+                        "output_frame": LaunchConfiguration("base_frame"),
+                        "timeout_sec": 1.0,
+                    }
+                ],
+                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+            )
         )
 
-        short_height_obstacle_detection_area_filter_component = ComposableNode(
-            package="pointcloud_preprocessor",
-            plugin="pointcloud_preprocessor::CropBoxFilterComponent",
-            name="short_height_obstacle_detection_area_filter",
-            remappings=[
-                ("input", "livox_concatenated/pointcloud"),
-                ("output", "short_height_obstacle_detection_area/pointcloud"),
-            ],
-            parameters=[
-                {
-                    "input_frame": LaunchConfiguration("base_frame"),
-                    "output_frame": LaunchConfiguration("base_frame"),
-                },
-                self.ground_segmentation_param["short_height_obstacle_detection_area_filter"]["parameters"],
-            ],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        components.append(
+            ComposableNode(
+                package="pointcloud_preprocessor",
+                plugin="pointcloud_preprocessor::CropBoxFilterComponent",
+                name="short_height_obstacle_detection_area_filter",
+                remappings=[
+                    ("input", "livox_concatenated/pointcloud"),
+                    ("output", "short_height_obstacle_detection_area/pointcloud"),
+                ],
+                parameters=[
+                    {
+                        "input_frame": LaunchConfiguration("base_frame"),
+                        "output_frame": LaunchConfiguration("base_frame"),
+                    },
+                    self.ground_segmentation_param["short_height_obstacle_detection_area_filter"]["parameters"],
+                ],
+                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+            )
         )
 
-        vector_map_filter_component = ComposableNode(
-            package="pointcloud_preprocessor",
-            plugin="pointcloud_preprocessor::Lanelet2MapFilterComponent",
-            name="vector_map_filter",
-            remappings=[
-                ("input/pointcloud", "short_height_obstacle_detection_area/pointcloud"),
-                ("input/vector_map", "/map/vector_map"),
-                ("output", "vector_map_filtered/pointcloud"),
-            ],
-            parameters=[
-                {
-                    "voxel_size_x": 0.25,
-                    "voxel_size_y": 0.25,
-                }
-            ],
-            # cannot use intra process because vector map filter uses transient local.
-            extra_arguments=[{"use_intra_process_comms": False}],
+        components.append(
+            ComposableNode(
+                package="pointcloud_preprocessor",
+                plugin="pointcloud_preprocessor::Lanelet2MapFilterComponent",
+                name="vector_map_filter",
+                remappings=[
+                    ("input/pointcloud", "short_height_obstacle_detection_area/pointcloud"),
+                    ("input/vector_map", "/map/vector_map"),
+                    ("output", "vector_map_filtered/pointcloud"),
+                ],
+                parameters=[
+                    {
+                        "voxel_size_x": 0.25,
+                        "voxel_size_y": 0.25,
+                    }
+                ],
+                # cannot use intra process because vector map filter uses transient local.
+                extra_arguments=[{"use_intra_process_comms": False}],
+            )
         )
 
-        ransac_ground_filter_component = ComposableNode(
-            package="ground_segmentation",
-            plugin="ground_segmentation::RANSACGroundFilterComponent",
-            name="ransac_ground_filter",
-            remappings=[
-                ("input", "vector_map_filtered/pointcloud"),
-                ("output", "short_height/no_ground/pointcloud"),
-            ],
-            parameters=[self.ground_segmentation_param["ransac_ground_filter"]["parameters"]],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+        components.append(
+            ComposableNode(
+                package="ground_segmentation",
+                plugin="ground_segmentation::RANSACGroundFilterComponent",
+                name="ransac_ground_filter",
+                remappings=[
+                    ("input", "vector_map_filtered/pointcloud"),
+                    ("output", "short_height/no_ground/pointcloud"),
+                ],
+                parameters=[self.ground_segmentation_param["ransac_ground_filter"]["parameters"]],
+                extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+            )
         )
 
-        return [
-            livox_concat_component,
-            short_height_obstacle_detection_area_filter_component,
-            vector_map_filter_component,
-            ransac_ground_filter_component,
-        ]
+        return components
 
     def create_common_pipeline(self, input_topic, output_topic):
         components = []
@@ -231,9 +235,7 @@ class GroundSegmentationPipeline:
 
         if use_additional:
             for lidar_name in additional_lidars:
-                components.extend(
-                    self.create_additional_pipeline(self.vehicle_info, lidar_name)
-                )
+                components.extend(self.create_additional_pipeline(self.vehicle_info, lidar_name))
             components.append(
                 self.get_additional_lidars_concatenated_component(
                     input_topics=[common_pipeline_output]
@@ -412,6 +414,7 @@ class GroundSegmentationPipeline:
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
+
 
 def launch_setup(context, *args, **kwargs):
     pipeline = GroundSegmentationPipeline(context)
