@@ -119,8 +119,9 @@ class GroundSegmentationPipeline:
             ComposableNode(
                 package="pointcloud_preprocessor",
                 plugin="pointcloud_preprocessor::PointCloudConcatenateDataSynchronizerComponent",
-                name="livox_concatenate_data",
-                remappings=[("output", "plane_fitting/concatenated/pointcloud")],
+                name="concatenate_data",
+                namespace="plane_fitting",
+                remappings=[("output", "concatenated/pointcloud")],
                 parameters=[
                     {
                         "input_topics": self.ground_segmentation_param["ransac_input_topics"],
@@ -139,9 +140,10 @@ class GroundSegmentationPipeline:
                 package="pointcloud_preprocessor",
                 plugin="pointcloud_preprocessor::CropBoxFilterComponent",
                 name="short_height_obstacle_detection_area_filter",
+                namespace="plane_fitting",
                 remappings=[
-                    ("input", "plane_fitting/concatenated/pointcloud"),
-                    ("output", "plane_fitting/detection_area/pointcloud"),
+                    ("input", "concatenated/pointcloud"),
+                    ("output", "detection_area/pointcloud"),
                 ],
                 parameters=[
                     {
@@ -163,10 +165,11 @@ class GroundSegmentationPipeline:
                 package="pointcloud_preprocessor",
                 plugin="pointcloud_preprocessor::Lanelet2MapFilterComponent",
                 name="vector_map_filter",
+                namespace="plane_fitting",
                 remappings=[
-                    ("input/pointcloud", "plane_fitting/detection_area/pointcloud"),
+                    ("input/pointcloud", "detection_area/pointcloud"),
                     ("input/vector_map", "/map/vector_map"),
-                    ("output", "plane_fitting/vector_map_filtered/pointcloud"),
+                    ("output", "vector_map_filtered/pointcloud"),
                 ],
                 parameters=[
                     {
@@ -184,9 +187,10 @@ class GroundSegmentationPipeline:
                 package="ground_segmentation",
                 plugin="ground_segmentation::RANSACGroundFilterComponent",
                 name="ransac_ground_filter",
+                namespace="plane_fitting",
                 remappings=[
-                    ("input", "plane_fitting/vector_map_filtered/pointcloud"),
-                    ("output", "plane_fitting/pointcloud"),
+                    ("input", "vector_map_filtered/pointcloud"),
+                    ("output", "pointcloud"),
                 ],
                 parameters=[self.ground_segmentation_param["ransac_ground_filter"]["parameters"]],
                 extra_arguments=[
@@ -309,8 +313,9 @@ class GroundSegmentationPipeline:
                 package="elevation_map_loader",
                 plugin="ElevationMapLoaderNode",
                 name="elevation_map_loader",
+                namespace="elevation_map",
                 remappings=[
-                    ("output/elevation_map", "elevation_map"),
+                    ("output/elevation_map", "map"),
                     ("input/pointcloud_map", "/map/pointcloud_map"),
                     ("input/vector_map", "/map/vector_map"),
                 ],
@@ -343,10 +348,11 @@ class GroundSegmentationPipeline:
                 package="compare_map_segmentation",
                 plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
                 name="compare_elevation_map_filter",
+                namespace="elevation_map",
                 remappings=[
                     ("input", input_topic),
                     ("output", "map_filtered/pointcloud"),
-                    ("input/elevation_map", "elevation_map"),
+                    ("input/elevation_map", "map"),
                 ],
                 parameters=[
                     {
@@ -368,6 +374,7 @@ class GroundSegmentationPipeline:
                 package="pointcloud_preprocessor",
                 plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
                 name="voxel_grid_filter",
+                namespace="elevation_map",
                 remappings=[
                     ("input", "map_filtered/pointcloud"),
                     ("output", "voxel_grid_filtered/pointcloud"),
@@ -392,6 +399,7 @@ class GroundSegmentationPipeline:
                 package="pointcloud_preprocessor",
                 plugin="pointcloud_preprocessor::VoxelGridOutlierFilterComponent",
                 name="voxel_grid_outlier_filter",
+                namespace="elevation_map",
                 remappings=[
                     ("input", "voxel_grid_filtered/pointcloud"),
                     ("output", output_topic),
