@@ -1318,7 +1318,7 @@ Visualization Manager:
             Filter size: 10
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /control/trajectory_follower/predicted_trajectory
+            Value: /control/trajectory_follower/lateral/predicted_trajectory
           Value: true
           View Path:
             Alpha: 1

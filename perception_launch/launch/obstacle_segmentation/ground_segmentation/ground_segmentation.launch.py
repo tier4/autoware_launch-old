@@ -16,13 +16,12 @@ import os
 from ament_index_python.packages import get_package_share_directory
 import launch
 from launch.actions import DeclareLaunchArgument
-from launch.actions import IncludeLaunchDescription
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
-from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
@@ -105,6 +104,7 @@ def create_ransac_pipeline(ground_segmentation_param):
                 "timeout_sec": 1.0,
             }
         ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
     short_height_obstacle_detection_area_filter_component = ComposableNode(
@@ -164,15 +164,53 @@ def create_ransac_pipeline(ground_segmentation_param):
     ]
 
 
-def create_elevation_map_filter_pipeline():
+def create_elevation_map_filter_pipeline(ground_segmentation_param):
+
+    elevation_map_loader = ComposableNode(
+        package="elevation_map_loader",
+        plugin="ElevationMapLoaderNode",
+        name="elevation_map_loader",
+        remappings=[
+            ("output/elevation_map", "elevation_map"),
+            ("input/pointcloud_map", "/map/pointcloud_map"),
+            ("input/vector_map", "/map/vector_map"),
+        ],
+        parameters=[
+            {
+                "use_lane_filter": False,
+                "use_inpaint": True,
+                "inpaint_radius": 1.0,
+                "param_file_path": PathJoinSubstitution(
+                    [
+                        FindPackageShare("perception_launch"),
+                        "config",
+                        "obstacle_segmentation",
+                        "ground_segmentation",
+                        "elevation_map_parameters.yaml",
+                    ]
+                ),
+                "elevation_map_directory": PathJoinSubstitution(
+                    [FindPackageShare("elevation_map_loader"), "data", "elevation_maps"]
+                ),
+                "use_elevation_map_cloud_publisher": False,
+            }
+        ],
+        extra_arguments=[{"use_intra_process_comms": False}],
+    )
+
     compare_elevation_map_filter_component = ComposableNode(
         package="compare_map_segmentation",
         plugin="compare_map_segmentation::CompareElevationMapFilterComponent",
         name="compare_elevation_map_filter",
         remappings=[
-            ("input", "no_ground/oneshot/pointcloud"),
+            (
+                "input",
+                "no_ground/oneshot/pointcloud"
+                if bool(ground_segmentation_param["additional_lidars"])
+                else "no_ground/pointcloud",
+            ),
             ("output", "map_filtered/pointcloud"),
-            ("input/elevation_map", "/map/elevation_map"),
+            ("input/elevation_map", "elevation_map"),
         ],
         parameters=[
             {
@@ -226,6 +264,7 @@ def create_elevation_map_filter_pipeline():
     )
 
     return [
+        elevation_map_loader,
         compare_elevation_map_filter_component,
         downsampling_component,
         voxel_grid_outlier_filter_component,
@@ -302,33 +341,9 @@ def launch_setup(context, *args, **kwargs):
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    laserscan_to_occupancy_grid_map_loader = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                FindPackageShare("laserscan_to_occupancy_grid_map"),
-                "/launch/laserscan_to_occupancy_grid_map.launch.py",
-            ]
-        ),
-        launch_arguments={
-            "container": "/perception/obstacle_segmentation/ground_segmentation/perception_pipeline_container",
-            "input/obstacle_pointcloud": "no_ground/oneshot/pointcloud"
-            if bool(ground_segmentation_param["additional_lidars"])
-            else "no_ground/pointcloud",
-            "input/raw_pointcloud": "/sensing/lidar/concatenated/pointcloud",
-            "output": "/perception/occupancy_grid_map/map",
-            "use_intra_process": LaunchConfiguration("use_intra_process"),
-        }.items(),
-        condition=UnlessCondition(
-            LaunchConfiguration(
-                "use_compare_map_pipeline",
-                default=ground_segmentation_param["use_compare_map_pipeline"],
-            )
-        ),
-    )
-
     occupancy_outlier_filter_component = ComposableNode(
-        package="pointcloud_preprocessor",
-        plugin="pointcloud_preprocessor::OccupancyGridMapOutlierFilterComponent",
+        package="occupancy_grid_map_outlier_filter",
+        plugin="occupancy_grid_map_outlier_filter::OccupancyGridMapOutlierFilterComponent",
         name="occupancy_grid_map_outlier_filter",
         remappings=[
             ("~/input/occupancy_grid_map", "/perception/occupancy_grid_map/map"),
@@ -345,7 +360,7 @@ def launch_setup(context, *args, **kwargs):
 
     # set container to run all required components in the same process
     container = ComposableNodeContainer(
-        name="perception_pipeline_container",
+        name=LaunchConfiguration("container_name"),
         namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
@@ -353,12 +368,28 @@ def launch_setup(context, *args, **kwargs):
             crop_box_filter_component,
             ground_filter_component,
         ],
+        condition=UnlessCondition(LaunchConfiguration("use_pointcloud_container")),
         output="screen",
+    )
+
+    composable_nodes_loader = LoadComposableNodes(
+        composable_node_descriptions=[
+            crop_box_filter_component,
+            ground_filter_component,
+        ],
+        target_container=LaunchConfiguration("container_name"),
+        condition=IfCondition(LaunchConfiguration("use_pointcloud_container")),
+    )
+
+    target_container = (
+        container
+        if UnlessCondition(LaunchConfiguration("use_pointcloud_container")).evaluate(context)
+        else LaunchConfiguration("container_name")
     )
 
     additional_pipeline_loader = LoadComposableNodes(
         composable_node_descriptions=additional_pipeline_components,
-        target_container=container,
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -369,7 +400,7 @@ def launch_setup(context, *args, **kwargs):
 
     concat_data_component_loader = LoadComposableNodes(
         composable_node_descriptions=[concat_data_component],
-        target_container=container,
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_additional_pipeline",
@@ -379,8 +410,10 @@ def launch_setup(context, *args, **kwargs):
     )
 
     compare_map_component_loader = LoadComposableNodes(
-        composable_node_descriptions=create_elevation_map_filter_pipeline(),
-        target_container=container,
+        composable_node_descriptions=create_elevation_map_filter_pipeline(
+            ground_segmentation_param
+        ),
+        target_container=target_container,
         condition=IfCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
@@ -391,7 +424,7 @@ def launch_setup(context, *args, **kwargs):
 
     occupancy_grid_outlier_filter_component_loader = LoadComposableNodes(
         composable_node_descriptions=[occupancy_outlier_filter_component],
-        target_container=container,
+        target_container=target_container,
         condition=UnlessCondition(
             LaunchConfiguration(
                 "use_compare_map_pipeline",
@@ -402,11 +435,11 @@ def launch_setup(context, *args, **kwargs):
 
     return [
         container,
+        composable_nodes_loader,
         additional_pipeline_loader,
         compare_map_component_loader,
         concat_data_component_loader,
         occupancy_grid_outlier_filter_component_loader,
-        laserscan_to_occupancy_grid_map_loader,
     ]
 
 
@@ -421,6 +454,8 @@ def generate_launch_description():
     add_launch_arg("vehicle_param_file")
     add_launch_arg("use_multithread", "False")
     add_launch_arg("use_intra_process", "True")
+    add_launch_arg("use_pointcloud_container", "False")
+    add_launch_arg("container_name", "perception_pipeline_container")
 
     set_container_executable = SetLaunchConfiguration(
         "container_executable",
