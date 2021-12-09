@@ -9,9 +9,8 @@
 
   <!-- Optional parameters -->
   <arg name="vehicle" default="true" description="launch vehicle" />
-  <arg name="system" default="true" description="launch system" />
   <arg name="map" default="true" description="launch map" />
-  <arg name="sensing" default="true" description="launch sensing" />
+  <arg name="sensing" default="false" description="launch sensing" />
   <arg name="localization" default="true" description="launch localization" />
   <arg name="perception" default="true" description="launch perception" />
   <arg name="planning" default="true" description="launch planning" />
@@ -33,13 +32,13 @@
   <include file="$(find-pkg-share lgsvl_interface)/launch/lgsvl.launch.py">
     <arg name="lgsvl_interface_param" value="$(find-pkg-share lgsvl_interface)/param/lgsvl.$(var vehicle_model).param.yaml" />
   </include>
+  <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 base_link nav_base" />
+  <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 base_link imu" />
   <node pkg="topic_tools" exec="relay" name="relay_lgsvl_clock" output="log" if="$(var use_sim_time)">
     <param name="input_topic" value="/lgsvl/clock" />
     <param name="output_topic" value="/clock" />
     <param name="type" value="rosgraph_msgs/msg/Clock" />
   </node>
-  <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 base_link nav_base" />
-  <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 base_link imu" />
   <node pkg="topic_tools" exec="relay" name="relay_lgsvl_odometry" output="log">
     <param name="input_topic" value="/lgsvl/gnss_odom" />
     <param name="output_topic" value="/localization/kinematic_state" />
@@ -67,14 +66,6 @@
       <arg name="sensor_model" value="$(var sensor_model)"/>
       <arg name="vehicle_id" value="$(var vehicle_id)"/>
       <arg name="simulation" value="$(var vehicle_simulation)"/>
-    </include>
-  </group>
-
-  <!-- System -->
-  <group>
-    <include file="$(find-pkg-share system_launch)/launch/system.launch.xml" if="$(var system)">
-      <arg name="run_mode" value="online"/>
-      <arg name="sensor_model" value="$(var sensor_model)"/>
     </include>
   </group>
 
@@ -125,25 +116,20 @@
     </include>
   </group>
 
-  <!-- Autoware API -->
-  <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml">
-    <arg name="init_simulator_pose" value="false"/>
-    <arg name="init_localization_pose" value="true"/>
-  </include>
-
   <!-- Rviz -->
   <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(find-pkg-share autoware_launch)/rviz/autoware.rviz -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png" if="$(var rviz)">
   </node>
 
-  <!-- Web Controller -->
-  <group>
-    <include file="$(find-pkg-share autoware_web_controller)/launch/autoware_web_controller.launch.xml" />
-  </group>
-
-  <!-- Simulator -->
-  <include file="$(find-pkg-share simulator_launch)/launch/simulator.launch.xml">
+  <!-- Simulator (only runs to use ground truth localization)-->
+  <include file="$(find-pkg-share simulator_launch)/launch/simulator.launch.xml" unless="$(var localization)">
     <arg name="scenario_simulation" value="$(var scenario_simulation)"/>
     <arg name="vehicle_simulation" value="false"/>
     <arg name="vehicle_model" value="$(var vehicle_model)"/>
   </include>
+  <!-- TODO: without this planning does not work but this should not be necessary-->
+  <node pkg="dummy_perception_publisher" exec="empty_objects_publisher" name="empty_objects_publisher" output="screen" if="$(var perception)">
+    <remap from="~/output/objects" to="/perception/object_recognition/objects" />
+  </node>
+  <!-- Engage command -->
+  <executable cmd="ros2 topic pub --rate 0.5 /autoware/engage autoware_auto_vehicle_msgs/msg/Engage '{engage: true}'" output="own_log" if="$(var control)" />
 </launch>
