@@ -29,6 +29,7 @@
   </include>
 
   <!-- SVL specific -->
+  <executable cmd="lgsvl_bridge" output="screen" />
   <include file="$(find-pkg-share lgsvl_interface)/launch/lgsvl.launch.py">
     <arg name="lgsvl_interface_param" value="$(find-pkg-share lgsvl_interface)/param/lgsvl.$(var vehicle_model).param.yaml" />
   </include>
@@ -54,9 +55,6 @@
     <node pkg="tf2_ros" exec="static_transform_publisher" args="0 0 0 0 0 0 map odom" />
     <node pkg="lgsvl_ground_truth" exec="lgsvl_ground_truth_exe" />
   </group>
-  <include file="$(find-pkg-share $(var sensor_model)_launch)/launch/svl_pointcloud_preprocessor.launch.py" unless="$(var sensing)">
-    <arg name="vehicle_model" value="$(var vehicle_model)"/>
-  </include>
 
 
   <!-- Vehicle -->
@@ -87,17 +85,21 @@
     </include>
   </group>
 
-  <!-- Localization -->
-  <group>
-    <include file="$(find-pkg-share localization_launch)/launch/localization.launch.xml" if="$(var localization)">
+  <!-- Custom pointcloud preprocessing for SVL. Only run if we do not use sensing and if we use either localization or perception -->
+  <group unless="$(var sensing)">
+    <include file="$(find-pkg-share $(var sensor_model)_launch)/launch/svl_pointcloud_preprocessor.launch.py" if="$(eval '\'$(var perception)\' == \'true\' or \'$(var localization)\' == \'true\'')">
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
     </include>
   </group>
+  <!-- Localization -->
+  <include file="$(find-pkg-share localization_launch)/launch/localization.launch.xml" if="$(var localization)">
+  </include>
 
   <!-- Perception -->
   <group>
     <include file="$(find-pkg-share perception_launch)/launch/perception.launch.xml" if="$(var perception)">
       <!-- options for mode: camera_lidar_fusion, lidar, camera -->
-      <arg name="mode" value="camera_lidar_fusion" />
+      <arg name="mode" value="lidar" />
       <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
     </include>
   </group>
