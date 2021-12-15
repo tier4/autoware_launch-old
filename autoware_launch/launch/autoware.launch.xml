@@ -84,6 +84,6 @@
   </node>
 
   <!-- Web Controller -->
-  <include file="$(find-pkg-share autoware_web_controller)/launch/autoware_web_controller.launch.xml" />
+  <include file="$(find-pkg-share web_controller)/launch/web_controller.launch.xml" />
 
 </launch>
