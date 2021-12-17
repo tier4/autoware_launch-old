@@ -16,7 +16,7 @@ Panels:
     Expanded: ~
     Name: Views
     Splitter Ratio: 0.5
-  - Class: autoware_localization_rviz_plugin/InitialPoseButtonPanel
+  - Class: tier4_localization_rviz_plugin/InitialPoseButtonPanel
     Name: InitialPoseButtonPanel
   - Class: rviz_common/Time
     Experimental: false
@@ -79,7 +79,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /vehicle/status/steering
+                Value: /vehicle/status/steering_status
               Value: true
               Value height offset: 0
             - Class: rviz_plugins/ConsoleMeter
@@ -95,7 +95,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /vehicle/status/twist
+                Value: /vehicle/status/velocity_status
               Value: true
               Value height offset: 0
             - Alpha: 0.999
@@ -113,7 +113,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /vehicle/status/twist
+                Value: /vehicle/status/velocity_status
               Value: true
             - Alpha: 0.30000001192092896
               Class: rviz_default_plugins/RobotModel
@@ -326,7 +326,7 @@ Visualization Manager:
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /control/turn_signal_cmd
+                Value: /vehicle/status/turn_indicators_status
               Value: true
               Width: 512
           Enabled: true
@@ -435,39 +435,6 @@ Visualization Manager:
                 Reliability Policy: Best Effort
                 Value: /sensing/lidar/concatenated/pointcloud
               Use Fixed Frame: false
-              Use rainbow: true
-              Value: true
-            - Alpha: 0.999
-              Autocompute Intensity Bounds: true
-              Autocompute Value Bounds:
-                Max Value: 15
-                Min Value: -2
-                Value: false
-              Axis: Z
-              Channel Name: z
-              Class: rviz_default_plugins/PointCloud2
-              Color: 200; 200; 200
-              Color Transformer: FlatColor
-              Decay Time: 0
-              Enabled: true
-              Invert Rainbow: false
-              Max Color: 255; 255; 255
-              Max Intensity: 15
-              Min Color: 0; 0; 0
-              Min Intensity: -5
-              Name: NoGroundPointCloud
-              Position Transformer: XYZ
-              Selectable: true
-              Size (Pixels): 3
-              Size (m): 0.02
-              Style: Points
-              Topic:
-                Depth: 5
-                Durability Policy: Volatile
-                History Policy: Keep Last
-                Reliability Policy: Best Effort
-                Value: /sensing/lidar/no_ground/pointcloud
-              Use Fixed Frame: true
               Use rainbow: true
               Value: true
             - Alpha: 0.999
@@ -718,64 +685,182 @@ Visualization Manager:
       Displays:
         - Class: rviz_common/Group
           Displays:
-            - Class: rviz_default_plugins/MarkerArray
+            - Alpha: 0.999
+              Autocompute Intensity Bounds: true
+              Autocompute Value Bounds:
+                Max Value: 15
+                Min Value: -2
+                Value: false
+              Axis: Z
+              Channel Name: z
+              Class: rviz_default_plugins/PointCloud2
+              Color: 200; 200; 200
+              Color Transformer: FlatColor
+              Decay Time: 0
               Enabled: true
-              Name: DynamicObjects
+              Invert Rainbow: false
+              Max Color: 255; 255; 255
+              Max Intensity: 15
+              Min Color: 0; 0; 0
+              Min Intensity: -5
+              Name: NoGroundPointCloud
+              Position Transformer: XYZ
+              Selectable: true
+              Size (Pixels): 3
+              Size (m): 0.02
+              Style: Points
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Best Effort
+                Value: /perception/obstacle_segmentation/pointcloud
+              Use Fixed Frame: true
+              Use rainbow: true
+              Value: true
+          Enabled: true
+          Name: Segmentation
+        - Class: rviz_common/Group
+          Displays:
+            - BUS:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CAR:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CYCLIST:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Class: autoware_auto_perception_rviz_plugin/DetectedObjects
+              Display 3d polygon: true
+              Display Label: true
+              Display PoseWithCovariance: true
+              Display Predicted Path Confidence: true
+              Display Predicted Paths: true
+              Display Twist: true
+              Display UUID: true
+              Display Velocity: true
+              Enabled: true
+              MOTORCYCLE:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Name: DetectedObjects
               Namespaces:
-                label: true
-                path: false
-                path confidence: true
-                position covariance: true
-                shape: true
-                twist: true
+                {}
+              PEDESTRIAN:
+                Alpha: 0.999
+                Color: 255; 192; 203
+              TRAILER:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              TRUCK:
+                Alpha: 0.999
+                Color: 30; 144; 255
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /perception/object_recognition/detection/objects/visualization
+                Value: /perception/object_recognition/detection/objects
+              UNKNOWN:
+                Alpha: 0.999
+                Color: 255; 255; 255
               Value: true
           Enabled: false
           Name: Detection
         - Class: rviz_common/Group
           Displays:
-            - Class: rviz_default_plugins/MarkerArray
+            - BUS:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CAR:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CYCLIST:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Class: autoware_auto_perception_rviz_plugin/TrackedObjects
+              Display 3d polygon: true
+              Display Label: true
+              Display PoseWithCovariance: true
+              Display Predicted Path Confidence: true
+              Display Predicted Paths: true
+              Display Twist: true
+              Display UUID: true
+              Display Velocity: true
               Enabled: true
-              Name: DynamicObjects
+              MOTORCYCLE:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Name: TrackedObjects
               Namespaces:
-                label: true
-                path: false
-                path confidence: true
-                position covariance: true
-                shape: true
-                twist: true
+                {}
+              PEDESTRIAN:
+                Alpha: 0.999
+                Color: 255; 192; 203
+              TRAILER:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              TRUCK:
+                Alpha: 0.999
+                Color: 30; 144; 255
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /perception/object_recognition/tracking/objects/visualization
+                Value: /perception/object_recognition/tracking/objects
+              UNKNOWN:
+                Alpha: 0.999
+                Color: 255; 255; 255
               Value: true
           Enabled: false
           Name: Tracking
         - Class: rviz_common/Group
           Displays:
-            - Class: rviz_default_plugins/MarkerArray
+            - BUS:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CAR:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              CYCLIST:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Class: autoware_auto_perception_rviz_plugin/PredictedObjects
+              Display 3d polygon: true
+              Display Label: true
+              Display PoseWithCovariance: true
+              Display Predicted Path Confidence: true
+              Display Predicted Paths: true
+              Display Twist: true
+              Display UUID: true
+              Display Velocity: true
               Enabled: true
-              Name: DynamicObjects
+              MOTORCYCLE:
+                Alpha: 0.999
+                Color: 119; 11; 32
+              Name: PredictedObjects
               Namespaces:
-                label: true
-                path: true
-                path confidence: true
-                position covariance: false
-                shape: true
-                twist: true
+                {}
+              PEDESTRIAN:
+                Alpha: 0.999
+                Color: 255; 192; 203
+              TRAILER:
+                Alpha: 0.999
+                Color: 30; 144; 255
+              TRUCK:
+                Alpha: 0.999
+                Color: 30; 144; 255
               Topic:
                 Depth: 5
                 Durability Policy: Volatile
                 History Policy: Keep Last
                 Reliability Policy: Reliable
-                Value: /perception/object_recognition/objects/visualization
+                Value: /perception/object_recognition/objects
+              UNKNOWN:
+                Alpha: 0.999
+                Color: 255; 255; 255
               Value: true
           Enabled: true
           Name: Prediction
@@ -1300,7 +1385,7 @@ Visualization Manager:
             Durability Policy: Volatile
             History Policy: Keep Last
             Reliability Policy: Reliable
-            Value: /control/trajectory_follower/predicted_trajectory
+            Value: /control/trajectory_follower/lateral/predicted_trajectory
           Value: true
           View Path:
             Alpha: 1

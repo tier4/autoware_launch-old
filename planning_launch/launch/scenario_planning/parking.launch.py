@@ -52,7 +52,10 @@ def generate_launch_description():
                 name="costmap_generator",
                 remappings=[
                     ("~/input/objects", "/perception/object_recognition/objects"),
-                    ("~/input/points_no_ground", "/sensing/lidar/no_ground/pointcloud"),
+                    (
+                        "~/input/points_no_ground",
+                        "/perception/obstacle_segmentation/pointcloud",
+                    ),
                     ("~/input/vector_map", "/map/vector_map"),
                     ("~/input/scenario", "/planning/scenario_planning/scenario"),
                     ("~/output/grid_map", "costmap_generator/grid_map"),
@@ -92,7 +95,7 @@ def generate_launch_description():
                     ("~/input/route", "/planning/mission_planning/route"),
                     ("~/input/occupancy_grid", "costmap_generator/occupancy_grid"),
                     ("~/input/scenario", "/planning/scenario_planning/scenario"),
-                    ("~/input/twist", "/localization/twist"),
+                    ("~/input/odometry", "/localization/kinematic_state"),
                     ("~/output/trajectory", "/planning/scenario_planning/parking/trajectory"),
                     ("is_completed", "/planning/scenario_planning/parking/is_completed"),
                 ],
