@@ -3,8 +3,8 @@
   <arg name="map_topic_name" default="/map/vector_map" />
 
   <group if="$(var disuse_foa)">
-    <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/lane_change_approval
-                    autoware_planning_msgs/msg/LaneChangeCommand 'command: true' -r 10" />
+    <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/path_change_approval
+                    tier4_planning_msgs/msg/Approval 'approval: true' -r 10"/>
   </group>
 
   <set_parameter name="avoidance.threshold_distance_object_is_on_center" value="0.5" if="$(var disuse_foa)" />
