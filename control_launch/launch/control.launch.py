@@ -20,7 +20,6 @@ from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
-from launch.launch_context import LaunchContext
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
@@ -33,14 +32,18 @@ import yaml
 
 def launch_setup(context, *args, **kwargs):
     lateral_controller_mode = LaunchConfiguration("lateral_controller_mode").perform(context)
-    if(lateral_controller_mode == "mpc_follower"):
-        lat_controller_param_path = FindPackageShare(
-            "control_launch").perform(context) + "/config/trajectory_follower/lateral_controller.param.yaml"
+    if lateral_controller_mode == "mpc_follower":
+        lat_controller_param_path = (
+            FindPackageShare("control_launch").perform(context)
+            + "/config/trajectory_follower/lateral_controller.param.yaml"
+        )
         with open(lat_controller_param_path, "r") as f:
             lat_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    elif(lateral_controller_mode == "pure_pursuit"):
-        lat_controller_param_path = FindPackageShare(
-            "control_launch").perform(context) + "/config/pure_pursuit/pure_pursuit.param.yaml"
+    elif lateral_controller_mode == "pure_pursuit":
+        lat_controller_param_path = (
+            FindPackageShare("control_launch").perform(context)
+            + "/config/pure_pursuit/pure_pursuit.param.yaml"
+        )
         with open(lat_controller_param_path, "r") as f:
             lat_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
     lon_controller_param_path = LaunchConfiguration("lon_controller_param_path").perform(context)
@@ -62,7 +65,7 @@ def launch_setup(context, *args, **kwargs):
         lane_departure_checker_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     # lateral controller
-    if(lateral_controller_mode == "mpc_follower"):
+    if lateral_controller_mode == "mpc_follower":
         lat_controller_component = ComposableNode(
             package="trajectory_follower_nodes",
             plugin="autoware::motion::control::trajectory_follower_nodes::LateralController",
@@ -81,7 +84,7 @@ def launch_setup(context, *args, **kwargs):
             ],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
-    elif(lateral_controller_mode == "pure_pursuit"):
+    elif lateral_controller_mode == "pure_pursuit":
         lat_controller_component = ComposableNode(
             package="pure_pursuit",
             plugin="pure_pursuit::PurePursuitNode",
@@ -243,7 +246,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # set container to run all required components in the same process
-    if(lateral_controller_mode == "mpc_follower"):
+    if lateral_controller_mode == "mpc_follower":
         container = ComposableNodeContainer(
             name="control_container",
             namespace="",
@@ -257,7 +260,7 @@ def launch_setup(context, *args, **kwargs):
                 vehicle_cmd_gate_component,
             ],
         )
-    elif(lateral_controller_mode == "pure_pursuit"):
+    elif lateral_controller_mode == "pure_pursuit":
         container = ComposableNodeContainer(
             name="control_container",
             namespace="",
@@ -332,8 +335,7 @@ def generate_launch_description():
     )
     add_launch_arg(
         "lane_departure_checker_param_path",
-        [FindPackageShare("lane_departure_checker"),
-            "/config/lane_departure_checker.param.yaml"],
+        [FindPackageShare("lane_departure_checker"), "/config/lane_departure_checker.param.yaml"],
     )
 
     # velocity controller
