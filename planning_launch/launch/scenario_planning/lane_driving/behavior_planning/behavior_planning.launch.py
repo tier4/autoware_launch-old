@@ -126,6 +126,11 @@ def generate_launch_description():
         name="behavior_path_planner",
         namespace="",
         remappings=[
+            (
+                "~/srv/planning_manager",
+                "/planning/scenario_planning/lane_driving/behavior_planning/"
+                "behavior_path_planner/service"
+            ),
             ("~/input/route", LaunchConfiguration("input_route_topic_name")),
             ("~/input/vector_map", LaunchConfiguration("map_topic_name")),
             ("~/input/perception", "/perception/object_recognition/objects"),

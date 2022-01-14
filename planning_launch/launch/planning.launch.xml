@@ -2,6 +2,14 @@
   <!-- planning module -->
   <group>
     <push-ros-namespace namespace="planning"/>
+
+    <!-- planning manager module -->
+    <group>
+      <push-ros-namespace namespace="planning_manager"/>
+      <include file="$(find-pkg-share planning_launch)/launch/planning_manager/planning_manager.launch.py">
+      </include>
+    </group>
+
     <!-- mission planning module -->
     <group>
       <push-ros-namespace namespace="mission_planning"/>
