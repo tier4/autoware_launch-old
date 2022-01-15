@@ -267,6 +267,16 @@ def generate_launch_description():
         name="behavior_velocity_planner",
         namespace="",
         remappings=[
+            (
+                "~/srv/planning_manager/plan",
+                "/planning/scenario_planning/lane_driving/behavior_planning/"
+                "behavior_velocity_planner/plan"
+            ),
+            (
+                "~/srv/planning_manager/validate",
+                "/planning/scenario_planning/lane_driving/behavior_planning/"
+                "behavior_velocity_planner/validate"
+            ),
             ("~/input/path_with_lane_id", "path_with_lane_id"),
             ("~/input/vector_map", "/map/vector_map"),
             ("~/input/vehicle_odometry", "/localization/kinematic_state"),

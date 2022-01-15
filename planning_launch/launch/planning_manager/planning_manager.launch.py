@@ -45,6 +45,21 @@ def generate_launch_description():
                         "/planning/scenario_planning/lane_driving/behavior_planning/"
                         "behavior_path_planner/validate",
                     ),
+                    (
+                        "~/srv/behavior_velocity_planner/plan",
+                        "/planning/scenario_planning/lane_driving/behavior_planning/"
+                        "behavior_velocity_planner/plan",
+                    ),
+                    (
+                        "~/srv/behavior_velocity_planner/validate",
+                        "/planning/scenario_planning/lane_driving/behavior_planning/"
+                        "behavior_velocity_planner/validate",
+                    ),
+                    (
+                        "~/output/trajectory",
+                        "/tmp"
+                        "/planning/scenario_planning/trajectory",
+                    ),
                 ],
             ),
         ],
