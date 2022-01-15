@@ -127,9 +127,14 @@ def generate_launch_description():
         namespace="",
         remappings=[
             (
-                "~/srv/planning_manager",
+                "~/srv/planning_manager/plan",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_path_planner/service"
+                "behavior_path_planner/plan"
+            ),
+            (
+                "~/srv/planning_manager/validate",
+                "/planning/scenario_planning/lane_driving/behavior_planning/"
+                "behavior_path_planner/validate"
             ),
             ("~/input/route", LaunchConfiguration("input_route_topic_name")),
             ("~/input/vector_map", LaunchConfiguration("map_topic_name")),
