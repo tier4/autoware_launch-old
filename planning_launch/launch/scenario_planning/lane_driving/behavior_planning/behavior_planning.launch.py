@@ -129,12 +129,12 @@ def generate_launch_description():
             (
                 "~/srv/planning_manager/plan",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_path_planner/plan"
+                "behavior_path_planner/plan",
             ),
             (
                 "~/srv/planning_manager/validate",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_path_planner/validate"
+                "behavior_path_planner/validate",
             ),
             ("~/output/path", "path_with_lane_id"),
             (
@@ -256,12 +256,12 @@ def generate_launch_description():
             (
                 "~/srv/planning_manager/plan",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_velocity_planner/plan"
+                "behavior_velocity_planner/plan",
             ),
             (
                 "~/srv/planning_manager/validate",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_velocity_planner/validate"
+                "behavior_velocity_planner/validate",
             ),
             ("~/input/path_with_lane_id", "path_with_lane_id"),
             ("~/input/vector_map", "/map/vector_map"),
