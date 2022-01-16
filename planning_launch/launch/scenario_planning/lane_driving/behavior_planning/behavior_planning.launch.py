@@ -136,20 +136,6 @@ def generate_launch_description():
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
                 "behavior_path_planner/validate"
             ),
-            ("~/input/route", LaunchConfiguration("input_route_topic_name")),
-            ("~/input/vector_map", LaunchConfiguration("map_topic_name")),
-            ("~/input/perception", "/perception/object_recognition/objects"),
-            ("~/input/odometry", "/localization/kinematic_state"),
-            (
-                "~/input/external_approval",
-                "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_path_planner/path_change_approval",
-            ),
-            (
-                "~/input/force_approval",
-                "/planning/scenario_planning/lane_driving/behavior_planning/"
-                "behavior_path_planner/path_change_force",
-            ),
             ("~/output/path", "path_with_lane_id"),
             (
                 "~/output/ready",
@@ -363,7 +349,6 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 "input_route_topic_name", default_value="/planning/mission_planning/route"
             ),
-            DeclareLaunchArgument("map_topic_name", default_value="/map/vector_map"),
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,

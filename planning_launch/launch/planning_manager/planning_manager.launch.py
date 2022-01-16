@@ -35,6 +35,19 @@ def generate_launch_description():
                         "~/input/route",
                         "/planning/mission_planning/route",
                     ),
+                    ("~/input/vector_map", LaunchConfiguration("map_topic_name")),
+                    ("~/input/predicted_objects", "/perception/object_recognition/objects"),
+                    ("~/input/odometry", "/localization/kinematic_state"),
+                    (
+                        "~/input/external_approval",
+                        "/planning/scenario_planning/lane_driving/behavior_planning/"
+                        "behavior_path_planner/path_change_approval",
+                    ),
+                    (
+                        "~/input/force_approval",
+                        "/planning/scenario_planning/lane_driving/behavior_planning/"
+                        "behavior_path_planner/path_change_force",
+                    ),
                     (
                         "~/srv/behavior_path_planner/plan",
                         "/planning/scenario_planning/lane_driving/behavior_planning/"
@@ -73,6 +86,7 @@ def generate_launch_description():
 
     return launch.LaunchDescription(
         [
+            DeclareLaunchArgument("map_topic_name", default_value="/map/vector_map"),
             set_container_mt_executable,
             container,
         ]
