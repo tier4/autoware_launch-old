@@ -27,7 +27,6 @@
         /autoware/localization/performance_monitoring/localization_accuracy: default
 
         /autoware/map/node_alive_monitoring: default
-        /autoware/map/map_validation: default
 
         /autoware/perception/node_alive_monitoring: default
 
@@ -41,6 +40,8 @@
         /autoware/system/resource_monitoring: { sf_at: "warn", lf_at: "none", spf_at: "none" }
 
         /autoware/vehicle/node_alive_monitoring: default
+
+        /autoware/system/debug_data_logger/storage_error: default
 
       external_control:
         /autoware/control/control_command_gate/node_alive_monitoring: default
