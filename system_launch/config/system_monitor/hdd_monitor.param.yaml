@@ -7,11 +7,11 @@
         name: /dev/sda
         temp_warn: 70.0
         temp_error: 80.0
-        usage_warn: 0.95
-        usage_error: 0.99
+        free_warn: 100000 #MB
+        free_error: 20000 #MB
       disk1:
         name: /dev/sdb
         temp_warn: 70.0
         temp_error: 80.0
-        usage_warn: 0.95
-        usage_error: 0.99
+        free_warn: 100000 #MB
+        free_error: 20000 #MB
