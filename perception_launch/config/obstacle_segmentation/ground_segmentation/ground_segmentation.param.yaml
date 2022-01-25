@@ -1,5 +1,6 @@
 /**:
   ros__parameters:
+    # additional_lidars: []
     additional_lidars: ["front_upper", "front_lower"]
     ransac_input_topics: []
     use_single_frame_filter: False
@@ -21,6 +22,13 @@
         split_points_distance_tolerance: 0.2
         split_height_distance: 0.2
         use_virtual_ground_point: False
+
+    # common_ground_filter:
+    #   plugin: "ground_segmentation::RayGroundFilterComponent"
+    #   parameters:
+    #     general_max_slope: 10.0
+    #     local_max_slope: 10.0
+    #     min_height_threshold: 0.2
 
     front_upper_crop_box_filter:
       parameters:
