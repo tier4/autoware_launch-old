@@ -26,7 +26,6 @@
         /autoware/localization/performance_monitoring/localization_accuracy: default
 
         /autoware/map/node_alive_monitoring: default
-        # /autoware/map/map_validation: default
 
         /autoware/perception/node_alive_monitoring: default
 
