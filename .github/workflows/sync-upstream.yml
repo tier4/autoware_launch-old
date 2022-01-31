@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  UPSTREAM_REPO: https://github.com/tier4/autoware_launcher.git
-  BASE_BRANCH: main
-  SYNC_TARGET_BRANCH: main
+  UPSTREAM_REPO: https://github.com/tier4/AutowareArchitectureProposal_launcher.git
+  BASE_BRANCH: tier4/universe
+  SYNC_TARGET_BRANCH: tier4/universe
   SYNC_BRANCH: sync-upstream
 
 jobs:
