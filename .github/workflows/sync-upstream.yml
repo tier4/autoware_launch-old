@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --local --unset-all http.https://github.com/.extraheader || true
           git config --global url.https://x-access-token:${{ steps.generate-token.outputs.token }}@github.com.insteadOf 'https://github.com'
-          
+
       - name: Fetch upstream
         run: |
           git remote add upstream "${{ env.UPSTREAM_REPO }}"
