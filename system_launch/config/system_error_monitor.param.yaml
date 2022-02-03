@@ -39,7 +39,7 @@
         /autoware/system/resource_monitoring: { sf_at: "warn", lf_at: "none", spf_at: "none" }
 
         /autoware/vehicle/node_alive_monitoring: default
-        /autoware/vehicle/vehicle_errors: default
+        /autoware/vehicle/vehicle_errors: { sf_at: "warn", lf_at: "none", spf_at: "error" }
 
       external_control:
         /autoware/control/control_command_gate/node_alive_monitoring: default
