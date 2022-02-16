@@ -2,8 +2,8 @@
   ros__parameters:
     adaptive_cruise_control:
       # Adaptive Cruise Control (ACC) config
-      use_object_to_estimate_vel: true # use tracking objects for estimating object velocity or not
-      use_pcl_to_estimate_vel: true # use pcl for estimating object velocity or not
+      use_object_to_estimate_vel: false # use tracking objects for estimating object velocity or not
+      use_pcl_to_estimate_vel: false # use pcl for estimating object velocity or not
       consider_obj_velocity: true # consider forward vehicle velocity to ACC or not
 
       # general parameter for ACC

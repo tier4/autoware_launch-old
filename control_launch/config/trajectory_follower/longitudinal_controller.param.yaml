@@ -3,7 +3,7 @@
     control_rate: 30.0
     delay_compensation_time: 0.17
 
-    enable_smooth_stop: true
+    enable_smooth_stop: false
     enable_overshoot_emergency: true
     enable_slope_compensation: true
 
@@ -11,7 +11,7 @@
     drive_state_stop_dist: 0.5
     drive_state_offset_stop_dist: 1.0
     stopping_state_stop_dist: 0.5
-    stopped_state_entry_vel: 0.01
+    stopped_state_entry_vel: 0.1
     stopped_state_entry_acc: 0.1
     emergency_state_overshoot_stop_dist: 1.5
     emergency_state_traj_trans_dev: 3.0
@@ -31,7 +31,7 @@
     min_d_effort: 0.0
     lpf_vel_error_gain: 0.9
     current_vel_threshold_pid_integration: 0.5
-    enable_brake_keeping_before_stop: false
+    enable_brake_keeping_before_stop: true
     brake_keeping_acc: -0.2
 
     # smooth stop state
@@ -49,7 +49,7 @@
 
     # stopped state
     stopped_vel: 0.0
-    stopped_acc: -3.4
+    stopped_acc: -0.3
     stopped_jerk: -5.0
 
     # emergency state
