@@ -32,21 +32,9 @@ import yaml
 
 
 def launch_setup(context, *args, **kwargs):
-    lateral_controller_mode = LaunchConfiguration("lateral_controller_mode").perform(context)
-    if lateral_controller_mode == "mpc_follower":
-        lat_controller_param_path = (
-            FindPackageShare("control_launch").perform(context)
-            + "/config/trajectory_follower/lateral_controller.param.yaml"
-        )
-        with open(lat_controller_param_path, "r") as f:
-            lat_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    elif lateral_controller_mode == "pure_pursuit":
-        lat_controller_param_path = (
-            FindPackageShare("control_launch").perform(context)
-            + "/config/pure_pursuit/pure_pursuit.param.yaml"
-        )
-        with open(lat_controller_param_path, "r") as f:
-            lat_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    lat_controller_param_path = LaunchConfiguration("lat_controller_param_path").perform(context)
+    with open(lat_controller_param_path, "r") as f:
+        lat_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
     lon_controller_param_path = LaunchConfiguration("lon_controller_param_path").perform(context)
     with open(lon_controller_param_path, "r") as f:
         lon_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
@@ -115,12 +103,6 @@ def launch_setup(context, *args, **kwargs):
         ],
         parameters=[
             lon_controller_param,
-            {
-                "control_rate": LaunchConfiguration("control_rate"),
-                "show_debug_info": LaunchConfiguration("show_debug_info"),
-                "enable_smooth_stop": LaunchConfiguration("enable_smooth_stop"),
-                "enable_pub_debug": LaunchConfiguration("enable_pub_debug"),
-            },
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -317,6 +299,14 @@ def generate_launch_description():
 
     # parameter file path
     add_launch_arg(
+        "lat_controller_param_path",
+        [
+            FindPackageShare("control_launch"),
+            "/config/trajectory_follower/mpc_follower.param.yaml",
+        ],
+        "path to the parameter file of lateral controller. default is `mpc_follower`",
+    )
+    add_launch_arg(
         "lon_controller_param_path",
         [
             FindPackageShare("control_launch"),
@@ -344,14 +334,6 @@ def generate_launch_description():
         "lane_departure_checker_param_path",
         [FindPackageShare("lane_departure_checker"), "/config/lane_departure_checker.param.yaml"],
     )
-
-    # velocity controller
-    add_launch_arg("control_rate", "30.0", "control rate")
-    add_launch_arg("show_debug_info", "false", "show debug information")
-    add_launch_arg(
-        "enable_smooth_stop", "false", "enable smooth stop (in velocity controller state)"
-    )
-    add_launch_arg("enable_pub_debug", "true", "enable to publish debug information")
 
     # vehicle cmd gate
     add_launch_arg("use_emergency_handling", "true", "use emergency handling")
