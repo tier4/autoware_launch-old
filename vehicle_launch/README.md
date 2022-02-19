@@ -31,7 +31,7 @@ ex.)
 <https://github.com/tier4/autoware_launcher/blob/d880474/vehicle_launch/launch/vehicle_interface.launch.xml#L9>
 
 ```xml
-<let name="vehicle_launch_pkg" value="$(find-pkg-share $(var vehicle_launch)_launch)"/>
+<let name="vehicle_launch_pkg" value="$(find-pkg-share $(var vehicle_model)_launch)"/>
 ```
 
 <https://github.com/tier4/autoware_launcher/blob/d880474/vehicle_launch/launch/vehicle_description.launch.xml#L11>
