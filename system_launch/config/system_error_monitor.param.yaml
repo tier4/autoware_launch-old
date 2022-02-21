@@ -41,8 +41,6 @@
 
         /autoware/vehicle/node_alive_monitoring: default
 
-        /autoware/system/debug_data_logger/storage_error: default
-
       external_control:
         /autoware/control/control_command_gate/node_alive_monitoring: default
         /autoware/control/external_control/external_command_selector/node_alive_monitoring: default
