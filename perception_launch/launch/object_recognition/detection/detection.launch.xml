@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="input/pointcloud" default="/sensing/lidar/top/outlier_filtered/pointcloud"/>
+  <arg name="input/pointcloud" />
   <arg name="mode" default="camera_lidar_fusion" description="options: `camera_lidar_fusion`, `lidar` or `camera`"/>
   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`"/>
   <!-- "camera_lidar_fusion", "lidar" or "camera" -->

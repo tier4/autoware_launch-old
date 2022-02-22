@@ -2,7 +2,7 @@
 <launch>
   <arg name="use_vector_map" default="true" description="use vector map in prediction"/>
   <arg name="lidar_detection_model" default="centerpoint" description="options: `centerpoint`, `apollo`"/>
-  <arg name="input/pointcloud" default="/sensing/lidar/top/outlier_filtered/pointcloud"/>
+  <arg name="input/pointcloud" />
 
   <!-- Clustering -->
   <group>

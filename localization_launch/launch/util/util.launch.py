@@ -112,11 +112,6 @@ def generate_launch_description():
         "container name",
     )
     add_launch_arg(
-        "input_sensor_points_topic",
-        "/sensing/lidar/top/outlier_filtered/pointcloud",
-        "input topic name for raw pointcloud",
-    )
-    add_launch_arg(
         "output_measurement_range_sensor_points_topic",
         "measurement_range/pointcloud",
         "output topic name for crop box filter",
