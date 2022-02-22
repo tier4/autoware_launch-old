@@ -113,7 +113,7 @@ def generate_launch_description():
     )
     add_launch_arg(
         "input_sensor_points_topic",
-        "/sensing/lidar/top/rectified/pointcloud",
+        "/sensing/lidar/top/outlier_filtered/pointcloud",
         "input topic name for raw pointcloud",
     )
     add_launch_arg(

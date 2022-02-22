@@ -2,7 +2,7 @@
 <launch>
 
   <!-- Topics -->
-  <arg name="input_sensor_points_topic" default="/sensing/lidar/top/rectified/pointcloud" description="input topic name for raw pointcloud"/>
+  <arg name="input_sensor_points_topic" default="/sensing/lidar/top/outlier_filtered/pointcloud" description="input topic name for raw pointcloud"/>
   <arg name="output_measurement_range_sensor_points_topic" default="measurement_range/pointcloud" description="output topic name for crop box filter"/>
   <arg name="output_voxel_grid_downsample_sensor_points_topic" default="voxel_grid_downsample/pointcloud" description="output topic name for voxel grid downsample filter"/>
   <arg name="output_downsample_sensor_points_topic" default="downsample/pointcloud" description="output topic name for downsample filter. this is final output"/>
