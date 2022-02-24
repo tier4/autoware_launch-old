@@ -48,6 +48,7 @@ class GroundSegmentationPipeline:
         self.use_time_series_filter = self.ground_segmentation_param["use_time_series_filter"]
 
     def get_vehicle_info(self):
+        # TODO: need to rename key from "ros_params" to "global_params" after Humble
         gp = self.context.launch_configurations.get("ros_params", {})
         p = {}
         p["vehicle_length"] = gp["front_overhang"] + gp["wheel_base"] + gp["rear_overhang"]
