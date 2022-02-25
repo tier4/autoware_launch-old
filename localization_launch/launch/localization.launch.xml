@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="input_sensor_points_topic" description="The topic will be used in the localization util module" />
+  <arg name="input_sensor_points_topic" default="/sensing/lidar/pointcloud" description="The topic will be used in the localization util module" />
   <!-- localization module -->
   <group>
     <push-ros-namespace namespace="localization"/>
