@@ -16,7 +16,7 @@
       # check if planned trajectory is outside drivable area
       drivability_check:
         # true: vehicle shape is considered as a set of circles
-        # false: vehicle shape is consideredas footprint (= rectangle)
+        # false: vehicle shape is considered as footprint (= rectangle)
         use_vehicle_circles: false
 
         # parameters only when use_vehicle_circles is true
@@ -75,7 +75,7 @@
     eb:
       common:
         num_joint_buffer_points: 3 # number of joint buffer points
-        num_offset_for_begin_idx: 2 # number of shifting points for beginning non-fix idxp
+        num_offset_for_begin_idx: 2 # number of shifting points for beginning non-fix idx
         delta_arc_length_for_eb: 0.6 # 1.0 # delta arc length when optimizing[m] When the value is around 1.0, overshoot at the corner happens.
         num_sampling_points_for_eb: 95 # number of optimizing points # must be longer than mpt points
 
@@ -148,8 +148,8 @@
         steer_rate_weight: 10.0 # weight for steering rate
 
         obstacle_avoid_lat_error_weight: 3.0 # weight for lateral error
-        obstacle_avoid_yaw_error_weight: 100.0 # weight for yaw error
-        obstacle_avoid_steer_input_weight: 10000.0 # weight for yaw error
+        obstacle_avoid_yaw_error_weight: 0.0 # weight for yaw error
+        obstacle_avoid_steer_input_weight: 1000.0 # weight for yaw error
         near_objects_length: 30.0 # weight for yaw error
 
         terminal_lat_error_weight: 100.0 # weight for lateral error at terminal point
@@ -159,5 +159,6 @@
 
     # replanning & trimming trajectory param outside algorithm
     replan:
-      min_ego_moving_dist_for_replan: 3.0 # minimum ego moving dist thres for replan [m]
-      min_delta_time_sec_for_replan: 1.0 # minimum delta time for replan [second]
+      max_path_shape_change_dist: 2.0 # threshold of path shape change from behavior path [m]
+      max_ego_moving_dist_for_replan: 3.0 # threshold of ego's moving distance for replan [m]
+      max_delta_time_sec_for_replan: 1.0 # threshold of delta time for replan [second]
