@@ -15,7 +15,6 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
-import launch
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import SetLaunchConfiguration
@@ -164,7 +163,6 @@ def generate_launch_description():
         "std",
     )
     ssd_fine_detector_param["mode"] = LaunchConfiguration("fine_detector_precision")
-
 
     fine_detector_loader = LoadComposableNodes(
         composable_node_descriptions=[
