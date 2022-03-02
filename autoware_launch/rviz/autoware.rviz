@@ -1079,6 +1079,7 @@ Visualization Manager:
                       Enabled: true
                       Name: MergeFromPrivate
                       Namespaces:
+                        factor_text: true
                         stop_point_pose_line: false
                         stop_virtual_wall: true
                       Topic:
