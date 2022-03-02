@@ -18,7 +18,7 @@
     required_modules:
       autonomous_driving:
         /autoware/control/autonomous_driving/node_alive_monitoring: default
-        /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default
+        # /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default # tmp
         /autoware/control/control_command_gate/node_alive_monitoring: default
 
         /autoware/localization/node_alive_monitoring: default
@@ -39,6 +39,7 @@
         /autoware/system/resource_monitoring: { sf_at: "warn", lf_at: "none", spf_at: "none" }
 
         /autoware/vehicle/node_alive_monitoring: default
+        /autoware/vehicle/vehicle_errors: { sf_at: "warn", lf_at: "none", spf_at: "error" }
 
       external_control:
         /autoware/control/control_command_gate/node_alive_monitoring: default
@@ -48,3 +49,4 @@
         /autoware/system/emergency_stop_operation: default
 
         /autoware/vehicle/node_alive_monitoring: default
+        /autoware/vehicle/vehicle_errors: default
