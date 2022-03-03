@@ -100,8 +100,10 @@
             radius: 0.95
 
             # parameters only when use_manual_vehicle_circles is false
-            num_for_radius: 4
             radius_ratio: 0.9
+            # If this parameter is commented out, the parameter is calculated automatically
+            # based on the vehicle length and width
+            # num_for_radius: 4
 
       eb:
         common:
@@ -165,5 +167,7 @@
             radius: 0.95
 
             # parameters only when use_manual_vehicle_circles is false
-            num_for_radius: 4
             radius_ratio: 0.8
+            # If this parameter is commented out, the parameter is calculated automatically
+            # based on the vehicle length and width
+            # num_for_radius: 4
