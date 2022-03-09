@@ -34,7 +34,7 @@ def launch_setup(context, *args, **kwargs):
         plugin="pointcloud_preprocessor::CropBoxFilterComponent",
         name="crop_box_filter_measurement_range",
         remappings=[
-            ("input", LaunchConfiguration("input_sensor_points_topic")),
+            ("input", LaunchConfiguration("input/pointcloud")),
             ("output", LaunchConfiguration("output_measurement_range_sensor_points_topic")),
         ],
         parameters=[
