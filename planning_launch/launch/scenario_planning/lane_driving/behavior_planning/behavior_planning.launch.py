@@ -273,6 +273,10 @@ def generate_launch_description():
                 "~/input/external_traffic_signals",
                 "/external/traffic_light_recognition/traffic_signals",
             ),
+            (
+                "~/input/external_velocity_limit_mps",
+                "/planning/scenario_planning/max_velocity_default",
+            ),
             ("~/input/virtual_traffic_light_states", "/awapi/tmp/virtual_traffic_light_states"),
             (
                 "~/input/occupancy_grid",
