@@ -69,10 +69,8 @@
       <arg name="output" value="camera_lidar_fusion/clusters"/>
     </include>
     <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
-      <arg name="use_map_current" value="$(var use_vector_map)"/>
       <arg name="input/objects" value="camera_lidar_fusion/clusters" />
       <arg name="output/objects" value="camera_lidar_fusion/objects_with_feature" />
-      <arg name="orientation_reliable" value="false"/>
     </include>
     <!-- convert DynamicObjectsWithFeatureArray to DynamicObjects -->
     <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
@@ -102,7 +100,7 @@
       <include file="$(find-pkg-share lidar_apollo_instance_segmentation)/launch/lidar_apollo_instance_segmentation.launch.xml" />
       <include file="$(find-pkg-share shape_estimation)/launch/shape_estimation.launch.xml">
         <arg name="output/objects" value="objects_with_feature"/>
-        <arg name="use_map_current" value="$(var use_vector_map)"/>
+        <arg name="use_vehicle_reference_yaw" value="true"/>
       </include>
       <!-- convert DynamicObjectsWithFeatureArray to DynamicObjects -->
       <include file="$(find-pkg-share detected_object_feature_remover)/launch/detected_object_feature_remover.launch.xml">
@@ -112,6 +110,14 @@
     </group>
   </group>
 
+  <!-- DetectionByTracker -->
+  <group>
+    <push-ros-namespace namespace="detection_by_tracker"/>
+    <include file="$(find-pkg-share detection_by_tracker)/launch/detection_by_tracker.launch.xml">
+    </include>
+  </group>
+
+  <!-- Merger -->
   <include file="$(find-pkg-share object_merger)/launch/object_association_merger.launch.xml">
     <arg name="input/object0" value="$(var lidar_detection_model)/objects"/>
     <arg name="input/object1" value="clustering/camera_lidar_fusion/short_range_objects"/>
@@ -122,4 +128,5 @@
     <arg name="input/object1" value="camera_lidar_fusion/objects"/>
     <arg name="output/object" value="objects"/>
   </include>
+
 </launch>
