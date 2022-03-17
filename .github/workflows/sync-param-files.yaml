@@ -20,9 +20,7 @@ jobs:
         uses: autowarefoundation/autoware-github-actions/sync-branches@tier4/proposal
         with:
           token: ${{ steps.generate-token.outputs.token }}
-          base-branch: tier4/universe
-          sync-pr-branch: sync-upstream
-          sync-target-repository: https://github.com/tier4/autoware_launch.git
-          sync-target-branch: tier4/universe
-          pr-title: "chore: sync upstream"
-          auto-merge-method: merge
+          config: .github/sync-param-files.yaml
+          pr-branch: sync-param-files
+          pr-title: "chore: sync param files"
+          pr-commit-message: "chore: sync param files"
