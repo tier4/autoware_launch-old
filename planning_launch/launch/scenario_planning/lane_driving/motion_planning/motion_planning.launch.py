@@ -120,6 +120,32 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # obstacle velocity planner
+    # TODO(murooka) use launcher param
+    obstacle_velocity_planner_param_path = os.path.join(
+        get_package_share_directory('obstacle_velocity_planner'),
+        'config',
+        'obstacle_velocity_planner.param.yaml',
+    )
+    with open(obstacle_velocity_planner_param_path, 'r') as f:
+        obstacle_velocity_planner_param = yaml.safe_load(f)['/**']['ros__parameters']
+    obstacle_velocity_planner_component = ComposableNode(
+        package='obstacle_velocity_planner',
+        plugin='ObstacleVelocityPlanner',
+        name='obstacle_velocity_planner',
+        namespace='',
+        remappings=[
+            ("~/output/trajectory", "/planning/scenario_planning/lane_driving/trajectory"),
+            ('~/input/trajectory', 'surround_obstacle_checker/trajectory'),
+        ],
+        parameters=[
+            obstacle_velocity_planner_param,
+        ],
+        extra_arguments=[
+            {'use_intra_process_comms': LaunchConfiguration('use_intra_process')}
+        ],
+    )
+
     # obstacle stop planner
     obstacle_stop_planner_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
@@ -181,7 +207,8 @@ def generate_launch_description():
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             obstacle_avoidance_planner_component,
-            obstacle_stop_planner_component,
+            obstacle_velocity_planner_component,
+            # obstacle_stop_planner_component,
         ],
     )
 
