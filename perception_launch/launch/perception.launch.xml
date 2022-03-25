@@ -106,10 +106,10 @@
     </group>
 
     <!-- traffic light module -->
-    <group>
+    <!-- <group>
       <push-ros-namespace namespace="traffic_light_recognition"/>
       <include file="$(find-pkg-share perception_launch)/launch/traffic_light_recognition/traffic_light.launch.xml">
       </include>
-    </group>
+    </group> -->
   </group>
 </launch>
