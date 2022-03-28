@@ -1,0 +1,8 @@
+<launch>
+
+  <!-- /autoware/localization/performance_monitoring -->
+  <include file="$(find-pkg-share dummy_diag_publisher)/launch/dummy_diag_publisher_node.launch.xml">
+    <arg name="diag_name" value="localization_accuracy"/>
+  </include>
+
+</launch>

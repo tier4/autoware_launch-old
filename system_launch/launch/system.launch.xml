@@ -30,8 +30,7 @@
     </include>
 
     <!-- Error Monitor -->
-    <let name="config_file" value="$(find-pkg-share system_launch)/config/system_error_monitor.param.yaml" if="$(eval &quot;'$(var run_mode)'=='online'&quot;)"/>
-    <let name="config_file" value="$(find-pkg-share system_launch)/config/system_error_monitor.planning_simulation.param.yaml" if="$(eval &quot;'$(var run_mode)'=='planning_simulation'&quot;)"/>
+    <let name="config_file" value="$(find-pkg-share system_launch)/config/system_error_monitor.param.yaml"/>
     <include file="$(find-pkg-share system_error_monitor)/launch/system_error_monitor.launch.xml">
       <arg name="config_file" value="$(var config_file)" />
       <arg name="extra_agg_config_file_sensing" value="$(var sensor_launch_pkg)/config/diagnostic_aggregator/sensor_kit.param.yaml" />
@@ -44,6 +43,9 @@
     <include file="$(find-pkg-share emergency_handler)/launch/emergency_handler.launch.xml">
       <arg name="config_file" value="$(find-pkg-share emergency_handler)/config/emergency_handler.param.yaml" />
     </include>
+
+    <!-- Dummy Diag Publisher -->
+    <include file="$(find-pkg-share system_launch)/launch/dummy_diag_publisher.launch.xml"/>
 
   </group>
 </launch>
