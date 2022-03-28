@@ -45,7 +45,9 @@
     </include>
 
     <!-- Dummy Diag Publisher -->
-    <include file="$(find-pkg-share system_launch)/launch/dummy_diag_publisher.launch.xml"/>
+    <group if="$(eval &quot;'$(var run_mode)'=='planning_simulation'&quot;)">
+      <include file="$(find-pkg-share system_launch)/launch/dummy_diag_publisher.launch.xml"/>
+    </group>
 
   </group>
 </launch>
