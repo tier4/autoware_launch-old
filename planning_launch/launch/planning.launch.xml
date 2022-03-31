@@ -1,6 +1,10 @@
 <launch>
+  <arg name="use_foa" default="false" />
   <!-- planning module -->
   <group>
+    <let name="disuse_foa" value="false" if="$(var use_foa)"/>
+    <let name="disuse_foa" value="true" unless="$(var use_foa)"/>
+
     <push-ros-namespace namespace="planning"/>
     <!-- mission planning module -->
     <group>
