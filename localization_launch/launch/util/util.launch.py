@@ -15,11 +15,13 @@
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import OpaqueFunction
-from launch.conditions import LaunchConfigurationNotEquals
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import LoadComposableNodes
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
+from launch_ros.actions import ComposableNodeContainer
+from launch.conditions import IfCondition
+from launch.conditions import UnlessCondition
 import yaml
 
 
@@ -71,13 +73,21 @@ def launch_setup(context, *args, **kwargs):
         random_downsample_component,
     ]
 
-    load_composable_nodes = LoadComposableNodes(
-        condition=LaunchConfigurationNotEquals("container", ""),
+    individual_container = ComposableNodeContainer(
+        name=LaunchConfiguration("container_name"),
+        namespace="",
+        package="rclcpp_components",
+        executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=composable_nodes,
-        target_container=LaunchConfiguration("container"),
+        condition=UnlessCondition(LaunchConfiguration("use_pointcloud_container")),
+        output="screen",
     )
-
-    return [load_composable_nodes]
+    pointcloud_container_loader = LoadComposableNodes(
+        composable_node_descriptions=composable_nodes,
+        target_container=LaunchConfiguration("container_name"),
+        condition=IfCondition(LaunchConfiguration("use_pointcloud_container")),
+    )
+    return [individual_container, pointcloud_container_loader]
 
 
 def generate_launch_description():
@@ -106,11 +116,9 @@ def generate_launch_description():
         "path to the parameter file of random_downsample_filter",
     )
     add_launch_arg("use_intra_process", "true", "use ROS2 component container communication")
-    add_launch_arg(
-        "container",
-        "/sensing/lidar/top/pointcloud_preprocessor/velodyne_node_container",
-        "container name",
-    )
+    add_launch_arg("use_pointcloud_container", "False")
+    add_launch_arg("container_name", "perception_pipeline_container")
+
     add_launch_arg(
         "output_measurement_range_sensor_points_topic",
         "measurement_range/pointcloud",
