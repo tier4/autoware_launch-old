@@ -117,7 +117,7 @@ def generate_launch_description():
     )
     add_launch_arg("use_intra_process", "true", "use ROS2 component container communication")
     add_launch_arg("use_pointcloud_container", "False")
-    add_launch_arg("container_name", "perception_pipeline_container")
+    add_launch_arg("container_name", "pointcloud_container")
 
     add_launch_arg(
         "output/pointcloud",
