@@ -15,6 +15,7 @@
 import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import OpaqueFunction
+from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
@@ -116,6 +117,7 @@ def generate_launch_description():
         "path to the parameter file of random_downsample_filter",
     )
     add_launch_arg("use_intra_process", "true", "use ROS2 component container communication")
+    add_launch_arg("use_multithread", "False")
     add_launch_arg("use_pointcloud_container", "False")
     add_launch_arg("container_name", "pointcloud_container")
 
@@ -125,4 +127,20 @@ def generate_launch_description():
         "final output topic name",
     )
 
-    return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
+    set_container_executable = SetLaunchConfiguration(
+        "container_executable",
+        "component_container",
+        condition=UnlessCondition(LaunchConfiguration("use_multithread")),
+    )
+
+    set_container_mt_executable = SetLaunchConfiguration(
+        "container_executable",
+        "component_container_mt",
+        condition=IfCondition(LaunchConfiguration("use_multithread")),
+    )
+
+    return launch.LaunchDescription(
+        launch_arguments
+        + [set_container_executable, set_container_mt_executable]
+        + [OpaqueFunction(function=launch_setup)]
+    )
