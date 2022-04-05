@@ -94,7 +94,7 @@
 
   <!-- Planning -->
   <group>
-    <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml" if="$(var planning)/>
+    <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml" if="$(var planning)"/>
   </group>
 
   <!-- Control -->
