@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
         name="crop_box_filter_measurement_range",
         remappings=[
             ("input", LaunchConfiguration("input/pointcloud")),
-            ("output", LaunchConfiguration("output_measurement_range_sensor_points_topic")),
+            ("output", "measurement_range/pointcloud"),
         ],
         parameters=[
             load_composable_node_param("crop_box_filter_measurement_range_param_path"),
@@ -49,8 +49,8 @@ def launch_setup(context, *args, **kwargs):
         plugin="pointcloud_preprocessor::VoxelGridDownsampleFilterComponent",
         name="voxel_grid_downsample_filter",
         remappings=[
-            ("input", LaunchConfiguration("output_measurement_range_sensor_points_topic")),
-            ("output", LaunchConfiguration("output_voxel_grid_downsample_sensor_points_topic")),
+            ("input", "measurement_range/pointcloud"),
+            ("output", "voxel_grid_downsample/pointcloud"),
         ],
         parameters=[load_composable_node_param("voxel_grid_downsample_filter_param_path")],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -60,8 +60,8 @@ def launch_setup(context, *args, **kwargs):
         plugin="pointcloud_preprocessor::RandomDownsampleFilterComponent",
         name="random_downsample_filter",
         remappings=[
-            ("input", LaunchConfiguration("output_voxel_grid_downsample_sensor_points_topic")),
-            ("output", LaunchConfiguration("output_downsample_sensor_points_topic")),
+            ("input", "voxel_grid_downsample/pointcloud"),
+            ("output", LaunchConfiguration("output/pointcloud")),
         ],
         parameters=[load_composable_node_param("random_downsample_filter_param_path")],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -120,19 +120,9 @@ def generate_launch_description():
     add_launch_arg("container_name", "perception_pipeline_container")
 
     add_launch_arg(
-        "output_measurement_range_sensor_points_topic",
-        "measurement_range/pointcloud",
-        "output topic name for crop box filter",
-    )
-    add_launch_arg(
-        "output_voxel_grid_downsample_sensor_points_topic",
-        "voxel_grid_downsample/pointcloud",
-        "output topic name for voxel grid downsample filter",
-    )
-    add_launch_arg(
-        "output_downsample_sensor_points_topic",
+        "output/pointcloud",
         "downsample/pointcloud",
-        "output topic name for downsample filter. this is final output",
+        "final output topic name",
     )
 
     return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
