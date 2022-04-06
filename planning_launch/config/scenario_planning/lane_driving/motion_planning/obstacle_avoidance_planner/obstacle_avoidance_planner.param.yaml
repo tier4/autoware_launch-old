@@ -26,7 +26,7 @@
       # trajectory total/fixing length
       trajectory_length: 300.0 # total trajectory length[m]
 
-      forward_fixing_min_distance: 1.0 # number of fixing points around ego vehicle [m]
+      forward_fixing_min_distance: 5.0 # number of fixing points around ego vehicle [m]
       forward_fixing_min_time: 0.5 # forward fixing time with current velocity [s]
 
       backward_fixing_distance: 5.0 # backward fixing length from base_link [m]

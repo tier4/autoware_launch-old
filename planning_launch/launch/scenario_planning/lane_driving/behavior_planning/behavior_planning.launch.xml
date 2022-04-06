@@ -2,8 +2,13 @@
   <arg name="input_route_topic_name" default="/planning/mission_planning/route" />
   <arg name="map_topic_name" default="/map/vector_map" />
 
-  <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/path_change_approval
-                   tier4_planning_msgs/msg/Approval 'approval: true' -r 10"/>
+  <group if="$(var disuse_foa)">
+    <executable cmd="ros2 topic pub /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/path_change_approval
+                    tier4_planning_msgs/msg/Approval 'approval: true' -r 10"/>
+  </group>
+
+  <set_parameter name="avoidance.threshold_distance_object_is_on_center" value="0.5" if="$(var disuse_foa)" />
+  <set_parameter name="avoidance.threshold_distance_object_is_on_center" value="0.0" unless="$(var disuse_foa)" />
 
   <node pkg="behavior_path_planner" exec="behavior_path_planner" name="behavior_path_planner" output="screen">
     <remap from="~/input/route" to="$(var input_route_topic_name)" />
@@ -23,6 +28,11 @@
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/lane_following/lane_following.param.yaml" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/lane_change/lane_change.param.yaml" />
     <param from="$(find-pkg-share planning_launch)/config/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner.param.yaml" />
+    <param name="enable_abort_lane_change" value="$(var disuse_foa)" />
+    <param name="enable_collision_check_at_prepare_phase" value="$(var disuse_foa)" />
+    <param name="use_predicted_path_outside_lanelet" value="$(var disuse_foa)" />
+    <param name="use_all_predicted_path" value="$(var disuse_foa)" />
+    <param name="enable_blocked_by_obstacle" value="$(var disuse_foa)" />
     <param name="bt_tree_config_path" value="$(find-pkg-share behavior_path_planner)/config/behavior_path_planner_tree.xml"/>
   </node>
 
