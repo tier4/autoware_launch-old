@@ -178,6 +178,39 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # smoother param
+    common_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "Analytical.param.yaml",
+    )
+    with open(common_param_path, "r") as f:
+        common_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
+    base_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "motion_velocity_smoother",
+        "motion_velocity_smoother.param.yaml",
+    )
+    with open(base_param_path, "r") as f:
+        base_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
+    smoother_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "motion_velocity_smoother",
+        "Analytical.param.yaml",
+    )
+    with open(smoother_param_path, "r") as f:
+        smoother_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
     # behavior velocity planner
     blind_spot_param_path = os.path.join(
         get_package_share_directory("behavior_velocity_planner"),
@@ -306,6 +339,9 @@ def generate_launch_description():
                 "max_accel": -2.8,
                 "delay_response_time": 1.3,
             },
+            common_param,
+            base_param,
+            smoother_param,
             blind_spot_param,
             crosswalk_param,
             detection_area_param,
