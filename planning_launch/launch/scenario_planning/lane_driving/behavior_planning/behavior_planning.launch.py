@@ -184,7 +184,7 @@ def generate_launch_description():
         "config",
         "scenario_planning",
         "common",
-        "Analytical.param.yaml",
+        "common.param.yaml",
     )
     with open(common_param_path, "r") as f:
         common_param = yaml.safe_load(f)["/**"]["ros__parameters"]
