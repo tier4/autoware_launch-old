@@ -4,8 +4,11 @@
     num_disks: 1
     disks: # Until multi type lists are allowed, name N the disks as disk0...disk{N-1}
       disk0:
-        name: /dev/sda2
-        temp_warn: 55.0
-        temp_error: 70.0
-        free_warn: 5120 # MB(8hour)
-        free_error: 100 # MB(last 1 minute)
+        name: /
+        temp_warn: 75.0
+        temp_error: 85.0
+        power_on_hours_warn: 3000000
+        total_data_written_warn: 11417920   # =440TB (1unit=32MB)
+        total_data_written_safety_factor: 0.05
+        free_warn: 64000 # MB(8 hour: 64GB)
+        free_error: 8000 # MB(last 1 minute: 8GB)
