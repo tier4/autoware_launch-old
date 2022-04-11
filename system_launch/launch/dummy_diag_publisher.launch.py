@@ -69,9 +69,7 @@ def launch_setup(context, *args, **kwargs):
     diag_config_path_array = (
         LaunchConfiguration("diag_config_path_array").perform(context).replace(" ", "").split(",")
     )
-    print(diag_config_path_array)
     for p in diag_config_path_array:
-        print(p)
         nodes += create_dummy_diag_node_list(p)
 
     # set container to run all required components in the same process
