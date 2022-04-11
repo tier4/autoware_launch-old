@@ -1,0 +1,11 @@
+/**:
+  ros__parameters:
+    control:
+      joy_controller_connection:
+        contains: [": joy_controller_connection"]
+
+    localization:
+      matching_score:
+        contains: ["ndt_scan_matcher"]
+      localization_accuracy:
+        contains: [": localization_accuracy"]
