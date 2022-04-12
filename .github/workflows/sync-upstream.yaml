@@ -23,7 +23,7 @@ jobs:
           base-branch: tier4/universe
           sync-pr-branch: sync-upstream
           sync-target-repository: https://github.com/tier4/autoware_launch.git
-          sync-target-branch: tier4/universe
+          sync-target-branch: add-labels-to-bot-pull-requests
           pr-title: "chore: sync upstream"
           pr-labels: |
             bot
