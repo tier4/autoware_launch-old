@@ -130,6 +130,7 @@ def generate_launch_description():
             ("~/input/vector_map", LaunchConfiguration("map_topic_name")),
             ("~/input/perception", "/perception/object_recognition/objects"),
             ("~/input/odometry", "/localization/kinematic_state"),
+            ("~/input/scenario", "/planning/scenario_planning/scenario"),
             (
                 "~/input/external_approval",
                 "/planning/scenario_planning/lane_driving/behavior_planning/"
@@ -178,74 +179,143 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # smoother param
+    common_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "common.param.yaml",
+    )
+    with open(common_param_path, "r") as f:
+        common_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
+    base_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "motion_velocity_smoother",
+        "motion_velocity_smoother.param.yaml",
+    )
+    with open(base_param_path, "r") as f:
+        base_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
+    smoother_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "common",
+        "motion_velocity_smoother",
+        "Analytical.param.yaml",
+    )
+    with open(smoother_param_path, "r") as f:
+        smoother_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
     # behavior velocity planner
     blind_spot_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "blind_spot.param.yaml",
     )
     with open(blind_spot_param_path, "r") as f:
         blind_spot_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     crosswalk_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "crosswalk.param.yaml",
     )
     with open(crosswalk_param_path, "r") as f:
         crosswalk_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     detection_area_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "detection_area.param.yaml",
     )
     with open(detection_area_param_path, "r") as f:
         detection_area_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     intersection_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "intersection.param.yaml",
     )
     with open(intersection_param_path, "r") as f:
         intersection_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     stop_line_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "stop_line.param.yaml",
     )
     with open(stop_line_param_path, "r") as f:
         stop_line_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     traffic_light_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "traffic_light.param.yaml",
     )
     with open(traffic_light_param_path, "r") as f:
         traffic_light_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     virtual_traffic_light_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "virtual_traffic_light.param.yaml",
     )
     with open(virtual_traffic_light_param_path, "r") as f:
         virtual_traffic_light_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     occlusion_spot_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "occlusion_spot.param.yaml",
     )
     with open(occlusion_spot_param_path, "r") as f:
         occlusion_spot_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     no_stopping_area_param_path = os.path.join(
-        get_package_share_directory("behavior_velocity_planner"),
+        get_package_share_directory("planning_launch"),
         "config",
+        "scenario_planning",
+        "lane_driving",
+        "behavior_planning",
+        "behavior_velocity_planner",
         "no_stopping_area.param.yaml",
     )
     with open(no_stopping_area_param_path, "r") as f:
@@ -272,6 +342,10 @@ def generate_launch_description():
             (
                 "~/input/external_traffic_signals",
                 "/external/traffic_light_recognition/traffic_signals",
+            ),
+            (
+                "~/input/external_velocity_limit_mps",
+                "/planning/scenario_planning/max_velocity_default",
             ),
             ("~/input/virtual_traffic_light_states", "/awapi/tmp/virtual_traffic_light_states"),
             (
@@ -302,6 +376,9 @@ def generate_launch_description():
                 "max_accel": -2.8,
                 "delay_response_time": 1.3,
             },
+            common_param,
+            base_param,
+            smoother_param,
             blind_spot_param,
             crosswalk_param,
             detection_area_param,
