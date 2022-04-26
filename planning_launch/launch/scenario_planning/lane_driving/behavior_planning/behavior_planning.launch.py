@@ -354,6 +354,7 @@ def generate_launch_description():
             ),
             ("~/output/path", "path"),
             ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
+            ("~/output/stop_reason2", "/planning/scenario_planning/status/stop_reason2"),
             (
                 "~/output/infrastructure_commands",
                 "/planning/scenario_planning/status/infrastructure_commands",
