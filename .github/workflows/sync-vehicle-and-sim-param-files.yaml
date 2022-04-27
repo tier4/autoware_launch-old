@@ -24,3 +24,6 @@ jobs:
           pr-branch: sync-vehicle-and-sim-param-files
           pr-title: "chore: sync vehicle and sim param files"
           pr-commit-message: "chore: sync vehicle and sim param files"
+          pr-labels: |
+            bot
+            sync-vehicle-and-sim-param-files
