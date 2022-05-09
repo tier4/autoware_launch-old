@@ -29,6 +29,7 @@
         "/localization/pose_twist_fusion_filter/pose",
         "/perception/object_recognition/objects",
         "/perception/obstacle_segmentation/pointcloud",
+        "/perception/traffic_light_recognition/traffic_signals",
         "/planning/mission_planning/route",
         "/planning/scenario_planning/trajectory",
         "/control/trajectory_follower/control_cmd",
@@ -59,6 +60,7 @@
           warn_rate: 5.0
           type: "sensor_msgs/msg/PointCloud2"
           best_effort: True
+
         /sensing/imu/imu_data:
           module: "sensing"
           timeout: 1.0
@@ -88,6 +90,13 @@
           # The implementation of subscriptions in ROS2 does not allow for multiple types
           # to be defined for a topic. By default this is set to not use have features.
           # type: ["tier4_perception_msgs/msg/DynamicObjectArray", "tier4_perception_msgs/msg/DynamicObjectWithFeatureArray"]
+
+        # Topic rate for traffic light recognition
+        /perception/traffic_light_recognition/traffic_signals:
+          module: "perception"
+          timeout: 1.0
+          warn_rate: 5.0
+          type: "autoware_auto_perception_msgs/msg/TrafficSignalArray"
 
         /planning/mission_planning/route:
           module: "planning"
