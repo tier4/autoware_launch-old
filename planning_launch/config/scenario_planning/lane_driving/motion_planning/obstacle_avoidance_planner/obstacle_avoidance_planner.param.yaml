@@ -26,7 +26,7 @@
       # trajectory total/fixing length
       trajectory_length: 300.0 # total trajectory length[m]
 
-      forward_fixing_min_distance: 1.0 # number of fixing points around ego vehicle [m]
+      forward_fixing_min_distance: 5.0 # number of fixing points around ego vehicle [m]
       forward_fixing_min_time: 0.5 # forward fixing time with current velocity [s]
 
       backward_fixing_distance: 5.0 # backward fixing length from base_link [m]
@@ -68,7 +68,7 @@
         delta_arc_length_for_mpt_points: 0.5 # delta arc length when generating mpt [m]
 
       kinematics:
-        max_steer_deg: 40.0 # max steering angle [deg]
+        max_steer_deg: 37.0 # max steering angle [deg]
 
         # If this parameter is commented out, the parameter is set as below by default.
         # The logic could be `optimization_center_offset = vehicle_info.wheel_base * 0.8`
