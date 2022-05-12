@@ -4,8 +4,6 @@
     <arg name="enable_yaw_bias_estimation" value="False"/>
     <arg name="use_pose_with_covariance" value="True"/>
     <arg name="use_twist_with_covariance" value="True"/>
-    <arg name="predict_frequency" value="10.0"/>
-    <arg name="extend_state_step" value="50"/>
     <arg name="tf_rate" value="50.0"/>
     <arg name="twist_rate" value="25.0"/>
     <arg name="input_initial_pose_name" value="/initialpose3d"/>
