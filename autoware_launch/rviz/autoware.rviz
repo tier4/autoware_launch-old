@@ -374,7 +374,7 @@ Visualization Manager:
           Namespaces:
             center_lane_line: false
             crosswalk_lanelets: true
-            lane_bound: false
+            lane_start_bound: false
             lanelet direction: true
             lanelet_id: false
             left_lane_bound: true
