@@ -161,7 +161,7 @@
             # two_step_soft_constraint: false
 
           vehicle_circles:
-            method: "uniform_circle"
+            method: "rear_drive"
 
             uniform_circle:
               num: 3
