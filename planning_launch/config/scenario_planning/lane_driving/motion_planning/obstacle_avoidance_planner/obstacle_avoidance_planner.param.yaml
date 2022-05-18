@@ -161,6 +161,13 @@
             # two_step_soft_constraint: false
 
           vehicle_circles:
-            num_for_calculation: 3
-            front_radius_ratio: 1.0
-            rear_radius_ratio: 1.0
+            method: "uniform_circle"
+
+            uniform_circle:
+              num: 3
+              radius_ratio: 0.8
+
+            rear_drive:
+              num_for_calculation: 3
+              front_radius_ratio: 1.0
+              rear_radius_ratio: 1.0
