@@ -89,7 +89,7 @@ def generate_launch_description():
         remappings=[
             ("~/output/no_start_reason", "/planning/scenario_planning/status/no_start_reason"),
             ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
-            ("~/output/stop_reason2", "/planning/scenario_planning/status/stop_reason2"),
+            ("~/output/motion_factors", "/planning/scenario_planning/status/motion_factors"),
             ("~/output/trajectory", "surround_obstacle_checker/trajectory"),
             ("~/output/max_velocity", "/planning/scenario_planning/max_velocity_candidates"),
             (
@@ -140,7 +140,7 @@ def generate_launch_description():
         remappings=[
             ("~/output/stop_reason", "/planning/scenario_planning/status/stop_reason"),
             ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
-            ("~/output/stop_reason2", "/planning/scenario_planning/status/stop_reason2"),
+            ("~/output/motion_factors", "/planning/scenario_planning/status/motion_factors"),
             ("~/output/max_velocity", "/planning/scenario_planning/max_velocity_candidates"),
             (
                 "~/output/velocity_limit_clear_command",
