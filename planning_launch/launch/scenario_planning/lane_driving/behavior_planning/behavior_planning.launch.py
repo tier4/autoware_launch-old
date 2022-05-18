@@ -354,7 +354,10 @@ def generate_launch_description():
             ),
             ("~/output/path", "path"),
             ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
-            ("~/output/motion_factors", "/planning/scenario_planning/status/motion_factors"),
+            (
+                "~/output/motion_factors",
+                "/planning/scenario_planning/status/scene_modules/motion_factors",
+            ),
             (
                 "~/output/infrastructure_commands",
                 "/planning/scenario_planning/status/infrastructure_commands",
