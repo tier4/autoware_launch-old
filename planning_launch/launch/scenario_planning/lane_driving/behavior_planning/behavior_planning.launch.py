@@ -17,7 +17,6 @@ import os
 from ament_index_python.packages import get_package_share_directory
 import launch
 from launch.actions import DeclareLaunchArgument
-from launch.actions import ExecuteProcess
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
 from launch.conditions import UnlessCondition
@@ -171,7 +170,7 @@ def generate_launch_description():
             {
                 "bt_tree_config_path": [
                     FindPackageShare("behavior_path_planner"),
-                    "/config/behavior_path_planner_tree.xml",
+                    "/config/behavior_path_planner_tree_lane_change_only.xml",
                 ],
                 "planning_hz": 10.0,
             },
@@ -369,11 +368,12 @@ def generate_launch_description():
                 "launch_blind_spot": True,
                 "launch_detection_area": True,
                 "launch_virtual_traffic_light": True,
-                "launch_occlusion_spot": True,
+                "launch_occlusion_spot": False,
                 "launch_no_stopping_area": True,
                 "forward_path_length": 1000.0,
                 "backward_path_length": 5.0,
-                "max_accel": -2.8,
+                "max_accel": -2.5,
+                "max_jerk": -1.5,
                 "delay_response_time": 1.3,
             },
             common_param,
@@ -426,18 +426,11 @@ def generate_launch_description():
             set_container_executable,
             set_container_mt_executable,
             container,
-            ExecuteProcess(
-                cmd=[
-                    "ros2",
-                    "topic",
-                    "pub",
-                    "/planning/scenario_planning/lane_driving/behavior_planning/"
-                    "behavior_path_planner/path_change_approval",
-                    "tier4_planning_msgs/msg/Approval",
-                    "{approval: true}",
-                    "-r",
-                    "10",
-                ]
-            ),
+            # ExecuteProcess(
+            #     cmd=['ros2', 'topic', 'pub',
+            #          '/planning/scenario_planning/lane_driving/behavior_planning/'
+            #          'behavior_path_planner/path_change_approval',
+            #          'autoware_planning_msgs/msg/Approval', '{approval: true}',
+            #          '-r', '10']),
         ]
     )

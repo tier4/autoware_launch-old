@@ -1,0 +1,10 @@
+- repository: tier4/autoware_launch.x2
+  files:
+    # controller
+    ## longitudinal_controller
+    - source: control_launch/config/trajectory_follower/longitudinal_controller.param.yaml
+      dest: control_launch/config/trajectory_follower/longitudinal_controller_for_vehicle_sim.param.yaml
+
+    ## mpc_follower
+    - source: control_launch/config/trajectory_follower/mpc_follower.param.yaml
+      dest: control_launch/config/trajectory_follower/mpc_follower_for_vehicle_sim.param.yaml
