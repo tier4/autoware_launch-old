@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Remove exec_depend
-        uses: autowarefoundation/autoware-github-actions/remove-exec-depend@v1
+        uses: autowarefoundation/autoware-github-actions/remove-exec-depend@feat/remove_exec_depend
 
       - name: Get modified packages
         id: get-modified-packages
