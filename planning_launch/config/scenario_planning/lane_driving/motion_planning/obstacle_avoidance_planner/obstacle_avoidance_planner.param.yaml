@@ -109,7 +109,7 @@
         common:
           num_joint_buffer_points: 3 # number of joint buffer points
           num_offset_for_begin_idx: 2 # number of shifting points for beginning non-fix idx
-          delta_arc_length_for_eb: 0.6 # 1.0 # delta arc length when optimizing[m] When the value is around 1.0, overshoot at the corner happens.
+          delta_arc_length_for_eb: 1.0 # delta arc length when optimizing[m] When the value is around 1.0, overshoot at the corner happens.
           num_sampling_points_for_eb: 95 # number of optimizing points # must be longer than mpt points
 
         clearance:
