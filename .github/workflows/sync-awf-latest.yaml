@@ -1,4 +1,4 @@
-name: sync-awf
+name: sync-awf-latest
 
 on:
   schedule:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  sync-awf:
+  sync-awf-latest:
     runs-on: ubuntu-latest
     steps:
       - name: Generate token
@@ -21,11 +21,11 @@ jobs:
         with:
           token: ${{ steps.generate-token.outputs.token }}
           base-branch: tier4/universe
-          sync-pr-branch: sync-awf
+          sync-pr-branch: sync-awf-latest
           sync-target-repository: https://github.com/tier4/autoware_launch.git
-          sync-target-branch: awf-sync
-          pr-title: "chore: sync awf"
+          sync-target-branch: awf-latest
+          pr-title: "chore: sync awf-latest"
           pr-labels: |
             bot
-            sync-awf
+            sync-awf-latest
           auto-merge-method: merge
