@@ -107,6 +107,44 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # obstacle velocity planner
+    obstacle_velocity_planner_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "lane_driving",
+        "motion_planning",
+        "obstacle_velocity_planner",
+        "obstacle_velocity_planner.param.yaml",
+    )
+    with open(obstacle_velocity_planner_param_path, "r") as f:
+        obstacle_velocity_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    obstacle_velocity_planner_component = ComposableNode(
+        package="obstacle_velocity_planner",
+        plugin="motion_planning::ObstacleVelocityPlannerNode",
+        name="obstacle_velocity_planner",
+        namespace="",
+        remappings=[
+            (
+                "~/input/trajectory",
+                "/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker/trajectory",
+            ),
+            ("~/input/odometry", "/localization/kinematic_state"),
+            ("~/input/map", "/map/vector_map"),
+            ("~/input/objects", "/perception/object_recognition/objects"),
+            ("~/output/trajectory", "/planning/scenario_planning/lane_driving/trajectory"),
+            ("~/output/velocity_limit", "/planning/scenario_planning/max_velocity_candidates"),
+            ("~/output/clear_velocity_limit", "/planning/scenario_planning/clear_velocity_limit"),
+            ("~/output/stop_reason", "/planning/scenario_planning/status/stop_reason"),
+            ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
+        ],
+        parameters=[
+            common_param,
+            obstacle_velocity_planner_param,
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     # obstacle stop planner
     obstacle_stop_planner_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
@@ -168,6 +206,7 @@ def generate_launch_description():
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             obstacle_avoidance_planner_component,
+            # obstacle_velocity_planner_component,
             obstacle_stop_planner_component,
         ],
     )
