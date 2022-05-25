@@ -19,6 +19,7 @@
   <group>
     <push-ros-namespace namespace="autoware_api/utils"/>
     <include file="$(find-pkg-share path_distance_calculator)/launch/path_distance_calculator.launch.xml"/>
+    <include file="$(find-pkg-share image_base64_converter)/launch/image_base64_converter.launch.xml"/>
   </group>
 
   <!-- rosbridge -->
