@@ -48,6 +48,8 @@ class GroundSegmentationPipeline:
         self.use_time_series_filter = self.ground_segmentation_param["use_time_series_filter"]
 
     def get_vehicle_info(self):
+        # TODO(TIER IV): Use Parameter Substitution after we drop Galactic support
+        # https://github.com/ros2/launch_ros/blob/master/launch_ros/launch_ros/substitutions/parameter.py
         gp = self.context.launch_configurations.get("ros_params", {})
         if not gp:
             gp = self.context.launch_configurations.get("global_params", {})
