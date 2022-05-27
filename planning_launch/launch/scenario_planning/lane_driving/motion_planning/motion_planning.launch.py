@@ -125,10 +125,7 @@ def generate_launch_description():
         name="obstacle_velocity_planner",
         namespace="",
         remappings=[
-            (
-                "~/input/trajectory",
-                "/planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker/trajectory",
-            ),
+            ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
             ("~/input/odometry", "/localization/kinematic_state"),
             ("~/input/map", "/map/vector_map"),
             ("~/input/objects", "/perception/object_recognition/objects"),
@@ -206,9 +203,19 @@ def generate_launch_description():
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             obstacle_avoidance_planner_component,
-            # obstacle_velocity_planner_component,
-            obstacle_stop_planner_component,
         ],
+    )
+
+    obstacle_stop_planner_loader = LoadComposableNodes(
+        composable_node_descriptions=[obstacle_stop_planner_component],
+        target_container=container,
+        condition=IfCondition(LaunchConfiguration("use_obstacle_stop_planner")),
+    )
+
+    obstacle_velocity_planner_loader = LoadComposableNodes(
+        composable_node_descriptions=[obstacle_velocity_planner_component],
+        target_container=container,
+        condition=IfCondition(LaunchConfiguration("use_obstacle_velocity_planner")),
     )
 
     surround_obstacle_checker_loader = LoadComposableNodes(
@@ -235,11 +242,15 @@ def generate_launch_description():
                 default_value="/planning/scenario_planning/lane_driving/behavior_planning/path",
             ),
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
+            DeclareLaunchArgument("use_obstacle_stop_planner", default_value="false"),
+            DeclareLaunchArgument("use_obstacle_velocity_planner", default_value="true"),
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
             set_container_mt_executable,
             container,
             surround_obstacle_checker_loader,
+            obstacle_stop_planner_loader,
+            obstacle_velocity_planner_loader,
         ]
     )
