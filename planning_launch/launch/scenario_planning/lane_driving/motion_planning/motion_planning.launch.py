@@ -127,12 +127,10 @@ def generate_launch_description():
         remappings=[
             ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
             ("~/input/odometry", "/localization/kinematic_state"),
-            ("~/input/map", "/map/vector_map"),
             ("~/input/objects", "/perception/object_recognition/objects"),
             ("~/output/trajectory", "/planning/scenario_planning/lane_driving/trajectory"),
             ("~/output/velocity_limit", "/planning/scenario_planning/max_velocity_candidates"),
             ("~/output/clear_velocity_limit", "/planning/scenario_planning/clear_velocity_limit"),
-            ("~/output/stop_reason", "/planning/scenario_planning/status/stop_reason"),
             ("~/output/stop_reasons", "/planning/scenario_planning/status/stop_reasons"),
         ],
         parameters=[
