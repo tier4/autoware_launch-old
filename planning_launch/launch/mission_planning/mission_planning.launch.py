@@ -14,7 +14,10 @@
 
 import launch
 from launch.actions import DeclareLaunchArgument
+from launch.actions import SetLaunchConfiguration
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition
+from launch.conditions import UnlessCondition
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
@@ -24,18 +27,19 @@ def generate_launch_description():
         name="mission_planning_container",
         namespace="",
         package="rclcpp_components",
-        executable="component_container",
+        executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
             ComposableNode(
                 package="mission_planner",
                 plugin="mission_planner::MissionPlannerLanelet2",
                 name="mission_planner",
                 remappings=[
-                    ("input/vector_map", "/map/vector_map"),
-                    ("input/goal_pose", "/planning/mission_planning/goal"),
-                    ("input/checkpoint", "/planning/mission_planning/checkpoint"),
-                    ("output/route", "/planning/mission_planning/route"),
-                    ("debug/route_marker", "/planning/mission_planning/route_marker"),
+                    ('input/vector_map', '/map/vector_map'),
+                    ('input/goal_pose', '/planning/mission_planning/goal'),
+                    ('input/checkpoint', '/planning/mission_planning/checkpoint'),
+                    ('output/route', '/planning/mission_planning/route'),
+                    ('visualization_topic_name',
+                     '/planning/mission_planning/route_marker'),
                 ],
                 parameters=[
                     {
@@ -61,6 +65,18 @@ def generate_launch_description():
             ),
         ],
     )
+
+    set_container_executable = SetLaunchConfiguration(
+        "container_executable",
+        "component_container",
+        condition=UnlessCondition(LaunchConfiguration("use_multithread")),
+    )
+    set_container_mt_executable = SetLaunchConfiguration(
+        "container_executable",
+        "component_container_mt",
+        condition=IfCondition(LaunchConfiguration("use_multithread")),
+    )
+
     return launch.LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -68,6 +84,11 @@ def generate_launch_description():
                 default_value="false",
                 description="use ROS2 component container communication",
             ),
+            DeclareLaunchArgument(
+                "use_multithread", default_value="true", description="use multithread"
+            ),
+            set_container_executable,
+            set_container_mt_executable,
             container,
         ]
     )
