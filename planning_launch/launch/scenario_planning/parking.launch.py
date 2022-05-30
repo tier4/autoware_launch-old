@@ -40,6 +40,17 @@ def generate_launch_description():
     with open(freespace_planner_param_path, "r") as f:
         freespace_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
+    auto_parking_planner_param_path = os.path.join(
+        get_package_share_directory('planning_launch'),
+        'config',
+        'scenario_planning',
+        'parking',
+        'auto_parking_planner',
+        'auto_parking_planner.param.yaml',
+    )
+    with open(auto_parking_planner_param_path, 'r') as f:
+        auto_parking_planner_param = yaml.safe_load(f)['/**']['ros__parameters']
+
     container = ComposableNodeContainer(
         name="parking_container",
         namespace="",
@@ -49,13 +60,13 @@ def generate_launch_description():
             ComposableNode(
                 package="costmap_generator",
                 plugin="CostmapGenerator",
-                name="costmap_generator",
                 remappings=[
                     ("~/input/objects", "/perception/object_recognition/objects"),
                     (
                         "~/input/points_no_ground",
                         "/perception/obstacle_segmentation/pointcloud",
                     ),
+                    ("~/input/extra_occgrid", "/perception/occupancy_grid_map/map"),
                     ("~/input/vector_map", "/map/vector_map"),
                     ("~/input/scenario", "/planning/scenario_planning/scenario"),
                     ("~/output/grid_map", "costmap_generator/grid_map"),
@@ -63,6 +74,8 @@ def generate_launch_description():
                 ],
                 parameters=[
                     {
+                        "use_extra_occgrid": True,
+                        "activate_by_scenario": False,
                         "costmap_frame": "map",
                         "vehicle_frame": "base_link",
                         "map_frame": "map",
@@ -83,6 +96,7 @@ def generate_launch_description():
                         "size_of_expansion_kernel": 9,
                     },
                 ],
+                name="costmap_generator",
                 extra_arguments=[
                     {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
                 ],
@@ -106,6 +120,22 @@ def generate_launch_description():
                     {"use_intra_process_comms": LaunchConfiguration("use_intra_process")}
                 ],
             ),
+            ComposableNode(
+                plugin="auto_parking_planner::AutoParkingPlanner",
+                package='auto_parking_planner',
+                name='auto_parking_planner',
+                remappings=[
+                    ('~/input/vector_map', '/map/vector_map'),
+                    ('~/input/state', '/autoware/state'),
+                    ('~/input/velocity_report', '/vehicle/status/velocity_status'),
+                    ('~/input/twist', '/vehicle/status/twist'),
+                    ('~/input/trajectory', '/planning/scenario_planning/trajectory'),
+                    ('~/output/route', '/planning/mission_planning/route'),
+                ],
+                parameters=[
+                    auto_parking_planner_param
+                ],
+            )
         ],
     )
 
@@ -128,7 +158,7 @@ def generate_launch_description():
                 description="use ROS2 component container communication",
             ),
             DeclareLaunchArgument(
-                "use_multithread", default_value="false", description="use multithread"
+                "use_multithread", default_value="true", description="use multithread"
             ),
             set_container_executable,
             set_container_mt_executable,
