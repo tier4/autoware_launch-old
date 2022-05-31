@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    # -- Node Configurations --
+    lookahead_length_max: 15.0
+    lookahead_length_min: 2.0
+    reedsshepp_threashold_length: 10.0
+    euclid_threashold_length: 6.0
