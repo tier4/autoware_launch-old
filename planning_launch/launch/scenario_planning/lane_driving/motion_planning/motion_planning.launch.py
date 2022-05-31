@@ -108,22 +108,22 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    # obstacle velocity planner
-    obstacle_velocity_planner_param_path = os.path.join(
+    # adaptive cruise planner
+    adaptive_cruise_planner_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
         "config",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
-        "obstacle_velocity_planner",
-        "obstacle_velocity_planner.param.yaml",
+        "adaptive_cruise_planner",
+        "adaptive_cruise_planner.param.yaml",
     )
-    with open(obstacle_velocity_planner_param_path, "r") as f:
-        obstacle_velocity_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    obstacle_velocity_planner_component = ComposableNode(
-        package="obstacle_velocity_planner",
-        plugin="motion_planning::ObstacleVelocityPlannerNode",
-        name="obstacle_velocity_planner",
+    with open(adaptive_cruise_planner_param_path, "r") as f:
+        adaptive_cruise_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    adaptive_cruise_planner_component = ComposableNode(
+        package="adaptive_cruise_planner",
+        plugin="motion_planning::AdaptiveCruisePlannerNode",
+        name="adaptive_cruise_planner",
         namespace="",
         remappings=[
             ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
@@ -136,7 +136,7 @@ def generate_launch_description():
         ],
         parameters=[
             common_param,
-            obstacle_velocity_planner_param,
+            adaptive_cruise_planner_param,
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -221,19 +221,19 @@ def generate_launch_description():
     obstacle_stop_planner_loader = LoadComposableNodes(
         composable_node_descriptions=[obstacle_stop_planner_component],
         target_container=container,
-        condition=LaunchConfigurationEquals("cruise_stop_planner", "obstacle_stop_planner"),
+        condition=LaunchConfigurationEquals("cruise_planner", "obstacle_stop_planner"),
     )
 
-    obstacle_velocity_planner_loader = LoadComposableNodes(
-        composable_node_descriptions=[obstacle_velocity_planner_component],
+    adaptive_cruise_planner_loader = LoadComposableNodes(
+        composable_node_descriptions=[adaptive_cruise_planner_component],
         target_container=container,
-        condition=LaunchConfigurationEquals("cruise_stop_planner", "obstacle_velocity_planner"),
+        condition=LaunchConfigurationEquals("cruise_planner", "adaptive_cruise_planner"),
     )
 
     adaptive_cruise_planner_relay_loader = LoadComposableNodes(
         composable_node_descriptions=[adaptive_cruise_planner_relay_component],
         target_container=container,
-        condition=LaunchConfigurationEquals("cruise_stop_planner", "none"),
+        condition=LaunchConfigurationEquals("cruise_planner", "none"),
     )
 
     surround_obstacle_checker_loader = LoadComposableNodes(
@@ -261,8 +261,8 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
             DeclareLaunchArgument(
-                "cruise_stop_planner", default_value="obstacle_stop_planner"
-            ),  # select from "obstacle_stop_planner", "obstacle_velocity_planner", "none"
+                "cruise_planner", default_value="obstacle_stop_planner"
+            ),  # select from "obstacle_stop_planner", "adaptive_cruise_planner", "none"
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
@@ -270,7 +270,7 @@ def generate_launch_description():
             container,
             surround_obstacle_checker_loader,
             obstacle_stop_planner_loader,
-            obstacle_velocity_planner_loader,
+            adaptive_cruise_planner_loader,
             adaptive_cruise_planner_relay_loader,
         ]
     )
