@@ -19,6 +19,7 @@ import launch
 from launch.actions import DeclareLaunchArgument
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
+from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
@@ -194,6 +195,19 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    adaptive_cruise_planner_relay_component = ComposableNode(
+        package="topic_tools",
+        plugin="topic_tools::RelayNode",
+        name="adaptive_cruise_planner_relay",
+        namespace="",
+        parameters=[
+            {"input_topic": "obstacle_avoidance_planner/trajectory"},
+            {"output_topic": "/planning/scenario_planning/lane_driving/trajectory"},
+            {"type": "autoware_auto_planning_msgs/msg/Trajectory"},
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     container = ComposableNodeContainer(
         name="motion_planning_container",
         namespace="",
@@ -207,13 +221,19 @@ def generate_launch_description():
     obstacle_stop_planner_loader = LoadComposableNodes(
         composable_node_descriptions=[obstacle_stop_planner_component],
         target_container=container,
-        condition=IfCondition(LaunchConfiguration("use_obstacle_stop_planner")),
+        condition=LaunchConfigurationEquals("cruise_stop_planner", "obstacle_stop_planner"),
     )
 
     obstacle_velocity_planner_loader = LoadComposableNodes(
         composable_node_descriptions=[obstacle_velocity_planner_component],
         target_container=container,
-        condition=IfCondition(LaunchConfiguration("use_obstacle_velocity_planner")),
+        condition=LaunchConfigurationEquals("cruise_stop_planner", "obstacle_velocity_planner"),
+    )
+
+    adaptive_cruise_planner_relay_loader = LoadComposableNodes(
+        composable_node_descriptions=[adaptive_cruise_planner_relay_component],
+        target_container=container,
+        condition=LaunchConfigurationEquals("cruise_stop_planner", "none"),
     )
 
     surround_obstacle_checker_loader = LoadComposableNodes(
@@ -240,8 +260,9 @@ def generate_launch_description():
                 default_value="/planning/scenario_planning/lane_driving/behavior_planning/path",
             ),
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
-            DeclareLaunchArgument("use_obstacle_stop_planner", default_value="true"),
-            DeclareLaunchArgument("use_obstacle_velocity_planner", default_value="false"),
+            DeclareLaunchArgument(
+                "cruise_stop_planner", default_value="obstacle_stop_planner"
+            ),  # select from "obstacle_stop_planner", "obstacle_velocity_planner", "none"
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
@@ -250,5 +271,6 @@ def generate_launch_description():
             surround_obstacle_checker_loader,
             obstacle_stop_planner_loader,
             obstacle_velocity_planner_loader,
+            adaptive_cruise_planner_relay_loader,
         ]
     )
