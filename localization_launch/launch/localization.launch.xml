@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="input/pointcloud" default="/sensing/lidar/top/outlier_filtered/pointcloud" description="The topic will be used in the localization util module"/>
-  <arg name="container" default="/sensing/lidar/top/pointcloud_preprocessor/velodyne_node_container"/>
+  <arg name="input/pointcloud" default="/sensing/lidar/right_upper/rectified/pointcloud_ex" description="The topic will be used in the localization util module"/>
+  <arg name="container" default="/sensing/lidar/right_upper/pointcloud_preprocessor/pandar_node_container"/>
 
   <!-- localization module -->
   <group>

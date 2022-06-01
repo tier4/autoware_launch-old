@@ -6,6 +6,10 @@
     },
     {
       "pattern": "^https://github.com/.*/discussions/new"
+    },
+    {
+      "pattern": "^https://github.com/tier4/*",
+      "reason": "This repos is private so skip checking."
     }
   ],
   "retryOn429": true,
