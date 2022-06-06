@@ -108,22 +108,22 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    # adaptive cruise planner
-    adaptive_cruise_planner_param_path = os.path.join(
+    # obstacle cruise planner
+    obstacle_cruise_planner_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
         "config",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
-        "adaptive_cruise_planner",
-        "adaptive_cruise_planner.param.yaml",
+        "obstacle_cruise_planner",
+        "obstacle_cruise_planner.param.yaml",
     )
-    with open(adaptive_cruise_planner_param_path, "r") as f:
-        adaptive_cruise_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    adaptive_cruise_planner_component = ComposableNode(
-        package="adaptive_cruise_planner",
-        plugin="motion_planning::AdaptiveCruisePlannerNode",
-        name="adaptive_cruise_planner",
+    with open(obstacle_cruise_planner_param_path, "r") as f:
+        obstacle_cruise_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    obstacle_cruise_planner_component = ComposableNode(
+        package="obstacle_cruise_planner",
+        plugin="motion_planning::ObstacleCruisePlannerNode",
+        name="obstacle_cruise_planner",
         namespace="",
         remappings=[
             ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
@@ -136,7 +136,7 @@ def generate_launch_description():
         ],
         parameters=[
             common_param,
-            adaptive_cruise_planner_param,
+            obstacle_cruise_planner_param,
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -195,10 +195,10 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
-    adaptive_cruise_planner_relay_component = ComposableNode(
+    obstacle_cruise_planner_relay_component = ComposableNode(
         package="topic_tools",
         plugin="topic_tools::RelayNode",
-        name="adaptive_cruise_planner_relay",
+        name="obstacle_cruise_planner_relay",
         namespace="",
         parameters=[
             {"input_topic": "obstacle_avoidance_planner/trajectory"},
@@ -224,14 +224,14 @@ def generate_launch_description():
         condition=LaunchConfigurationEquals("cruise_planner", "obstacle_stop_planner"),
     )
 
-    adaptive_cruise_planner_loader = LoadComposableNodes(
-        composable_node_descriptions=[adaptive_cruise_planner_component],
+    obstacle_cruise_planner_loader = LoadComposableNodes(
+        composable_node_descriptions=[obstacle_cruise_planner_component],
         target_container=container,
-        condition=LaunchConfigurationEquals("cruise_planner", "adaptive_cruise_planner"),
+        condition=LaunchConfigurationEquals("cruise_planner", "obstacle_cruise_planner"),
     )
 
-    adaptive_cruise_planner_relay_loader = LoadComposableNodes(
-        composable_node_descriptions=[adaptive_cruise_planner_relay_component],
+    obstacle_cruise_planner_relay_loader = LoadComposableNodes(
+        composable_node_descriptions=[obstacle_cruise_planner_relay_component],
         target_container=container,
         condition=LaunchConfigurationEquals("cruise_planner", "none"),
     )
@@ -262,7 +262,7 @@ def generate_launch_description():
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
             DeclareLaunchArgument(
                 "cruise_planner", default_value="obstacle_stop_planner"
-            ),  # select from "obstacle_stop_planner", "adaptive_cruise_planner", "none"
+            ),  # select from "obstacle_stop_planner", "obstacle_cruise_planner", "none"
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
@@ -270,7 +270,7 @@ def generate_launch_description():
             container,
             surround_obstacle_checker_loader,
             obstacle_stop_planner_loader,
-            adaptive_cruise_planner_loader,
-            adaptive_cruise_planner_relay_loader,
+            obstacle_cruise_planner_loader,
+            obstacle_cruise_planner_relay_loader,
         ]
     )
