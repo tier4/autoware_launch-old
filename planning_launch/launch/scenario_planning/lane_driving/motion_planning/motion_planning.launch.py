@@ -261,7 +261,7 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
             DeclareLaunchArgument(
-                "cruise_planner", default_value="obstacle_cruise_planner"
+                "cruise_planner", default_value="obstacle_stop_planner"
             ),  # select from "obstacle_stop_planner", "obstacle_cruise_planner", "none"
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
