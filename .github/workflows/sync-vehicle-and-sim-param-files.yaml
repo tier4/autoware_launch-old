@@ -1,0 +1,29 @@
+name: sync-vehicle-and-sim-param-files
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch:
+
+jobs:
+  sync-vehicle-and-sim-param-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate token
+        id: generate-token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Run sync-files
+        uses: autowarefoundation/autoware-github-actions/sync-files@v1
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          config: .github/sync-vehicle-and-sim-param-files.yaml
+          pr-branch: sync-vehicle-and-sim-param-files
+          pr-title: "chore: sync vehicle and sim param files"
+          pr-commit-message: "chore: sync vehicle and sim param files"
+          pr-labels: |
+            bot
+            sync-vehicle-and-sim-param-files
