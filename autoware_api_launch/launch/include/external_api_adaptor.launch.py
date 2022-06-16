@@ -29,6 +29,7 @@ def _create_api_node(node_name, class_name, **kwargs):
 
 def generate_launch_description():
     components = [
+        _create_api_node("calibration_status", "CalibrationStatus"),
         _create_api_node("cpu_usage", "CpuUsage"),
         _create_api_node("diagnostics", "Diagnostics"),
         _create_api_node("door", "Door"),
@@ -40,6 +41,7 @@ def generate_launch_description():
         _create_api_node("operator", "Operator"),
         _create_api_node("metadata_packages", "MetadataPackages"),
         _create_api_node("route", "Route"),
+        _create_api_node("rtc_controller", "RTCController"),
         _create_api_node("service", "Service"),
         _create_api_node("start", "Start"),
         _create_api_node("vehicle_status", "VehicleStatus"),
