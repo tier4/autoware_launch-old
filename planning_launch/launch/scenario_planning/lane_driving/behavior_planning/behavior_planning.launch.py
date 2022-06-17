@@ -26,6 +26,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions import PythonExpression
 from launch_ros.actions import ComposableNodeContainer
+from launch_ros.actions import SetParameter
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
 import yaml
@@ -172,11 +173,15 @@ def generate_launch_description():
             pull_out_param,
             behavior_path_planner_param,
             {
-                "bt_tree_config_path": [
-                    FindPackageShare("behavior_path_planner"),
-                    "/config/behavior_path_planner_tree.xml",
-                ],
                 "planning_hz": 10.0,
+                "lane_change.enable_abort_lane_change": LaunchConfiguration("disuse_foa"),
+                "lane_change.enable_collision_check_at_prepare_phase": LaunchConfiguration(
+                    "disuse_foa"
+                ),
+                "lane_change.use_predicted_path_outside_lanelet": LaunchConfiguration("disuse_foa"),
+                "lane_change.use_all_predicted_path": LaunchConfiguration("disuse_foa"),
+                "lane_change.enable_blocked_by_obstacle": LaunchConfiguration("disuse_foa"),
+                "bt_tree_config_path": LaunchConfiguration("bt_tree_config_path"),
             },
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
@@ -462,6 +467,18 @@ def generate_launch_description():
         ),
     )
 
+    set_bt_tree_config_path_without_foa = SetLaunchConfiguration(
+        "bt_tree_config_path",
+        [FindPackageShare("behavior_path_planner"), "/config/behavior_path_planner_tree.xml"],
+        condition=IfCondition(LaunchConfiguration("disuse_foa")),
+    )
+
+    set_bt_tree_config_path_with_foa = SetLaunchConfiguration(
+        "bt_tree_config_path",
+        [FindPackageShare("behavior_path_planner"), "/config/behavior_path_planner_tree.xml"],
+        condition=UnlessCondition(LaunchConfiguration("disuse_foa")),
+    )
+
     return launch.LaunchDescription(
         [
             DeclareLaunchArgument(
@@ -472,6 +489,18 @@ def generate_launch_description():
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
             set_container_mt_executable,
+            SetParameter(
+                name="avoidance.threshold_distance_object_is_on_center",
+                value=0.5,
+                condition=IfCondition(LaunchConfiguration("disuse_foa")),
+            ),
+            SetParameter(
+                name="avoidance.threshold_distance_object_is_on_center",
+                value=0.0,
+                condition=UnlessCondition(LaunchConfiguration("disuse_foa")),
+            ),
+            set_bt_tree_config_path_without_foa,
+            set_bt_tree_config_path_with_foa,
             container,
             load_compare_map,
             ExecuteProcess(
@@ -485,7 +514,8 @@ def generate_launch_description():
                     "{approval: true}",
                     "-r",
                     "10",
-                ]
+                ],
+                condition=IfCondition(LaunchConfiguration("disuse_foa")),
             ),
         ]
     )
