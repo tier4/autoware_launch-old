@@ -1,0 +1,7 @@
+/**:
+  ros__parameters:
+    # for finding nearest index
+    find_nearest_index:
+      ego_dist_threshold
+      ego_yaw_threshold
+      obj_dist_threshold
