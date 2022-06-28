@@ -45,6 +45,10 @@
     <arg name="model_file_path" value="$(var classifier_model_path)"/>
   </include>
 
+  <!-- estimation -->
+  <include file="$(find-pkg-share traffic_light_estimator)/launch/traffic_light_estimator.launch.xml">
+  </include>
+
   <!-- visualizer -->
   <include file="$(find-pkg-share traffic_light_visualization)/launch/traffic_light_map_visualizer.launch.xml">
   </include>

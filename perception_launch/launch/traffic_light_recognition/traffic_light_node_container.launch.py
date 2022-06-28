@@ -116,7 +116,7 @@ def generate_launch_description():
                     ("~/input/image", LaunchConfiguration("input/image")),
                     ("~/input/rois", "rois"),
                     ("~/input/rough/rois", "rough/rois"),
-                    ("~/input/traffic_signals", "traffic_signals"),
+                    ("~/input/traffic_signals", "classified/traffic_signals"),
                     ("~/output/image", "debug/rois"),
                     ("~/output/image/compressed", "debug/rois/compressed"),
                     ("~/output/image/compressedDepth", "debug/rois/compressedDepth"),
