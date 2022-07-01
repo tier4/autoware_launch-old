@@ -67,7 +67,7 @@ def generate_launch_description():
     add_launch_arg("input_h", "224")
     add_launch_arg("input_w", "224")
 
-    add_launch_arg("use_traffic_light_estimator", "True")
+    add_launch_arg("use_crosswalk_traffic_light_estimator", "True")
     add_launch_arg("use_intra_process", "False")
     add_launch_arg("use_multithread", "False")
 
@@ -134,9 +134,9 @@ def generate_launch_description():
     estimator_loader = LoadComposableNodes(
         composable_node_descriptions=[
             ComposableNode(
-                package="traffic_light_estimator",
-                plugin="traffic_light::TrafficLightEstimatorNode",
-                name="traffic_light_estimator",
+                package="crosswalk_traffic_light_estimator",
+                plugin="traffic_light::CrosswalkTrafficLightEstimatorNode",
+                name="crosswalk_traffic_light_estimator",
                 remappings=[
                     ("~/input/vector_map", "/map/vector_map"),
                     ("~/input/route", "/planning/mission_planning/route"),
@@ -147,7 +147,7 @@ def generate_launch_description():
             ),
         ],
         target_container=container,
-        condition=IfCondition(LaunchConfiguration("use_traffic_light_estimator")),
+        condition=IfCondition(LaunchConfiguration("use_crosswalk_traffic_light_estimator")),
     )
 
     relay_loader = LoadComposableNodes(
@@ -168,7 +168,7 @@ def generate_launch_description():
             )
         ],
         target_container=container,
-        condition=UnlessCondition(LaunchConfiguration("use_traffic_light_estimator")),
+        condition=UnlessCondition(LaunchConfiguration("use_crosswalk_traffic_light_estimator")),
     )
 
     decompressor_loader = LoadComposableNodes(
