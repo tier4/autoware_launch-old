@@ -4,7 +4,8 @@
     delay_compensation_time: 0.40
 
     enable_smooth_stop: true
-    enable_overshoot_emergency: true
+    enable_overshoot_emergency: false
+    enable_large_tracking_error_emergency: false
     enable_slope_compensation: true
 
     # state transition
