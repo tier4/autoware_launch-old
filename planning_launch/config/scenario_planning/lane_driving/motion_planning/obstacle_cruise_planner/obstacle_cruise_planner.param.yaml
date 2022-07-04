@@ -54,7 +54,7 @@
       max_prediction_time_for_collision_check : 20.0 # prediction time to check collision between obstacle and ego
 
       ignored_outside_obstacle_type:
-        unknown: false
+        unknown: true
         car: false
         truck: false
         bus: false
