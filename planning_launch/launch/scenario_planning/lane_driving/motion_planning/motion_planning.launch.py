@@ -64,7 +64,7 @@ def generate_launch_description():
         ],
         parameters=[
             obstacle_avoidance_planner_param,
-            {"enable_avoidance": LaunchConfiguration("disuse_foa")},
+            {"enable_avoidance": False},
             {"is_showing_debug_info": False},
             {"is_stopping_if_outside_drivable_area": True},
         ],
