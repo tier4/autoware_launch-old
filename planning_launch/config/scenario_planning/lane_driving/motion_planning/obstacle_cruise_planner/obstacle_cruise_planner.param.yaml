@@ -3,7 +3,7 @@
     common:
       planning_algorithm: "pid_base" # currently supported algorithm is "pid_base"
 
-      is_showing_debug_info: true
+      is_showing_debug_info: false
 
       # longitudinal info
       idling_time: 1.5 # idling time to detect front vehicle starting deceleration [s]
