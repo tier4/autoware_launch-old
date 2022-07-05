@@ -65,7 +65,7 @@
   <!-- radar detection-->
   <include file="$(find-pkg-share radar_tracks_msgs_converter)/launch/radar_tracks_msgs_converter.launch.xml">
     <arg name="input/radar_objects" value="/sensing/radar/front_center/objects_raw" />
-    <arg name="input/odometry" value="/localization//localization/kinematic_state" />
+    <arg name="input/odometry" value="/localization/kinematic_state" />
     <arg name="output/radar_objects" value="radar/front_center/objects" />
     <arg name="update_rate_hz" value="20.0" />
     <arg name="use_twist_compensation" value="true" />
