@@ -71,7 +71,7 @@
     <arg name="use_twist_compensation" value="true" />
   </include>
 
-  <!-- radar fusion detection-->
+  <!-- camera lidar radar fusion-->
   <include file="$(find-pkg-share radar_fusion_to_detected_object)/launch/radar_object_fusion_to_detected_object.launch.xml">
     <arg name="input/objects" value="lidar_objects" />
     <arg name="input/radars" value="radar/front_center/objects" />
