@@ -28,7 +28,7 @@
   <group>
     <include file="$(find-pkg-share perception_launch)/launch/object_recognition/detection/camera_lidar_fusion_based_detection.launch.xml">
       <arg name="input/pointcloud" value="$(var input/pointcloud)"/>
-      <arg name="output/objects" value="camera_lidar_fusion_objects"/>
+      <arg name="output/objects" value="camera_lidar_fusion/objects"/>
       <arg name="image_raw0" value="$(var image_raw0)"/>
       <arg name="camera_info0" value="$(var camera_info0)"/>
       <arg name="image_raw1" value="$(var image_raw1)"/>
@@ -61,7 +61,7 @@
 
   <!-- camera lidar radar fusion-->
   <include file="$(find-pkg-share radar_fusion_to_detected_object)/launch/radar_object_fusion_to_detected_object.launch.xml">
-    <arg name="input/objects" value="camera_lidar_fusion_objects" />
+    <arg name="input/objects" value="camera_lidar_fusion/objects" />
     <arg name="input/radars" value="radar/objects" />
     <arg name="output/objects" value="objects" />
   </include>
