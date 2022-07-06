@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-  <arg name="mode" default="lidar" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `camera_radar_fusion`, `lidar` or `camera`"/>
+  <arg name="mode" default="lidar" description="options: `camera_lidar_radar_fusion`, `camera_lidar_fusion`, `lidar_radar_fusion`, `lidar` or `radar`"/>
 
   <!-- lidar param -->
   <arg name="input/pointcloud" />
