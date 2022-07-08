@@ -37,8 +37,8 @@
     brake_keeping_acc: -0.2
 
     # smooth stop state
-    smooth_stop_max_strong_acc: -0.85
-    smooth_stop_min_strong_acc: -1.35
+    smooth_stop_max_strong_acc: -0.90
+    smooth_stop_min_strong_acc: -1.40
     smooth_stop_weak_acc: -0.625
     smooth_stop_weak_stop_acc: -0.75
     smooth_stop_strong_stop_acc: -3.4
