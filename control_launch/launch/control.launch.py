@@ -19,13 +19,11 @@ from launch.actions import IncludeLaunchDescription
 from launch.actions import OpaqueFunction
 from launch.actions import SetLaunchConfiguration
 from launch.conditions import IfCondition
-from launch.conditions import LaunchConfigurationEquals
 from launch.conditions import UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import EnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
-from launch_ros.actions import LoadComposableNodes
 from launch_ros.actions import PushRosNamespace
 from launch_ros.descriptions import ComposableNode
 from launch_ros.substitutions import FindPackageShare
@@ -39,10 +37,6 @@ def launch_setup(context, *args, **kwargs):
     lon_controller_param_path = LaunchConfiguration("lon_controller_param_path").perform(context)
     with open(lon_controller_param_path, "r") as f:
         lon_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-    latlon_muxer_param_path = LaunchConfiguration("latlon_muxer_param_path").perform(context)
-    with open(latlon_muxer_param_path, "r") as f:
-        latlon_muxer_param = yaml.safe_load(f)["/**"]["ros__parameters"]
-
     vehicle_cmd_gate_param_path = LaunchConfiguration("vehicle_cmd_gate_param_path").perform(
         context
     )
@@ -54,73 +48,34 @@ def launch_setup(context, *args, **kwargs):
     with open(lane_departure_checker_param_path, "r") as f:
         lane_departure_checker_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
-    # lateral controller
-    mpc_follower_component = ComposableNode(
+    operation_mode_transition_manager_param_path = LaunchConfiguration(
+        "operation_mode_transition_manager_param_path"
+    ).perform(context)
+    with open(operation_mode_transition_manager_param_path, "r") as f:
+        operation_mode_transition_manager_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+
+    controller_component = ComposableNode(
         package="trajectory_follower_nodes",
-        plugin="autoware::motion::control::trajectory_follower_nodes::LateralController",
-        name="lateral_controller_node_exe",
+        plugin="autoware::motion::control::trajectory_follower_nodes::Controller",
+        name="controller_node_exe",
         namespace="trajectory_follower",
         remappings=[
             ("~/input/reference_trajectory", "/planning/scenario_planning/trajectory"),
             ("~/input/current_odometry", "/localization/kinematic_state"),
             ("~/input/current_steering", "/vehicle/status/steering_status"),
-            ("~/output/control_cmd", "lateral/control_cmd"),
             ("~/output/predicted_trajectory", "lateral/predicted_trajectory"),
-            ("~/output/diagnostic", "lateral/diagnostic"),
-        ],
-        parameters=[
-            lat_controller_param,
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-    pure_pursuit_component = ComposableNode(
-        package="pure_pursuit",
-        plugin="pure_pursuit::PurePursuitNode",
-        name="pure_pursuit_node_exe",
-        namespace="trajectory_follower",
-        remappings=[
-            ("input/reference_trajectory", "/planning/scenario_planning/trajectory"),
-            ("input/current_odometry", "/localization/kinematic_state"),
-            ("output/control_raw", "lateral/control_cmd"),
-        ],
-        parameters=[
-            lat_controller_param,
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
-    # longitudinal controller
-    lon_controller_component = ComposableNode(
-        package="trajectory_follower_nodes",
-        plugin="autoware::motion::control::trajectory_follower_nodes::LongitudinalController",
-        name="longitudinal_controller_node_exe",
-        namespace="trajectory_follower",
-        remappings=[
-            ("~/input/current_trajectory", "/planning/scenario_planning/trajectory"),
-            ("~/input/current_odometry", "/localization/kinematic_state"),
-            ("~/output/control_cmd", "longitudinal/control_cmd"),
+            ("~/output/lateral_diagnostic", "lateral/diagnostic"),
             ("~/output/slope_angle", "longitudinal/slope_angle"),
-            ("~/output/diagnostic", "longitudinal/diagnostic"),
-        ],
-        parameters=[
-            lon_controller_param,
-        ],
-        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-    )
-
-    # latlon muxer
-    latlon_muxer_component = ComposableNode(
-        package="trajectory_follower_nodes",
-        plugin="autoware::motion::control::trajectory_follower_nodes::LatLonMuxer",
-        name="latlon_muxer_node_exe",
-        namespace="trajectory_follower",
-        remappings=[
-            ("~/input/lateral/control_cmd", "lateral/control_cmd"),
-            ("~/input/longitudinal/control_cmd", "longitudinal/control_cmd"),
+            ("~/output/longitudinal_diagnostic", "longitudinal/diagnostic"),
             ("~/output/control_cmd", "control_cmd"),
         ],
         parameters=[
-            latlon_muxer_param,
+            {
+                "ctrl_period": 0.03,
+                "lateral_controller_mode": LaunchConfiguration("lateral_controller_mode"),
+            },
+            lon_controller_param,
+            lat_controller_param,
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
@@ -165,6 +120,7 @@ def launch_setup(context, *args, **kwargs):
         remappings=[
             ("input/emergency_state", "/system/emergency/emergency_state"),
             ("input/steering", "/vehicle/status/steering_status"),
+            ("input/operation_mode", "/control/operation_mode"),
             ("input/auto/control_cmd", "/control/trajectory_follower/control_cmd"),
             ("input/auto/turn_indicators_cmd", "/planning/turn_indicators_cmd"),
             ("input/auto/hazard_lights_cmd", "/planning/hazard_lights_cmd"),
@@ -186,6 +142,7 @@ def launch_setup(context, *args, **kwargs):
             ("output/gate_mode", "/control/current_gate_mode"),
             ("output/engage", "/api/autoware/get/engage"),
             ("output/external_emergency", "/api/autoware/get/emergency"),
+            ("output/operation_mode", "/control/vehicle_cmd_gate/operation_mode"),
             ("~/service/engage", "/api/autoware/set/engage"),
             ("~/service/external_emergency", "/api/autoware/set/emergency"),
             # TODO(Takagi, Isamu): deprecated
@@ -202,6 +159,30 @@ def launch_setup(context, *args, **kwargs):
             },
         ],
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
+    # operation mode transition manager
+    operation_mode_transition_manager_component = ComposableNode(
+        package="operation_mode_transition_manager",
+        plugin="operation_mode_transition_manager::OperationModeTransitionManager",
+        name="operation_mode_transition_manager",
+        remappings=[
+            # input
+            ("kinematics", "/localization/kinematic_state"),
+            ("steering", "/vehicle/status/steering_status"),
+            ("trajectory", "/planning/scenario_planning/trajectory"),
+            ("control_cmd", "/control/command/control_cmd"),
+            ("control_mode_report", "/vehicle/status/control_mode"),
+            ("gate_operation_mode", "/control/vehicle_cmd_gate/operation_mode"),
+            ("operation_mode_request", "/system/operation_mode_request"),
+            # output
+            ("is_autonomous_available", "/control/is_autonomous_available"),
+            ("operation_mode", "/control/operation_mode"),
+            ("control_mode_request", "/control/control_mode_request"),
+        ],
+        parameters=[
+            operation_mode_transition_manager_param,
+        ],
     )
 
     # external cmd selector
@@ -227,56 +208,26 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    # set container to run all required components in the same process
-    mpc_follower_container = ComposableNodeContainer(
+    container = ComposableNodeContainer(
         name="control_container",
         namespace="",
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
-            lon_controller_component,
-            latlon_muxer_component,
+            controller_component,
             lane_departure_component,
             shift_decider_component,
             vehicle_cmd_gate_component,
+            operation_mode_transition_manager_component,
         ],
-        condition=LaunchConfigurationEquals("lateral_controller_mode", "mpc_follower"),
-    )
-    pure_pursuit_container = ComposableNodeContainer(
-        name="control_container",
-        namespace="",
-        package="rclcpp_components",
-        executable=LaunchConfiguration("container_executable"),
-        composable_node_descriptions=[
-            lon_controller_component,
-            latlon_muxer_component,
-            shift_decider_component,
-            vehicle_cmd_gate_component,
-        ],
-        condition=LaunchConfigurationEquals("lateral_controller_mode", "pure_pursuit"),
-    )
-
-    # lateral controller is separated since it may be another controller (e.g. pure pursuit)
-    mpc_follower_loader = LoadComposableNodes(
-        composable_node_descriptions=[mpc_follower_component],
-        target_container=mpc_follower_container,
-        condition=LaunchConfigurationEquals("lateral_controller_mode", "mpc_follower"),
-    )
-    pure_pursuit_loader = LoadComposableNodes(
-        composable_node_descriptions=[pure_pursuit_component],
-        target_container=pure_pursuit_container,
-        condition=LaunchConfigurationEquals("lateral_controller_mode", "pure_pursuit"),
     )
 
     group = GroupAction(
         [
             PushRosNamespace("control"),
-            mpc_follower_container,
-            pure_pursuit_container,
+            container,
             external_cmd_selector_loader,
             external_cmd_converter_loader,
-            mpc_follower_loader,
-            pure_pursuit_loader,
         ]
     )
 
@@ -320,14 +271,6 @@ def generate_launch_description():
         "path to the parameter file of longitudinal controller",
     )
     add_launch_arg(
-        "latlon_muxer_param_path",
-        [
-            FindPackageShare("control_launch"),
-            "/config/trajectory_follower/latlon_muxer.param.yaml",
-        ],
-        "path to the parameter file of latlon muxer",
-    )
-    add_launch_arg(
         "vehicle_cmd_gate_param_path",
         [
             FindPackageShare("control_launch"),
@@ -338,6 +281,14 @@ def generate_launch_description():
     add_launch_arg(
         "lane_departure_checker_param_path",
         [FindPackageShare("lane_departure_checker"), "/config/lane_departure_checker.param.yaml"],
+    )
+    add_launch_arg(
+        "operation_mode_transition_manager_param_path",
+        [
+            FindPackageShare("control_launch"),
+            "/config/operation_mode_transition_manager/operation_mode_transition_manager.param.yaml",
+        ],
+        "path to the parameter file of vehicle_cmd_gate",
     )
 
     # vehicle cmd gate

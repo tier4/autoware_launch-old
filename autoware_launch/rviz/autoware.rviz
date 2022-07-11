@@ -724,6 +724,7 @@ Visualization Manager:
               Display Twist: true
               Display UUID: true
               Display Velocity: true
+              Line Width: 0.03
               Enabled: true
               MOTORCYCLE:
                 Alpha: 0.999
@@ -771,6 +772,7 @@ Visualization Manager:
               Display Twist: true
               Display UUID: true
               Display Velocity: true
+              Line Width: 0.03
               Enabled: true
               MOTORCYCLE:
                 Alpha: 0.999
@@ -818,6 +820,7 @@ Visualization Manager:
               Display Twist: false
               Display UUID: true
               Display Velocity: true
+              Line Width: 0.03
               Enabled: true
               MOTORCYCLE:
                 Alpha: 0.999
@@ -842,6 +845,18 @@ Visualization Manager:
               UNKNOWN:
                 Alpha: 0.999
                 Color: 255; 255; 255
+              Value: true
+            - Class: rviz_default_plugins/MarkerArray
+              Enabled: false
+              Name: Maneuver
+              Namespaces:
+                maneuver: true
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: Reliable
+                Value: /perception/object_recognition/prediction/maneuver
               Value: true
           Enabled: true
           Name: Prediction
@@ -1020,6 +1035,18 @@ Visualization Manager:
                           Value: true
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: true
+                          Name: VirtualWall (Walkway)
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/virtual_wall/walkway
+                          Value: true
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: true
                           Name: VirtualWall (DetectionArea)
                           Namespaces:
                             {}
@@ -1154,6 +1181,18 @@ Visualization Manager:
                             History Policy: Keep Last
                             Reliability Policy: Reliable
                             Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/crosswalk
+                          Value: false
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: false
+                          Name: Walkway
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/walkway
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
