@@ -1,9 +1,11 @@
+# These parameters are tuned for xx1
+
 /**:
   ros__parameters:
     frequency_hz: 10.0
     engage_acceptable_limits:
       allow_autonomous_in_stopped: true  # no check if the velocity is zero, always allowed.
-      dist_threshold: 1.5
+      dist_threshold: 0.5
       yaw_threshold: 0.524
       speed_upper_threshold: 10.0
       speed_lower_threshold: -10.0
@@ -11,8 +13,8 @@
       lateral_acc_threshold: 1.0
       lateral_acc_diff_threshold: 0.5
     stable_check:
-      duration: 0.1
-      dist_threshold: 1.5
+      duration: 3.0
+      dist_threshold: 0.5
       speed_upper_threshold: 2.0
       speed_lower_threshold: -2.0
       yaw_threshold: 0.262
