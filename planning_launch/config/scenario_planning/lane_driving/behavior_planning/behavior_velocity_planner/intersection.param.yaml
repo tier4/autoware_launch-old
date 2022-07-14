@@ -14,7 +14,7 @@
       detection_area_length: 200.0 # [m]
       min_predicted_path_confidence: 0.05
       collision_start_margin_time: 5.0 # [s]
-      collision_end_margin_time: 2.0 # [s]
+      collision_end_margin_time: 5.0 # [s]
 
     merge_from_private_road:
       stop_duration_sec: 1.0
