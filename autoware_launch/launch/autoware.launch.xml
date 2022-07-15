@@ -12,6 +12,7 @@
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" description="lanelet2 map file name"/>
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" description="pointcloud map file name"/>
   <arg name="use_foa" default="false"/>
+  <arg name="use_perfect_lane_change" default="false" />
 
   <!-- Global parameters -->
   <!-- Do not add "group" in order to propagate global parameters -->

@@ -17,6 +17,7 @@
   <arg name="sensing/visible_range" default="300.0" description="visible range when using dummy perception"/>
   <arg name="scenario_simulation" default="false" description="use scenario simulation"/>
   <arg name="use_foa" default="false" />
+  <arg name="use_perfect_lane_change" default="true" />
   <!-- Optional parameters for vcu emulation -->
   <arg name="vehicle_simulation" default="true" description="use vehicle simulation"/>
 
@@ -58,6 +59,7 @@
   <group>
     <include file="$(find-pkg-share planning_launch)/launch/planning.launch.xml">
       <arg name="use_foa" value="$(var use_foa)" />
+      <arg name="use_perfect_lane_change" value="$(var use_perfect_lane_change)" />
     </include>
   </group>
 

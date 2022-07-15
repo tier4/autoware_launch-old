@@ -174,13 +174,12 @@ def generate_launch_description():
             behavior_path_planner_param,
             {
                 "planning_hz": 10.0,
-                "lane_change.enable_abort_lane_change": LaunchConfiguration("disuse_foa"),
+                "lane_change.enable_abort_lane_change": LaunchConfiguration("use_perfect_lane_change"),
                 "lane_change.enable_collision_check_at_prepare_phase": LaunchConfiguration(
-                    "disuse_foa"
+                    "use_perfect_lane_change"
                 ),
-                "lane_change.use_predicted_path_outside_lanelet": LaunchConfiguration("disuse_foa"),
-                "lane_change.use_all_predicted_path": LaunchConfiguration("disuse_foa"),
-                "lane_change.enable_blocked_by_obstacle": LaunchConfiguration("disuse_foa"),
+                "lane_change.use_predicted_path_outside_lanelet": LaunchConfiguration("use_perfect_lane_change"),
+                "lane_change.use_all_predicted_path": LaunchConfiguration("use_perfect_lane_change"),
                 "bt_tree_config_path": LaunchConfiguration("bt_tree_config_path"),
             },
         ],
@@ -489,16 +488,6 @@ def generate_launch_description():
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
             set_container_mt_executable,
-            SetParameter(
-                name="avoidance.threshold_distance_object_is_on_center",
-                value=0.5,
-                condition=IfCondition(LaunchConfiguration("disuse_foa")),
-            ),
-            SetParameter(
-                name="avoidance.threshold_distance_object_is_on_center",
-                value=0.0,
-                condition=UnlessCondition(LaunchConfiguration("disuse_foa")),
-            ),
             set_bt_tree_config_path_without_foa,
             set_bt_tree_config_path_with_foa,
             container,

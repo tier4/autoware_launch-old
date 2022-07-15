@@ -6,6 +6,7 @@
   <arg name="use_pointcloud_container"/>
   <arg name="pointcloud_container_name"/>
   <arg name="disuse_foa" />
+  <arg name="use_perfect_lane_change" />
 
   <!-- lane_driving scenario -->
   <group>
