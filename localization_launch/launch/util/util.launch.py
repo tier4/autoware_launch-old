@@ -88,29 +88,59 @@ def generate_launch_description():
         launch_arguments.append(arg)
 
     add_launch_arg(
+        "tier4_localization_launch_param_path",
+        [FindPackageShare("tier4_localization_launch"), "/config"],
+        "tier4_localization_launch param path",
+    )
+    add_launch_arg(
         "crop_box_filter_measurement_range_param_path",
         [
-            FindPackageShare("localization_launch"),
-            "/config/crop_box_filter_measurement_range.param.yaml",
+            LaunchConfiguration("tier4_localization_launch_param_path"),
+            "/crop_box_filter_measurement_range.param.yaml",
         ],
         "path to the parameter file of crop_box_filter_measurement_range",
     )
     add_launch_arg(
         "voxel_grid_downsample_filter_param_path",
-        [FindPackageShare("localization_launch"), "/config/voxel_grid_filter.param.yaml"],
+        [
+            LaunchConfiguration("tier4_localization_launch_param_path"),
+            "/voxel_grid_filter.param.yaml",
+        ],
         "path to the parameter file of voxel_grid_downsample_filter",
     )
     add_launch_arg(
         "random_downsample_filter_param_path",
-        [FindPackageShare("localization_launch"), "/config/random_downsample_filter.param.yaml"],
+        [
+            LaunchConfiguration("tier4_localization_launch_param_path"),
+            "/random_downsample_filter.param.yaml",
+        ],
         "path to the parameter file of random_downsample_filter",
     )
     add_launch_arg("use_intra_process", "true", "use ROS2 component container communication")
-
+    add_launch_arg(
+        "container",
+        "/sensing/lidar/top/pointcloud_preprocessor/velodyne_node_container",
+        "container name",
+    )
     add_launch_arg(
         "output/pointcloud",
         "downsample/pointcloud",
         "final output topic name",
+    )
+    add_launch_arg(
+        "output_measurement_range_sensor_points_topic",
+        "measurement_range/pointcloud",
+        "output topic name for crop box filter",
+    )
+    add_launch_arg(
+        "output_voxel_grid_downsample_sensor_points_topic",
+        "voxel_grid_downsample/pointcloud",
+        "output topic name for voxel grid downsample filter",
+    )
+    add_launch_arg(
+        "output_downsample_sensor_points_topic",
+        "downsample/pointcloud",
+        "output topic name for downsample filter. this is final output",
     )
 
     return launch.LaunchDescription(launch_arguments + [OpaqueFunction(function=launch_setup)])
