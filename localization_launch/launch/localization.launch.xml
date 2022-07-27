@@ -35,8 +35,10 @@
       <include file="$(find-pkg-share localization_launch)/launch/pose_twist_fusion_filter/pose_twist_fusion_filter.launch.xml"/>
     </group>
     <!-- localization_error_monitor_module -->
-    <include file="$(find-pkg-share localization_launch)/launch/localization_error_monitor/localization_error_monitor.launch.xml">
-      <arg name="param_file" value="$(var tier4_localization_launch_param_path)/localization_error_monitor.param.yaml"/>
-    </include>
+    <group>
+      <include file="$(find-pkg-share localization_launch)/launch/localization_error_monitor/localization_error_monitor.launch.xml">
+        <arg name="param_file" value="$(var tier4_localization_launch_param_path)/localization_error_monitor.param.yaml"/>
+      </include>
+    </group>
   </group>
 </launch>
