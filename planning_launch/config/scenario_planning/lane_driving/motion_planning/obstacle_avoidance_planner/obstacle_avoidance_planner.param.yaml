@@ -10,18 +10,18 @@
       is_stopping_if_outside_drivable_area: true # stop if the ego's footprint will be outside the drivable area
 
       # show
-      is_showing_debug_info: false
+      is_showing_debug_info: true
       is_showing_calculation_time: false
 
       # other
-      enable_avoidance: false # enable avoidance function
+      enable_avoidance: true # false # enable avoidance function
       enable_pre_smoothing: true # enable EB
       skip_optimization: false # skip MPT and EB
       reset_prev_optimization: false
 
     common:
       # sampling
-      num_sampling_points: 100 # number of optimizing points
+      num_sampling_points: 100 # 300 # number of optimizing points
 
       # trajectory total/fixing length
       trajectory_length: 300.0 # total trajectory length[m]
@@ -56,7 +56,7 @@
     # mpt param
     mpt:
       option:
-        steer_limit_constraint: true
+        steer_limit_constraint: false # true
         fix_points_around_ego: true
         plan_from_ego: false
         max_plan_from_ego_length: 10.0
@@ -66,7 +66,7 @@
 
       common:
         num_curvature_sampling_points: 5 # number of sampling points when calculating curvature
-        delta_arc_length_for_mpt_points: 0.5 # delta arc length when generating mpt [m]
+        delta_arc_length_for_mpt_points: 1.0 # 0.5 # delta arc length when generating mpt [m]
 
       kinematics:
         max_steer_deg: 40.0 # max steering angle [deg]
@@ -89,7 +89,7 @@
           num_joint_buffer_points: 3 # number of joint buffer points
           num_offset_for_begin_idx: 2 # number of shifting points for beginning non-fix idx
           delta_arc_length_for_eb: 0.6 # 1.0 # delta arc length when optimizing[m] When the value is around 1.0, overshoot at the corner happens.
-          num_sampling_points_for_eb: 95 # number of optimizing points # must be longer than mpt points
+          num_sampling_points_for_eb: 300 # number of optimizing points # must be longer than mpt points
 
         clearance:
           clearance_for_straight_line: 0.05 # minimum optimizing range around straight points
@@ -121,10 +121,10 @@
           steer_input_weight: 10.0 # weight for steering input
           steer_rate_weight: 10.0 # weight for steering rate
 
-          obstacle_avoid_lat_error_weight: 3.0 # weight for lateral error
+          obstacle_avoid_lat_error_weight: 1.0 # weight for lateral error
           obstacle_avoid_yaw_error_weight: 0.0 # weight for yaw error
           obstacle_avoid_steer_input_weight: 1000.0 # weight for yaw error
-          near_objects_length: 30.0 # weight for yaw error
+          near_objects_length: 40.0 # weight for yaw error
 
           terminal_lat_error_weight: 100.0 # weight for lateral error at terminal point
           terminal_yaw_error_weight: 100.0 # weight for yaw error at terminal point

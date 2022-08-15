@@ -9,7 +9,7 @@
     minimum_pull_over_length: 16.0
 
     drivable_area_resolution: 0.1
-    drivable_lane_forward_length: 50.0
+    drivable_lane_forward_length: 150.0
     drivable_lane_backward_length:  5.0
     drivable_lane_margin: 1.0
     drivable_area_margin: 6.0
