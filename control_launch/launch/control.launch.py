@@ -184,7 +184,7 @@ def launch_setup(context, *args, **kwargs):
             ("control_mode_request", "/control/control_mode_request"),
         ],
         parameters=[
-            nearest_search_param_path,
+            nearest_search_param,
             operation_mode_transition_manager_param,
         ],
     )
