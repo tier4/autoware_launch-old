@@ -260,7 +260,7 @@ def generate_launch_description():
             FindPackageShare("control_launch"),
             "/config/common/nearest_search.param.yaml",
         ],
-        "path to the paremter file of nearest search",
+        "path to the parameter file of nearest search",
     )
     add_launch_arg(
         "lat_controller_param_path",
