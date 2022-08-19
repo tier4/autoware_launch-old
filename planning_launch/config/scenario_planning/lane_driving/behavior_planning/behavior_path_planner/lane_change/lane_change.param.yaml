@@ -13,9 +13,4 @@
       use_all_predicted_path: true
       lane_change_sampling_num: 10
       enable_blocked_by_obstacle: false
-      safety_time_margin_for_control: 2.0
-      rear_vehicle_reaction_time: 1.0
-      lateral_distance_threshold: 5.0
-      expected_front_deceleration: -1.0
-      expected_rear_deceleration: -1.0
       publish_debug_marker: true
