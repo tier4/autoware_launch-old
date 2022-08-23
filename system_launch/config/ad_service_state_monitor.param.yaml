@@ -84,7 +84,7 @@
         /perception/object_recognition/objects:
           module: "perception"
           timeout: 1.0
-          warn_rate: 5.0
+          warn_rate: 3.0
           type: "autoware_auto_perception_msgs/msg/PredictedObjects"
           # This topic could have two different types depending on the launch flags used.
           # The implementation of subscriptions in ROS2 does not allow for multiple types
