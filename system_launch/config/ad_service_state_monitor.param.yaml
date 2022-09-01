@@ -108,7 +108,7 @@
         /planning/scenario_planning/trajectory:
           module: "planning"
           timeout: 1.0
-          warn_rate: 5.0
+          warn_rate: 3.0
           type: "autoware_auto_planning_msgs/msg/Trajectory"
 
         /control/trajectory_follower/control_cmd:
