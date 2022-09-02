@@ -11,13 +11,15 @@
       enable_avoidance_over_opposite_direction: true
       enable_abort_avoidance: true
 
-      threshold_distance_object_is_on_center: 1.0 # [m]
+      threshold_distance_object_is_on_center: 0.0 # [m]
+      # threshold_distance_object_is_on_center: 1.0 # [m]
       threshold_speed_object_is_stopped: 1.0      # [m/s]
       object_check_forward_distance: 150.0        # [m]
       object_check_backward_distance: 2.0         # [m]
       object_check_overhang: 1.0                  # [m]
       object_check_yaw: 0.52                      # [rad]
       object_check_road_shoulder_ratio: 0.8       # [-]
+      minimum_collision_margin: 0.3               # [m]
       lateral_collision_margin: 1.0               # [m]
       lateral_collision_safety_buffer: 0.7        # [m]
 
