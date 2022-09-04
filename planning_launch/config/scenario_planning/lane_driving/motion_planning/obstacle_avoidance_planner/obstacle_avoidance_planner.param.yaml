@@ -56,14 +56,14 @@
     # mpt param
     mpt:
       option:
-        steer_limit_constraint: false # true
+        steer_limit_constraint: true
         fix_points_around_ego: true
         plan_from_ego: true
         max_plan_from_ego_length: 10.0
         visualize_sampling_num: 1
         enable_manual_warm_start: true
         enable_warm_start: true # false
-        is_fixed_point_single: true
+        is_fixed_point_single: false
 
       common:
         num_curvature_sampling_points: 5 # number of sampling points when calculating curvature
@@ -79,7 +79,7 @@
     replan:
       max_path_shape_change_dist: 0.3 # threshold of path shape change from behavior path [m]
       max_ego_moving_dist_for_replan: 3.0 # threshold of ego's moving distance for replan [m]
-      max_delta_time_sec_for_replan: 0.0 # 1.0 # threshold of delta time for replan [second]
+      max_delta_time_sec_for_replan: 1.0 # threshold of delta time for replan [second]
 
     # advanced parameters to improve performance as much as possible
     advanced:
@@ -139,7 +139,7 @@
             # two_step_soft_constraint: false
 
           vehicle_circles:
-            method: "bicycle_model"
+            method: "rear_drive"
 
             uniform_circle:
               num: 3
