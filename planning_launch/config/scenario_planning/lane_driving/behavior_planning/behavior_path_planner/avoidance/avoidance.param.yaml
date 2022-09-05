@@ -30,7 +30,7 @@
       min_nominal_avoidance_speed: 7.0  # [m/s]
       min_sharp_avoidance_speed: 1.0    # [m/s]
 
-      road_shoulder_safety_margin: 0.0 # [m]
+      road_shoulder_safety_margin: 0.7 # [m]
 
       max_right_shift_length: 5.0
       max_left_shift_length: 5.0
@@ -65,3 +65,9 @@
 
       # ---------- advanced parameters ----------
       avoidance_execution_lateral_threshold: 0.499
+
+      target_velocity_matrix:
+        col_size: 6
+        matrix:
+          [0.50, 1.00, 1.50, 2.00, 2.50, 3.00,   # margin [m]
+           1.38, 3.76, 4.16, 5.56, 8.33, 11.1]   # target velocity [m]
