@@ -1306,7 +1306,7 @@ Visualization Manager:
                             Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/run_out
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
-                          Enabled: false
+                          Enabled: true
                           Name: Avoidance
                           Namespaces:
                             {}
@@ -1414,7 +1414,7 @@ Visualization Manager:
                               Value: false
                           Enabled: false
                           Name: PullOver
-                      Enabled: false
+                      Enabled: true
                       Name: DebugMarker
                   Enabled: true
                   Name: BehaviorPlanning
