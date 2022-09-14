@@ -1578,6 +1578,22 @@ Visualization Manager:
               Value: true
           Enabled: true
           Name: ScenarioPlanning
+        - Class: rviz_common/Group
+          Displays:
+            - Class: rviz_default_plugins/MarkerArray
+              Enabled: true
+              Name: StopReasonMarker
+              Namespaces:
+                {}
+              Topic:
+                Depth: 5
+                Durability Policy: Volatile
+                History Policy: Keep Last
+                Reliability Policy: BestEffort
+                Value: /planning/planning_debug_tools/stop_reason_visualizer/debug/markers
+              Value: true
+          Enabled: true
+          Name: PlanningDebugTools
       Enabled: true
       Name: Planning
     - Class: rviz_common/Group

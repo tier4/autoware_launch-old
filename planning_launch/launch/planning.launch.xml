@@ -37,5 +37,12 @@
       <include file="$(find-pkg-share planning_launch)/launch/planning_diagnostics/planning_error_monitor.launch.xml">
       </include>
     </group>
+
+    <!-- planning debug tools -->
+    <group>
+      <push-ros-namespace namespace="planning_debug_tools"/>
+      <include file="$(find-pkg-share planning_debug_tools)/launch/stop_reason_visualizer.launch.xml">
+      </include>
+    </group>
   </group>
 </launch>
