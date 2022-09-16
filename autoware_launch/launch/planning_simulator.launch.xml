@@ -68,10 +68,7 @@
 
   <!-- Autoware API -->
   <group>
-    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml">
-      <arg name="init_simulator_pose" value="true"/>
-      <arg name="init_localization_pose" value="false"/>
-    </include>
+    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml"/>
   </group>
 
   <!-- Tools -->
@@ -96,10 +93,12 @@
     <let name="launch_dummy_perception" value="true" unless="$(var scenario_simulation)"/>
     <let name="launch_dummy_vehicle" value="false" if="$(var scenario_simulation)"/>
     <let name="launch_dummy_vehicle" value="true" unless="$(var scenario_simulation)"/>
+    <let name="launch_dummy_localization" value="true" unless="$(var scenario_simulation)"/>
 
     <include file="$(find-pkg-share simulator_launch)/launch/simulator.launch.xml">
       <arg name="launch_dummy_perception" value="$(var launch_dummy_perception)"/>
       <arg name="launch_dummy_vehicle" value="$(var launch_dummy_vehicle)"/>
+      <arg name="launch_dummy_localization" value="$(var launch_dummy_localization)"/>
       <arg name="perception/enable_detection_failure" value="$(var perception/enable_detection_failure)"/>
       <arg name="perception/enable_object_recognition" value="$(var perception/enable_object_recognition)"/>
       <arg name="perception/enable_traffic_light" value="$(var perception/enable_traffic_light)"/>
