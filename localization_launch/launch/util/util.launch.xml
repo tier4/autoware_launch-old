@@ -12,6 +12,7 @@
     <arg name="ndt_enabled" value="true"/>
     <arg name="stop_check_enabled" value="true"/>
   </include>
+  <include file="$(find-pkg-share automatic_pose_initializer)/launch/automatic_pose_initializer.launch.xml"/>
 
   <!-- util -->
   <include file="$(find-pkg-share localization_launch)/launch/util/util.launch.py">
