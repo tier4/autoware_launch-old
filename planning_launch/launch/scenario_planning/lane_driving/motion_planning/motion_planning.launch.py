@@ -94,6 +94,37 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # collision free path planner
+    collision_free_path_planner_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "lane_driving",
+        "motion_planning",
+        "collision_free_path_planner",
+        "collision_free_path_planner.param.yaml",
+    )
+    with open(collision_free_path_planner_param_path, "r") as f:
+        collision_free_path_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    collision_free_path_planner_component = ComposableNode(
+        package="collision_free_path_planner",
+        plugin="CollisionFreePathPlanner",
+        name="collision_free_path_planner",
+        namespace="",
+        remappings=[
+            ("~/input/objects", "/perception/object_recognition/objects"),
+            ("~/input/path", LaunchConfiguration("input_path_topic")),
+            ("~/output/path", "collision_free_path_planner/trajectory"),
+        ],
+        parameters=[
+            nearest_search_param,
+            collision_free_path_planner_param,
+            {"is_showing_debug_info": False},
+            {"is_stopping_if_outside_drivable_area": True},
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     # obstacle velocity limiter
     obstacle_velocity_limiter_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
@@ -112,7 +143,7 @@ def generate_launch_description():
         name="obstacle_velocity_limiter",
         namespace="",
         remappings=[
-            ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
+            {"~/input/trajectory": "collision_free_path_planner/trajectory"},
             ("~/input/odometry", "/localization/kinematic_state"),
             ("~/input/dynamic_obstacles", "/perception/object_recognition/objects"),
             ("~/input/occupancy_grid", "/perception/occupancy_grid_map/map"),
@@ -277,7 +308,8 @@ def generate_launch_description():
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
-            obstacle_avoidance_planner_component,
+            # obstacle_avoidance_planner_component,
+            collision_free_path_planner_component,
             obstacle_velocity_limiter_component,
         ],
     )
