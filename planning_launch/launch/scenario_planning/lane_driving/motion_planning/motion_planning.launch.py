@@ -81,6 +81,37 @@ def generate_launch_description():
         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
     )
 
+    # collision free path planner
+    collision_free_path_planner_param_path = os.path.join(
+        get_package_share_directory("planning_launch"),
+        "config",
+        "scenario_planning",
+        "lane_driving",
+        "motion_planning",
+        "collision_free_path_planner",
+        "collision_free_path_planner.param.yaml",
+    )
+    with open(collision_free_path_planner_param_path, "r") as f:
+        collision_free_path_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    collision_free_path_planner_component = ComposableNode(
+        package="collision_free_path_planner",
+        plugin="CollisionFreePathPlanner",
+        name="collision_free_path_planner",
+        namespace="",
+        remappings=[
+            ("~/input/objects", "/perception/object_recognition/objects"),
+            ("~/input/path", LaunchConfiguration("input_path_topic")),
+            ("~/output/path", "collision_free_path_planner/trajectory"),
+        ],
+        parameters=[
+            nearest_search_param,
+            collision_free_path_planner_param,
+            {"is_showing_debug_info": False},
+            {"is_stopping_if_outside_drivable_area": True},
+        ],
+        extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    )
+
     # surround obstacle checker
     surround_obstacle_checker_param_path = os.path.join(
         get_package_share_directory("planning_launch"),
@@ -138,7 +169,8 @@ def generate_launch_description():
         name="obstacle_cruise_planner",
         namespace="",
         remappings=[
-            ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
+            # ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
+            ("~/input/trajectory", "collision_free_path_planner/trajectory"),
             ("~/input/odometry", "/localization/kinematic_state"),
             ("~/input/acceleration", "/localization/acceleration"),
             ("~/input/objects", "/perception/object_recognition/objects"),
@@ -199,7 +231,8 @@ def generate_launch_description():
             ),
             ("~/input/objects", "/perception/object_recognition/objects"),
             ("~/input/odometry", "/localization/kinematic_state"),
-            ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
+            # ("~/input/trajectory", "obstacle_avoidance_planner/trajectory"),
+            ("~/input/trajectory", "collision_free_path_planner/trajectory"),
         ],
         parameters=[
             common_param,
@@ -217,7 +250,8 @@ def generate_launch_description():
         name="obstacle_cruise_planner_relay",
         namespace="",
         parameters=[
-            {"input_topic": "obstacle_avoidance_planner/trajectory"},
+            # {"input_topic": "obstacle_avoidance_planner/trajectory"},
+            {"input_topic": "collision_free_path_planner/trajectory"},
             {"output_topic": "/planning/scenario_planning/lane_driving/trajectory"},
             {"type": "autoware_auto_planning_msgs/msg/Trajectory"},
         ],
@@ -230,7 +264,8 @@ def generate_launch_description():
         package="rclcpp_components",
         executable=LaunchConfiguration("container_executable"),
         composable_node_descriptions=[
-            obstacle_avoidance_planner_component,
+            # obstacle_avoidance_planner_component,
+            collision_free_path_planner_component,
         ],
     )
 
@@ -277,7 +312,7 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
             DeclareLaunchArgument(
-                "cruise_planner", default_value="obstacle_stop_planner"
+                "cruise_planner", default_value="obstacle_cruise_planner"
             ),  # select from "obstacle_stop_planner", "obstacle_cruise_planner", "none"
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
