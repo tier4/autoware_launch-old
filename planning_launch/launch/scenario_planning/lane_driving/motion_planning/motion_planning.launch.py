@@ -108,7 +108,7 @@ def generate_launch_description():
         collision_free_path_planner_param = yaml.safe_load(f)["/**"]["ros__parameters"]
     collision_free_path_planner_component = ComposableNode(
         package="collision_free_path_planner",
-        plugin="CollisionFreePathPlanner",
+        plugin="collision_free_path_planner::CollisionFreePathPlanner",
         name="collision_free_path_planner",
         namespace="",
         remappings=[
