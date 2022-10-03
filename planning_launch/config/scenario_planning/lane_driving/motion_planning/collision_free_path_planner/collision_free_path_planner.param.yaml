@@ -11,10 +11,7 @@
       debug:
         # flag to publish
         # NOTE: Most of them are disabled to reduce the computation cost.
-        enable_debug_marker_pub: true           # publish debug marker
-        enable_clearance_map_pub: false         # publish clearance map as nav_msgs::OccupancyGrid
-        enable_object_clearance_map_pub: false  # publish object clearance map as nav_msgs::OccupancyGrid
-        enable_area_with_objects_pub: false     # publish occupancy map of objects as nav_msgs::OccupancyGrid
+        enable_pub_debug_marker: true           # publish debug marker
 
         # flag to show
         enable_debug_info: false
@@ -36,6 +33,13 @@
       delta_dist_threshold_for_closest_point: 3.0 # delta dist thres for closest point [m]
       delta_yaw_threshold_for_closest_point: 1.046 #M_PI/3.0, delta yaw thres for closest point
       delta_yaw_threshold_for_straight: 0.02 # delta dist thres for straight point
+
+    costmap:
+      debug:
+        # flag to publish
+        enable_pub_clearance_map: false         # publish clearance map as nav_msgs::OccupancyGrid
+        enable_pub_object_clearance_map: false  # publish object clearance map as nav_msgs::OccupancyGrid
+        enable_pub_area_with_objects: false     # publish occupancy map of objects as nav_msgs::OccupancyGrid
 
     replan:
       max_path_shape_change_dist: 0.3 # threshold of path shape change from behavior path [m]
