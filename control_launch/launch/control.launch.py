@@ -268,7 +268,7 @@ def generate_launch_description():
         "pid",
         "longitudinal controller mode: `pid`",
     )
-    
+
     # parameter file path
     add_launch_arg(
         "nearest_search_param_path",
