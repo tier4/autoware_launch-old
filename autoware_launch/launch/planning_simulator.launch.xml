@@ -9,6 +9,7 @@
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/autoware.rviz" description="rviz config"/>
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" description="lanelet2 map file name"/>
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" description="pointcloud map file name"/>
+  <arg name="rosbridge_max_message_size" default="100000000"  description="max message size of rosbridge"/>
   <!-- Optional parameters for scenario simulation -->
   <arg name="initial_engage_state" default="true" description="/vehicle/engage state after starting Autoware"/>
   <arg name="perception/enable_detection_failure" default="true" description="enable to simulate detection failure when using dummy perception"/>
@@ -70,7 +71,9 @@
 
   <!-- Autoware API -->
   <group>
-    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml"/>
+    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml">
+      <arg name="max_message_size" value="$(var rosbridge_max_message_size)"/>
+    </include>
   </group>
 
   <!-- Tools -->
