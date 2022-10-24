@@ -24,7 +24,7 @@
   <arg name="use_pointcloud_container" default="true" description="launch pointcloud container"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
   <arg name="launch_vehicle_interface" default="false"/>
-  <arg name="rosbridge_max_message_size" default="100000000"  description="max message size of rosbridge"/>
+  <arg name="rosbridge_max_message_size" default="1000000000"  description="max message size of rosbridge"/>
   <!-- Optional parameters for scenario simulation -->
   <arg name="scenario_simulation" default="false" description="use scenario simulation"/>
 

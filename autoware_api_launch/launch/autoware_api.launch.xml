@@ -2,7 +2,7 @@
 
   <arg name="respawn" default="true" />
   <arg name="launch_default_ad_api" default="true"/>
-  <arg name="max_message_size" default="100000000" />
+  <arg name="max_message_size" default="1000000000" />
 
   <!-- AD API -->
   <group if="$(var launch_default_ad_api)">

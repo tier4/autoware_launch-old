@@ -11,7 +11,7 @@
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
   <arg name="lanelet2_map_file" default="lanelet2_map.osm" description="lanelet2 map file name"/>
   <arg name="pointcloud_map_file" default="pointcloud_map.pcd" description="pointcloud map file name"/>
-  <arg name="rosbridge_max_message_size" default="100000000"  description="max message size of rosbridge"/>
+  <arg name="rosbridge_max_message_size" default="1000000000"  description="max message size of rosbridge"/>
 
   <!-- Global parameters -->
   <!-- Do not add "group" in order to propagate global parameters -->
