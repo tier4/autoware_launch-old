@@ -112,7 +112,7 @@
 
   <!-- Autoware API -->
   <group>
-    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml" if="$(var api)" />
+    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml" if="$(var api)"/>
   </group>
 
   <!-- Tools -->

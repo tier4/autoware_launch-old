@@ -70,7 +70,7 @@
 
   <!-- Autoware API -->
   <group>
-    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml" />
+    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml"/>
   </group>
 
   <!-- Tools -->
