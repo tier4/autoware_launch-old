@@ -1,5 +1,6 @@
 /**:
   ros__parameters:
+
     # Vehicle reference frame
     base_frame: "base_link"
 
