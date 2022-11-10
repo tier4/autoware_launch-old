@@ -274,32 +274,32 @@ def generate_launch_description():
     add_launch_arg(
         "nearest_search_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/common/nearest_search.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/common/nearest_search.param.yaml",
         ],
         "path to the parameter file of nearest search",
     )
     add_launch_arg(
         "lat_controller_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/trajectory_follower/mpc_follower.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/trajectory_follower/mpc_follower.param.yaml",
         ],
         "path to the parameter file of lateral controller. default is `mpc_follower`",
     )
     add_launch_arg(
         "lon_controller_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/trajectory_follower/longitudinal_controller.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/trajectory_follower/longitudinal_controller.param.yaml",
         ],
         "path to the parameter file of longitudinal controller",
     )
     add_launch_arg(
         "vehicle_cmd_gate_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml",
         ],
         "path to the parameter file of vehicle_cmd_gate",
     )
@@ -310,16 +310,16 @@ def generate_launch_description():
     add_launch_arg(
         "operation_mode_transition_manager_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/operation_mode_transition_manager/operation_mode_transition_manager.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/operation_mode_transition_manager/operation_mode_transition_manager.param.yaml",
         ],
         "path to the parameter file of vehicle_cmd_gate",
     )
     add_launch_arg(
         "shift_decider_param_path",
         [
-            FindPackageShare("control_launch"),
-            "/config/shift_decider/shift_decider.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_control_launch/shift_decider/shift_decider.param.yaml",
         ],
         "path to the parameter file of shift_decider",
     )

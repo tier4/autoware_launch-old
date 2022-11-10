@@ -10,7 +10,7 @@
     <arg name="output_pose_topic" value="/localization/pose_estimator/pose"/>
     <arg name="output_pose_with_covariance_topic" value="/localization/pose_estimator/pose_with_covariance"/>
 
-    <arg name="param_file" value="$(find-pkg-share localization_launch)/config/ndt_scan_matcher.param.yaml" />
+    <arg name="param_file" value="$(find-pkg-share autoware_launch)/config/tier4_localization_launch/ndt_scan_matcher.param.yaml" />
   </include>
 
 </launch>

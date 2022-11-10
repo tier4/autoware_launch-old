@@ -1,11 +1,11 @@
 <launch>
 
   <arg name="lateral_controller_mode" description="options for lateral_controller_mode: mpc_follower, pure_pursuit"/>
-  <arg name="lat_controller_param_path" default="$(find-pkg-share control_launch)/config/trajectory_follower/$(var lateral_controller_mode).param.yaml"/>
-  <arg name="lon_controller_param_path" default="$(find-pkg-share control_launch)/config/trajectory_follower/longitudinal_controller.param.yaml" description="path to the longitudinal controller param file"/>
-  <arg name="vehicle_cmd_gate_param_path" default="$(find-pkg-share control_launch)/config/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml"/>
-  <arg name="operation_mode_transition_manager_param_path" default="$(find-pkg-share control_launch)/config/operation_mode_transition_manager/operation_mode_transition_manager.param.yaml"/>
-  <arg name="shift_decider_param_path" default="$(find-pkg-share control_launch)/config/shift_decider/shift_decider.param.yaml"/>
+  <arg name="lat_controller_param_path" default="$(find-pkg-share autoware_launch)/config/tier4_control_launch/trajectory_follower/$(var lateral_controller_mode).param.yaml"/>
+  <arg name="lon_controller_param_path" default="$(find-pkg-share autoware_launch)/config/tier4_control_launch/trajectory_follower/longitudinal_controller.param.yaml" description="path to the longitudinal controller param file"/>
+  <arg name="vehicle_cmd_gate_param_path" default="$(find-pkg-share autoware_launch)/config/tier4_control_launch/vehicle_cmd_gate/vehicle_cmd_gate.param.yaml"/>
+  <arg name="operation_mode_transition_manager_param_path" default="$(find-pkg-share autoware_launch)/config/tier4_control_launch/operation_mode_transition_manager/operation_mode_transition_manager.param.yaml"/>
+  <arg name="shift_decider_param_path" default="$(find-pkg-share autoware_launch)/config/tier4_control_launch/shift_decider/shift_decider.param.yaml"/>
 
   <include file="$(find-pkg-share control_launch)/launch/control.launch.py">
     <arg name="lateral_controller_mode" value="$(var lateral_controller_mode)" />
