@@ -90,8 +90,8 @@ def generate_launch_description():
     add_launch_arg(
         "crop_box_filter_measurement_range_param_path",
         [
-            FindPackageShare("localization_launch"),
-            "/config/crop_box_filter_measurement_range.param.yaml",
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_localization_launch/crop_box_filter_measurement_range.param.yaml",
         ],
         "path to the parameter file of crop_box_filter_measurement_range",
     )

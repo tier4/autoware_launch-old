@@ -44,8 +44,9 @@ def generate_launch_description():
 
     # planning common param path
     common_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "common.param.yaml",
@@ -54,8 +55,9 @@ def generate_launch_description():
         common_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     nearest_search_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "nearest_search.param.yaml",
@@ -65,8 +67,9 @@ def generate_launch_description():
 
     # obstacle avoidance planner
     obstacle_avoidance_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
@@ -96,8 +99,9 @@ def generate_launch_description():
 
     # surround obstacle checker
     surround_obstacle_checker_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
@@ -135,8 +139,9 @@ def generate_launch_description():
 
     # obstacle cruise planner
     obstacle_cruise_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
@@ -170,8 +175,9 @@ def generate_launch_description():
 
     # obstacle stop planner
     obstacle_stop_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "motion_planning",
@@ -179,8 +185,9 @@ def generate_launch_description():
         "obstacle_stop_planner.param.yaml",
     )
     obstacle_stop_planner_acc_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "motion_planning",

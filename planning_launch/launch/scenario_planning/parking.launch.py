@@ -30,8 +30,9 @@ import yaml
 
 def generate_launch_description():
     freespace_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "parking",
         "freespace_planner",

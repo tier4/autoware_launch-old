@@ -32,8 +32,9 @@ import yaml
 
 def generate_launch_description():
     nearest_search_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "nearest_search.param.yaml",
@@ -43,8 +44,9 @@ def generate_launch_description():
 
     # behavior path planner
     side_shift_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -56,8 +58,9 @@ def generate_launch_description():
         side_shift_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     avoidance_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -69,8 +72,9 @@ def generate_launch_description():
         avoidance_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     lane_change_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -82,8 +86,9 @@ def generate_launch_description():
         lane_change_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     lane_following_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -95,8 +100,9 @@ def generate_launch_description():
         lane_following_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     pull_over_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -108,8 +114,9 @@ def generate_launch_description():
         pull_over_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     pull_out_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -121,8 +128,9 @@ def generate_launch_description():
         pull_out_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     drivable_area_expansion_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -133,8 +141,9 @@ def generate_launch_description():
         drivable_area_expansion_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     behavior_path_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -183,8 +192,9 @@ def generate_launch_description():
 
     # smoother param
     common_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "common.param.yaml",
@@ -193,8 +203,9 @@ def generate_launch_description():
         common_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     motion_velocity_smoother_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "motion_velocity_smoother",
@@ -204,8 +215,9 @@ def generate_launch_description():
         motion_velocity_smoother_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     smoother_type_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "common",
         "motion_velocity_smoother",
@@ -216,8 +228,9 @@ def generate_launch_description():
 
     # behavior velocity planner
     blind_spot_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -228,8 +241,9 @@ def generate_launch_description():
         blind_spot_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     crosswalk_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -240,8 +254,9 @@ def generate_launch_description():
         crosswalk_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     detection_area_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -252,8 +267,9 @@ def generate_launch_description():
         detection_area_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     intersection_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -264,8 +280,9 @@ def generate_launch_description():
         intersection_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     stop_line_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -276,8 +293,9 @@ def generate_launch_description():
         stop_line_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     traffic_light_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -288,8 +306,9 @@ def generate_launch_description():
         traffic_light_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     virtual_traffic_light_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -300,8 +319,9 @@ def generate_launch_description():
         virtual_traffic_light_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     occlusion_spot_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -312,8 +332,9 @@ def generate_launch_description():
         occlusion_spot_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     no_stopping_area_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -324,8 +345,9 @@ def generate_launch_description():
         no_stopping_area_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     run_out_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
@@ -336,8 +358,9 @@ def generate_launch_description():
         run_out_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     behavior_velocity_planner_param_path = os.path.join(
-        get_package_share_directory("planning_launch"),
+        get_package_share_directory("autoware_launch"),
         "config",
+        "tier4_planning_launch",
         "scenario_planning",
         "lane_driving",
         "behavior_planning",
