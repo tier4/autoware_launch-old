@@ -97,12 +97,18 @@ def generate_launch_description():
     )
     add_launch_arg(
         "voxel_grid_downsample_filter_param_path",
-        [FindPackageShare("autoware_launch"), "/config/tier4_localization_launch/voxel_grid_filter.param.yaml"],
+        [
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_localization_launch/voxel_grid_filter.param.yaml",
+        ],
         "path to the parameter file of voxel_grid_downsample_filter",
     )
     add_launch_arg(
         "random_downsample_filter_param_path",
-        [FindPackageShare("autoware_launch"), "/config/tier4_localization_launch/random_downsample_filter.param.yaml"],
+        [
+            FindPackageShare("autoware_launch"),
+            "/config/tier4_localization_launch/random_downsample_filter.param.yaml",
+        ],
         "path to the parameter file of random_downsample_filter",
     )
     add_launch_arg("use_intra_process", "true", "use ROS2 component container communication")
