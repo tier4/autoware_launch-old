@@ -46,7 +46,7 @@
       abort_expected_deceleration: 0.1           # [m/s2]
       abort_longitudinal_jerk: 0.5               # [m/s3]
 
-      abort_max_lateral_jerk: 5.0                # [m/s3]
+      abort_max_lateral_jerk: 1000.0             # [m/s3]
 
       # debug
       publish_debug_marker: false
