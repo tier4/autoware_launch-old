@@ -1012,7 +1012,7 @@ Visualization Manager:
                         Value: false
                     - Class: rviz_default_plugins/MarkerArray
                       Enabled: true
-                      Name: Boundary
+                      Name: Bound
                       Namespaces:
                         left_bound: true
                         right_bound: true
