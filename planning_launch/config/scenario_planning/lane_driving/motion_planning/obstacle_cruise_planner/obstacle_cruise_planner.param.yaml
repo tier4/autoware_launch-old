@@ -7,7 +7,7 @@
       disable_stop_planning: false # true
 
       # longitudinal info
-      idling_time: 1.5 # idling time to detect front vehicle starting deceleration [s]
+      idling_time: 2.0 # idling time to detect front vehicle starting deceleration [s]
       min_ego_accel_for_rss: -1.0 # ego's acceleration to calculate RSS distance [m/ss]
       min_object_accel_for_rss: -1.0 # front obstacle's acceleration to calculate RSS distance [m/ss]
       safe_distance_margin : 6.0 # This is also used as a stop margin [m]
@@ -28,7 +28,7 @@
         bus: true
         trailer: true
         motorcycle: true
-        bicycle: false
+        bicycle: true
         pedestrian: false
 
       stop_obstacle_type:
@@ -75,37 +75,26 @@
         pedestrian: true
 
     pid_based_planner:
-      use_velocity_limit_based_planner: true # false # true # false
-
-      error_function_type: quadratic # quadratic # quadratic # choose from linear, quadratic
+      use_velocity_limit_based_planner: true
+      error_function_type: quadratic # choose from linear, quadratic
 
       velocity_limit_based_planner:
           # PID gains to keep safe distance with the front vehicle
-          # kp: 2.5
-          # ki: 0.0
-          # kd: 2.3
-
-          # for quadratic
           kp: 10.0
           ki: 0.0
           kd: 2.0
-
-          # for velocity limit without acceleration
-          # kp_acc: 2.0
-          # ki_acc: 0.0
-          # kd_acc: 2.0 # 6.0
 
           output_ratio_during_accel: 0.6 # target acceleration is multiplied with this value while ego accelerates to catch up the front vehicle [-]
           vel_to_acc_weight: 12.0 # target acceleration is calculated by (target_velocity - current_velocity) * vel_to_acc_weight [-]
 
           enable_jerk_limit_to_output_acc: false
 
-          disable_target_acceleration: true # false
+          disable_target_acceleration: true
 
       velocity_insertion_based_planner:
-          kp_acc: 6.0 # 3.0 # 8.0
+          kp_acc: 6.0
           ki_acc: 0.0
-          kd_acc: 2.0 # 6.0
+          kd_acc: 2.0
 
           kp_jerk: 20.0
           ki_jerk: 0.0
