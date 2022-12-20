@@ -70,7 +70,6 @@
   <group if="$(var launch_system)">
     <include file="$(find-pkg-share system_launch)/launch/system.launch.xml">
       <arg name="run_mode" value="$(var system_run_mode)"/>
-      <arg name="launch_system_monitor" value="$(var launch_system_monitor)"/>
       <arg name="sensor_model" value="$(var sensor_model)"/>
     </include>
   </group>
