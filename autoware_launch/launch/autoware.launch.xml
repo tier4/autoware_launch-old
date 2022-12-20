@@ -30,7 +30,6 @@
   <arg name="enable_obstacle_collision_checker" default="false" description="use obstacle_collision_checker"/>
   <!-- System -->
   <arg name="system_run_mode" default="online" description="run mode in system"/>
-  <arg name="launch_system_monitor" default="true" description="launch system monitor"/>
   <!-- Tools -->
   <arg name="rviz" default="true" description="launch rviz"/>
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/autoware.rviz" description="rviz config"/>
