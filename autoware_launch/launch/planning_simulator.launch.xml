@@ -44,8 +44,6 @@
       <!-- Map -->
       <arg name="lanelet2_map_file" value="$(var lanelet2_map_file)"/>
       <arg name="pointcloud_map_file" value="$(var pointcloud_map_file)"/>
-      <!-- Control -->
-      <arg name="enable_obstacle_collision_checker" value="$(var enable_obstacle_collision_checker)"/>
       <!-- Tools -->
       <arg name="rviz" value="$(var rviz)"/>
       <arg name="rviz_config" value="$(var rviz_config)"/>
