@@ -57,8 +57,6 @@
       <!-- Map -->
       <arg name="lanelet2_map_file" value="$(var lanelet2_map_file)"/>
       <arg name="pointcloud_map_file" value="$(var pointcloud_map_file)"/>
-      <!-- Control -->
-      <arg name="enable_obstacle_collision_checker" value="$(var enable_obstacle_collision_checker)"/>
       <!-- Sensing -->
       <arg name="launch_sensing_driver" value="false"/>
     </include>
