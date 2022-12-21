@@ -155,4 +155,3 @@
       dest: autoware_launch/config/tier4_system_launch/system_monitor/hdd_monitor.param.yaml
 
     # tier4_vehicle_launch
-
