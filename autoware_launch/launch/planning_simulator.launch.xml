@@ -64,6 +64,13 @@
     </include>
   </group>
 
+  <!-- Planning Evaluator -->
+  <group if="$(var scenario_simulation)">
+    <include file="$(find-pkg-share planning_evaluator)/launch/planning_evaluator.launch.xml">
+      <arg name="scenario_simulation" value="$(var scenario_simulation)"/>
+    </include>
+  </group>
+
   <!-- Control -->
   <group>
     <include file="$(find-pkg-share control_launch)/launch/control.launch.xml">
