@@ -1578,6 +1578,18 @@ Visualization Manager:
                               Value: true
                             - Class: rviz_default_plugins/MarkerArray
                               Enabled: true
+                              Name: DebugMarker
+                              Namespaces:
+                                {}
+                              Topic:
+                                Depth: 5
+                                Durability Policy: Volatile
+                                History Policy: Keep Last
+                                Reliability Policy: Reliable
+                                Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_cruise_planner/debug/marker
+                              Value: true
+                            - Class: rviz_default_plugins/MarkerArray
+                              Enabled: true
                               Name: SurroundObstacleCheck
                               Namespaces:
                                 {}
