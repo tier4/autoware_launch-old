@@ -1589,6 +1589,10 @@ Visualization Manager:
                                 Reliability Policy: Reliable
                                 Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_cruise_planner/debug/marker
                               Value: true
+                          Enabled: true
+                          Name: ObstacleCruise
+                        - Class: rviz_common/Group
+                          Displays:
                             - Class: rviz_default_plugins/MarkerArray
                               Enabled: true
                               Name: SurroundObstacleCheck
@@ -1642,18 +1646,6 @@ Visualization Manager:
                               Value: false
                           Enabled: true
                           Name: SurroundObstacleChecker
-                        - Class: rviz_default_plugins/MarkerArray
-                          Enabled: true
-                          Name: ObstacleStop
-                          Namespaces:
-                            {}
-                          Topic:
-                            Depth: 5
-                            Durability Policy: Volatile
-                            History Policy: Keep Last
-                            Reliability Policy: Reliable
-                            Value: /planning/scenario_planning/lane_driving/motion_planning/surround_obstacle_checker/debug/marker
-                          Value: true
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: true
                           Name: ObstacleAvoidance
