@@ -1468,6 +1468,7 @@ Visualization Manager:
                             Reliability Policy: Reliable
                             Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/debug/sideshift
                           Value: false
+                      Enabled: false
                       Name: DebugMarker
                   Enabled: true
                   Name: BehaviorPlanning
