@@ -1566,6 +1566,18 @@ Visualization Manager:
                           Displays:
                             - Class: rviz_default_plugins/MarkerArray
                               Enabled: true
+                              Name: CruiseVirtualWall
+                              Namespaces:
+                                {}
+                              Topic:
+                                Depth: 5
+                                Durability Policy: Volatile
+                                History Policy: Keep Last
+                                Reliability Policy: Reliable
+                                Value: /planning/scenario_planning/lane_driving/motion_planning/obstacle_cruise_planner/debug/cruise/virtual_wall
+                              Value: true
+                            - Class: rviz_default_plugins/MarkerArray
+                              Enabled: true
                               Name: SurroundObstacleCheck
                               Namespaces:
                                 {}
