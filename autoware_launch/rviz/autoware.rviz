@@ -1302,6 +1302,18 @@ Visualization Manager:
                           Value: false
                         - Class: rviz_default_plugins/MarkerArray
                           Enabled: false
+                          Name: Walkway
+                          Namespaces:
+                            {}
+                          Topic:
+                            Depth: 5
+                            Durability Policy: Volatile
+                            History Policy: Keep Last
+                            Reliability Policy: Reliable
+                            Value: /planning/scenario_planning/lane_driving/behavior_planning/behavior_velocity_planner/debug/walkway
+                          Value: false
+                        - Class: rviz_default_plugins/MarkerArray
+                          Enabled: false
                           Name: Intersection
                           Namespaces:
                             {}
