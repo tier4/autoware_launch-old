@@ -284,7 +284,7 @@ def generate_launch_description():
         "lat_controller_param_path",
         [
             FindPackageShare("control_launch"),
-            "/config/trajectory_follower/mpc_follower.param.yaml",
+            "/config/mpc_lateral_controller/mpc_lateral_controller.param.yaml",
         ],
         "path to the parameter file of lateral controller. default is `mpc_follower`",
     )
@@ -292,7 +292,7 @@ def generate_launch_description():
         "lon_controller_param_path",
         [
             FindPackageShare("control_launch"),
-            "/config/trajectory_follower/longitudinal_controller.param.yaml",
+            "/config/pid_longitudinal_controller/pid_longitudinal_controller.param.yaml",
         ],
         "path to the parameter file of longitudinal controller",
     )
