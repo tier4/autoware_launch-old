@@ -260,8 +260,8 @@ def generate_launch_description():
     # lateral controller mode
     add_launch_arg(
         "lateral_controller_mode",
-        "mpc_follower",
-        "lateral controller mode: `mpc_follower` or `pure_pursuit`",
+        "mpc",
+        "lateral controller mode: `mpc` or `pure_pursuit`",
     )
 
     # longitudinal controller mode
