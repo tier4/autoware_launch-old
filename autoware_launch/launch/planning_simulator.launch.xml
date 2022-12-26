@@ -13,6 +13,8 @@
   <arg name="rviz" default="true" description="launch rviz"/>
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/autoware.rviz" description="rviz config"/>
   <!-- Scenario simulation -->
+  <arg name="cruise_planner_type" default="obstacle_cruise_planner" description="type of cruise planner"/>
+  <!-- Optional parameters for scenario simulation -->
   <arg name="initial_engage_state" default="true" description="/vehicle/engage state after starting Autoware"/>
   <arg name="perception/enable_detection_failure" default="true" description="enable to simulate detection failure when using dummy perception"/>
   <arg name="perception/enable_object_recognition" default="true" description="enable object recognition when using dummy perception"/>

@@ -324,7 +324,7 @@ def generate_launch_description():
                 "input_path_topic",
                 default_value="/planning/scenario_planning/lane_driving/behavior_planning/path",
             ),
-            DeclareLaunchArgument("use_surround_obstacle_check", default_value="true"),
+            DeclareLaunchArgument("use_surround_obstacle_check", default_value="false"),
             DeclareLaunchArgument("use_intra_process", default_value="false"),
             DeclareLaunchArgument("use_multithread", default_value="false"),
             set_container_executable,
