@@ -61,8 +61,8 @@ def launch_setup(context, *args, **kwargs):
         shift_decider_param = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     controller_component = ComposableNode(
-        package="trajectory_follower_nodes",
-        plugin="autoware::motion::control::trajectory_follower_nodes::Controller",
+        package="trajectory_follower_node",
+        plugin="autoware::motion::control::trajectory_follower_node::Controller",
         name="controller_node_exe",
         namespace="trajectory_follower",
         remappings=[
