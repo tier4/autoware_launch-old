@@ -214,7 +214,12 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments=[
             ("use_intra_process", LaunchConfiguration("use_intra_process")),
             ("target_container", "/control/control_container"),
-            ("initial_selector_mode", LaunchConfiguration("initial_selector_mode")),
+            # This is temporary uncomment. I will replace control_launch with tier4_control_launch soon.
+            # ("initial_selector_mode", LaunchConfiguration("initial_selector_mode")),
+            (
+                "external_cmd_selector_param_path",
+                LaunchConfiguration("external_cmd_selector_param_path"),
+            ),
         ],
     )
 
@@ -346,6 +351,13 @@ def generate_launch_description():
 
     # external cmd selector
     add_launch_arg("initial_selector_mode", "remote", "local or remote")
+    add_launch_arg(
+        "external_cmd_selector_param_path",
+        [
+            FindPackageShare("external_cmd_selector"),
+            "/config/external_cmd_selector.param.yaml",
+        ],
+    )
 
     # component
     add_launch_arg("use_intra_process", "false", "use ROS2 component container communication")
