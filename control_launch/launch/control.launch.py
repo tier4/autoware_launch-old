@@ -39,6 +39,11 @@ def launch_setup(context, *args, **kwargs):
     lon_controller_param_path = LaunchConfiguration("lon_controller_param_path").perform(context)
     with open(lon_controller_param_path, "r") as f:
         lon_controller_param = yaml.safe_load(f)["/**"]["ros__parameters"]
+    trajectory_follower_node_param_path = LaunchConfiguration(
+        "trajectory_follower_node_param_path"
+    ).perform(context)
+    with open(trajectory_follower_node_param_path, "r") as f:
+        trajectory_follower_node_param = yaml.safe_load(f)["/**"]["ros__parameters"]
     vehicle_cmd_gate_param_path = LaunchConfiguration("vehicle_cmd_gate_param_path").perform(
         context
     )
@@ -83,6 +88,7 @@ def launch_setup(context, *args, **kwargs):
                 "longitudinal_controller_mode": LaunchConfiguration("longitudinal_controller_mode"),
             },
             nearest_search_param,
+            trajectory_follower_node_param,
             lon_controller_param,
             lat_controller_param,
         ],
@@ -284,7 +290,7 @@ def generate_launch_description():
         "lat_controller_param_path",
         [
             FindPackageShare("control_launch"),
-            "/config/mpc_lateral_controller/mpc_lateral_controller.param.yaml",
+            "/config/trajectory_follower/lateral/mpc.param.yaml",
         ],
         "path to the parameter file of lateral controller. default is `mpc_follower`",
     )
@@ -292,7 +298,15 @@ def generate_launch_description():
         "lon_controller_param_path",
         [
             FindPackageShare("control_launch"),
-            "/config/pid_longitudinal_controller/pid_longitudinal_controller.param.yaml",
+            "/config/trajectory_follower/longitudinal/pid.param.yaml",
+        ],
+        "path to the parameter file of longitudinal controller",
+    )
+    add_launch_arg(
+        "trajectory_follower_node_param_path",
+        [
+            FindPackageShare("control_launch"),
+            "/config/trajectory_follower/trajectory_follower_node.param.yaml",
         ],
         "path to the parameter file of longitudinal controller",
     )
