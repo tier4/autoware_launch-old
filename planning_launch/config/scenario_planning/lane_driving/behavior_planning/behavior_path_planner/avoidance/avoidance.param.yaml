@@ -61,7 +61,7 @@
       max_avoidance_acceleration: 0.5  # [m/ss]
 
       # bound clipping for objects
-      enable_bound_clipping: false
+      enable_bound_clipping: true
 
       # for debug
       publish_debug_marker: false
