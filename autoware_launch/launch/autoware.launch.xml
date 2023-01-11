@@ -18,7 +18,6 @@
   <arg name="launch_perception" default="true" description="launch perception"/>
   <arg name="launch_planning" default="true" description="launch planning"/>
   <arg name="launch_control" default="true" description="launch control"/>
-  <arg name="launch_rviz" default="true" description="launch rviz"/>
   <!-- Global parameters -->
   <arg name="use_sim_time" default="false" description="use_sim_time"/>
   <!-- Vehicle -->
@@ -31,6 +30,7 @@
   <!-- System -->
   <arg name="system_run_mode" default="online" description="run mode in system"/>
   <!-- Tools -->
+  <arg name="rviz" default="true" description="launch rviz"/>
   <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/autoware.rviz" description="rviz config"/>
   <!-- Perception -->
   <arg name="perception_mode" default="camera_lidar_fusion" description="select perception mode. camera_lidar_radar_fusion, camera_lidar_fusion, lidar_radar_fusion, lidar, radar"/>
@@ -135,7 +135,7 @@
   </group>
 
   <!-- Rviz -->
-  <group if="$(var launch_rviz)">
+  <group if="$(var rviz)">
     <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_config) -s $(find-pkg-share autoware_launch)/rviz/image/autoware.png"/>
   </group>
 </launch>
