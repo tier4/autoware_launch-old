@@ -18,7 +18,6 @@
   <arg name="launch_perception" default="true" description="launch perception"/>
   <arg name="launch_planning" default="true" description="launch planning"/>
   <arg name="launch_control" default="true" description="launch control"/>
-  <arg name="launch_api" default="true" description="launch api"/>
   <arg name="launch_rviz" default="true" description="launch rviz"/>
   <!-- Global parameters -->
   <arg name="use_sim_time" default="false" description="use_sim_time"/>
@@ -131,7 +130,7 @@
   </group>
 
   <!-- Autoware API -->
-  <group if="$(var launch_api)">
+  <group>
     <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml"/>
   </group>
 
