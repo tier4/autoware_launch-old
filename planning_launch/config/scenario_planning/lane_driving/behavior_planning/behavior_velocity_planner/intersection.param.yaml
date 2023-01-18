@@ -23,7 +23,7 @@
       enable_front_car_decel_prediction: false # By default this feature is disabled
       occlusion:
         free_space_max: 43
-        occupied_min: 58
+        occupied_min: 65
 
     merge_from_private_road:
       stop_duration_sec: 1.0
