@@ -88,8 +88,8 @@
       <arg name="sensor_model" value="$(var sensor_model)"/>
       <arg name="vehicle_mirror_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/mirror.param.yaml"/>
       <arg name="use_pointcloud_container" value="$(var use_pointcloud_container)"/>
-      <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
       <arg name="perception_mode" value="$(var perception_mode)"/>
+      <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     </include>
   </group>
 
@@ -130,9 +130,10 @@
     </include>
   </group>
 
-  <!-- Autoware API -->
+  <!-- API -->
   <group>
-    <include file="$(find-pkg-share autoware_api_launch)/launch/autoware_api.launch.xml"/>
+    <include file="$(find-pkg-share autoware_launch)/config/autoware_api/autoware_api.param.xml"/>
+    <include file="$(find-pkg-share tier4_autoware_api_launch)/launch/autoware_api.launch.xml"/>
   </group>
 
   <!-- Rviz -->
