@@ -17,8 +17,8 @@
   <exec_depend>python3-tornado</exec_depend>
   <exec_depend>rviz2</exec_depend>
   <exec_depend>system_launch</exec_depend>
-  <exec_depend>tier4_control_launch</exec_depend>
   <exec_depend>tier4_autoware_api_launch</exec_depend>
+  <exec_depend>tier4_control_launch</exec_depend>
   <exec_depend>tier4_localization_launch</exec_depend>
   <exec_depend>tier4_map_launch</exec_depend>
   <exec_depend>tier4_perception_launch</exec_depend>
