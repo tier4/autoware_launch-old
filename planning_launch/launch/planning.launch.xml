@@ -24,10 +24,12 @@
       </include>
     </group>
 
-    <!-- planning error monitor -->
+    <!-- planning validator -->
     <group>
-      <push-ros-namespace namespace="planning_diagnostics"/>
-      <include file="$(find-pkg-share planning_launch)/launch/planning_diagnostics/planning_error_monitor.launch.xml">
+      <include file="$(find-pkg-share planning_validator)/launch/planning_validator.launch.xml">
+        <arg name="planning_validator_param_path" value="$(find-pkg-share planning_launch)/config/planning_validator/planning_validator.param.yaml" />
+        <arg name="input_trajectory" value="/planning/scenario_planning/motion_velocity_smoother/trajectory" />
+        <arg name="output_trajectory" value="/planning/scenario_planning/trajectory" />
       </include>
     </group>
   </group>
