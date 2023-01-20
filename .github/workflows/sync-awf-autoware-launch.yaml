@@ -1,4 +1,4 @@
-name: sync-awf-latest
+name: sync-awf-autoware-launch
 
 on:
   schedule:
