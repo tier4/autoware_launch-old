@@ -4,6 +4,10 @@
       drivable_area_right_bound_offset: 0.0
       drivable_area_left_bound_offset: 0.0
       drivable_area_types_to_skip: [road_border]
+    avoidance_by_lc:
+      drivable_area_right_bound_offset: 0.0
+      drivable_area_left_bound_offset: 0.0
+      drivable_area_types_to_skip: [road_border]
     lane_change:
       drivable_area_right_bound_offset: 0.0
       drivable_area_left_bound_offset: 0.0
