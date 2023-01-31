@@ -1,6 +1,30 @@
 /**:
   ros__parameters:
     planning_hz: 10.0
+
+    launch_pull_over: true
+    launch_pull_out: true
+    launch_avoidance_by_lc: true
+    launch_avoidance: true
+    launch_lane_change: true
+    launch_side_shift: true
+
+    priority_pull_over: 1
+    priority_avoidance_by_lc: 2
+    priority_avoidance: 3
+    priority_lane_change: 4
+    priority_side_shift: 5
+    priority_pull_out: 0
+
+    enable_simultaneous_execution_avoidance_by_lc: false
+    enable_simultaneous_execution_avoidance: true
+    enable_simultaneous_execution_lane_change: true
+    enable_simultaneous_execution_side_shift: false
+    enable_simultaneous_execution_pull_over: false
+    enable_simultaneous_execution_pull_out: false
+
+    verbose: true
+
     backward_path_length: 5.0
     forward_path_length: 300.0
     backward_length_buffer_for_end_of_pull_over: 5.0
