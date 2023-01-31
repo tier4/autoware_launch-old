@@ -57,8 +57,8 @@
     <let name="launch_dummy_vehicle" value="false" if="$(var scenario_simulation)"/>
     <let name="launch_dummy_vehicle" value="true" unless="$(var scenario_simulation)"/>
     <let name="launch_dummy_localization" value="true"/>
-    <let name="launch_planning_evaluator" value="false" if="$(var scenario_simulation)"/>
-    <let name="launch_planning_evaluator" value="true" unless="$(var scenario_simulation)"/>
+    <let name="launch_planning_evaluator" value="true" if="$(var scenario_simulation)"/>
+    <let name="launch_planning_evaluator" value="false" unless="$(var scenario_simulation)"/>
 
     <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_simulator_component.launch.xml">
       <arg name="launch_dummy_perception" value="$(var launch_dummy_perception)"/>
