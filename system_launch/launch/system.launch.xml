@@ -44,7 +44,7 @@
         <arg name="extra_agg_config_file_sensing" value="$(var sensor_launch_pkg)/config/diagnostic_aggregator/sensor_kit.param.yaml" />
         <arg name="extra_agg_config_file_system" value="$(find-pkg-share system_launch)/config/diagnostic_aggregator/system.param.yaml" />
         <arg name="extra_agg_config_file_vehicle" value="$(find-pkg-share system_launch)/config/diagnostic_aggregator/vehicle.param.yaml" />
-        <arg name="use_emergency_hold" value="false" />
+        <arg name="use_emergency_hold" value="true" />
       </include>
     </group>
 
