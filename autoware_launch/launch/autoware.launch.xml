@@ -115,7 +115,7 @@
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
       <arg
         name="behavior_path_planner_tree_param_path"
-        value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree.xml"
+        value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree_lane_change_only.xml"
       />
       <arg name="cruise_planner_type" value="obstacle_stop_planner"/>
       <arg name="use_experimental_lane_change_function" value="false"/>
