@@ -28,7 +28,7 @@
       occlusion:
         free_space_max: 43
         occupied_min: 58
-        do_dp: false
+        do_dp: true
 
     merge_from_private_road:
       stop_duration_sec: 1.0
