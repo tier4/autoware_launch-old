@@ -1857,8 +1857,10 @@ Visualization Manager:
           Enabled: true
           Name: Debug/AEB
           Namespaces:
-            ego_predicted_path: true
-            ego_predicted_polygons: true
+            ego_path: true
+            ego_polygons: true
+            predicted_path: true
+            predicted_polygons: true
           Topic:
             Depth: 5
             Durability Policy: Volatile
