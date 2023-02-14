@@ -17,7 +17,7 @@
     required_modules:
       autonomous_driving:
         /autoware/control/autonomous_driving/node_alive_monitoring: default
-        /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default
+        # /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default
         /autoware/control/control_command_gate/node_alive_monitoring: default
 
         /autoware/localization/node_alive_monitoring: default

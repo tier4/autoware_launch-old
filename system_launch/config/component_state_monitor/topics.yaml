@@ -72,8 +72,8 @@
     topic_type: autoware_auto_perception_msgs/msg/PredictedObjects
     best_effort: false
     transient_local: false
-    warn_rate: 5.0
-    error_rate: 1.0
+    warn_rate: 8.0
+    error_rate: 5.0
     timeout: 1.0
 
 - module: planning
@@ -98,8 +98,8 @@
     topic_type: autoware_auto_planning_msgs/msg/Trajectory
     best_effort: false
     transient_local: false
-    warn_rate: 5.0
-    error_rate: 1.0
+    warn_rate: 8.0
+    error_rate: 5.0
     timeout: 1.0
 
 - module: control
