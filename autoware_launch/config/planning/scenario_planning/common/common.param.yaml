@@ -4,8 +4,8 @@
     normal:
       min_acc: -1.0         # min deceleration [m/ss]
       max_acc: 1.0          # max acceleration [m/ss]
-      min_jerk: -1.0        # min jerk [m/sss]
-      max_jerk: 1.0         # max jerk [m/sss]
+      min_jerk: -0.35        # min jerk [m/sss]
+      max_jerk: 0.35         # max jerk [m/sss]
 
     # constraints to be observed
     limit:
