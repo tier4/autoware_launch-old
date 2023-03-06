@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <!-- Fork the repository and add the parameters here if needed. -->x
+  <!-- Fork the repository and add the parameters here if needed. -->
   <arg name="launch_deprecated_api" default="true"/>
   <arg name="rosbridge_enabled" default="true"/>
   <arg name="rosbridge_max_message_size" default="1000000000"/>
