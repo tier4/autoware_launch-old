@@ -49,7 +49,7 @@
     />
     <arg
       name="behavior_path_planner_tree_param_path"
-      value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree.xml"
+      value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree_lane_change_only.xml"
     />
     <arg
       name="behavior_path_planner_param_path"
