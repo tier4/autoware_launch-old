@@ -6,7 +6,7 @@
   <!-- motion -->
   <arg name="cruise_planner_type" default="obstacle_stop_planner" description="options: obstacle_stop_planner, obstacle_cruise_planner, none"/>
   <arg name="use_surround_obstacle_check" default="true"/>
-  <arg name="smoother_type" default="JerkFiltered" description="options: JerkFiltered, L2, Analytical, Linf(Unstable)"/>
+  <arg name="smoother_type" default="Analytical" description="options: JerkFiltered, L2, Analytical, Linf(Unstable)"/>
 
   <include file="$(find-pkg-share tier4_planning_launch)/launch/planning.launch.xml">
     <arg name="vehicle_param_file" value="$(find-pkg-share $(var vehicle_model)_description)/config/vehicle_info.param.yaml"/>
@@ -49,7 +49,7 @@
     />
     <arg
       name="behavior_path_planner_tree_param_path"
-      value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree.xml"
+      value="$(find-pkg-share autoware_launch)/config/planning/scenario_planning/lane_driving/behavior_planning/behavior_path_planner/behavior_path_planner_tree_lane_change_only.xml"
     />
     <arg
       name="behavior_path_planner_param_path"
