@@ -2,7 +2,7 @@
   ros__parameters:
     delay_compensation_time: 0.17
 
-    enable_smooth_stop: true
+    enable_smooth_stop: false
     enable_overshoot_emergency: true
     enable_large_tracking_error_emergency: true
     enable_slope_compensation: true
