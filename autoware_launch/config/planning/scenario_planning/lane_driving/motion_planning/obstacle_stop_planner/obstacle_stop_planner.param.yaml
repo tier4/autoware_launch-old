@@ -22,7 +22,7 @@
 
       # params for detection area
       detection_area:
-        lateral_margin: 0.0                  # margin [m]
+        lateral_margin: 0.2                  # margin [m]
         vehicle_lateral_margin: 0.0          # margin of vehicle footprint [m]
         pedestrian_lateral_margin: 0.0       # margin of pedestrian footprint [m]
         unknown_lateral_margin: 0.0          # margin of unknown footprint [m]
